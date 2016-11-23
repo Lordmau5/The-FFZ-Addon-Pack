@@ -14,7 +14,7 @@ var registerAddon = function(addon) {
   }
   else {
     addons.push(addon);
-    console.log("[TOE] Registered addon: " + addon.name);
+    console.log("[FFZ:AP] Registered addon: " + addon.name);
   }
 };
 
@@ -76,23 +76,37 @@ var checkExistance = function(attempts) {
     // Register with FFZ.
     ffz = FrankerFaceZ.get();
 
-    api = ffz.api("ThatOneExtension", "https://cdn.lordmau5.com/Mau5Badge_Alpha.png", version);
+    api = ffz.api("FFZ Add-On Pack", "https://cdn.lordmau5.com/Mau5Badge_Alpha.png", version, "ffz-ap");
+
+    /* Debug toggle */
+
+    FrankerFaceZ.settings_info.ffz_ap_debug_mode = {
+      type: "boolean",
+      value: false,
+      category: "FFZ Add-On Pack",
+      name: "Enable debug mode",
+      help: "Will try to load the script from a local server hosted on port 3000.",
+      on_update: function(enabled) {
+        localStorage.ffz_ap_debug_mode = enabled;
+      }
+    };
+
+    /* ------------ */
 
     // Check for BTTV
     if(ffz.has_bttv) {
       api.log("BTTV was found. To ensure best possible compatibility, consider removing BTTV.");
     }
 
-    api.add_badge("that-one-extension", {
-      name: "that-one-extension",
-      title: "TOE Developer",
+    api.add_badge("developer", {
+      name: "developer",
+      title: "FFZ:AP Developer",
       image: "https://cdn.lordmau5.com/Mau5Badge.png",
       alpha_image: "https://cdn.lordmau5.com/Mau5Badge_Alpha.png",
       color: "#49acff"
     });
-    api.user_add_badge("lordmau5", 20, "that-one-extension");
-    api.user_add_badge("quanto", 20, "that-one-extension");
-    api.user_add_badge("faiizow", 20, "that-one-extension");
+    api.user_add_badge("lordmau5", 20, "developer");
+    api.user_add_badge("quantoqt", 20, "developer");
 
     api.log("Injected successfully.");
 
@@ -113,13 +127,16 @@ var checkExistance = function(attempts) {
       return setTimeout(checkExistance.bind(this, attempts), 1000);
     }
 
-    console.log("[ThatOneExtension] Could not find FFZ. Injection unsuccessful. (Host: " + window.location.host + ")");
+    console.log("[FFZ:AP] Could not find FFZ. Injection unsuccessful. (Host: " + window.location.host + ")");
   }
 };
 
 // Finally intiialize ourselves!
 setTimeout(checkExistance, 3000);
-;var BTTV = {
+
+/* --------------- */
+
+var BTTV = {
   name: "BetterTTV",
   log: function(string) {
     api.log("[" + BTTV.name + "] " + string);
@@ -141,7 +158,7 @@ setTimeout(checkExistance, 3000);
     FrankerFaceZ.settings_info.bttv_global_emotes = {
       type: "boolean",
       value: BTTV.vars.global_emotes,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[BTTV] Global Emoticons",
       help: "Enable this to show global emotes.",
       on_update: function(enabled) {
@@ -176,7 +193,7 @@ setTimeout(checkExistance, 3000);
     FrankerFaceZ.settings_info.bttv_gif_emotes = {
       type: "boolean",
       value: BTTV.vars.gif_emotes,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[BTTV] GIF Emoticons",
       help: "Enable this to show GIF emotes.",
       on_update: function(enabled) {
@@ -214,7 +231,7 @@ setTimeout(checkExistance, 3000);
     FrankerFaceZ.settings_info.bttv_override_emotes = {
       type: "boolean",
       value: BTTV.vars.override_emotes,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[BTTV] Enable Override Emotes",
       help: "Enable this to show override emotes (like D:).",
       on_update: function(enabled) {
@@ -234,7 +251,7 @@ setTimeout(checkExistance, 3000);
     FrankerFaceZ.settings_info.bttv_pro_emotes = {
       type: "boolean",
       value: BTTV.vars.pro_emotes,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[BTTV] Enable Pro Emotes",
       help: "Enable this to show Pro emotes from other users. (Requires refresh!)",
       on_update: function(enabled) {
@@ -253,7 +270,7 @@ setTimeout(checkExistance, 3000);
     FrankerFaceZ.settings_info.bttv_show_emotes_in_menu = {
       type: "boolean",
       value: BTTV.vars.show_emotes_in_menu,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[BTTV] Show emotes in Emoticon Menu",
       help: "Enable this to show the emotes in the Emoticon Menu (you can still enter the emotes manually when this is disabled)",
       on_update: function(enabled) {
@@ -329,7 +346,7 @@ setTimeout(checkExistance, 3000);
         var _type = _types[i];
 
         var type = {
-          name: _type.name,
+          name: "bttv-" + _type.name,
           title: _type.description,
           image: _type.svg,
           no_invert: true
@@ -842,7 +859,10 @@ BTTV.Socket.prototype.joinChannel = function(channel) {
 };
 
 registerAddon(BTTV);
-;var GameWisp = {
+
+/* --------------- */
+
+var GameWisp = {
   name: "GameWisp",
   log: function(string) {
     api.log("[" + GameWisp.name + "] " + string);
@@ -868,7 +888,10 @@ registerAddon(BTTV);
 };
 
 registerAddon(GameWisp);
-;var MaiWaifu = {
+
+/* --------------- */
+
+var MaiWaifu = {
   name: "MaiWaifu",
   log: function(string) {
     api.log("[" + MaiWaifu.name + "] " + string);
@@ -889,7 +912,7 @@ registerAddon(GameWisp);
     FrankerFaceZ.settings_info.maiwaifu_enabled = {
       type: "boolean",
       value: MaiWaifu.vars.enabled,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[MaiWaifu] Enabled",
       help: "Enable this to activate MaiWaifu.",
       on_update: function(enabled) {
@@ -900,7 +923,7 @@ registerAddon(GameWisp);
     FrankerFaceZ.settings_info.maiwaifu_trihex_only = {
       type: "boolean",
       value: MaiWaifu.vars.trihex_only,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[MaiWaifu] Trihex only",
       help: "Enable this to only make the MaiWaifu badges available on Trihex' stream.",
       on_update: function(enabled) {
@@ -911,7 +934,7 @@ registerAddon(GameWisp);
     FrankerFaceZ.settings_info.maiwaifu_use_click = {
       type: "boolean",
       value: MaiWaifu.vars.use_click,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[MaiWaifu] Click instead of Hover",
       help: "Enable this for having to click on the badge instead of hovering over it.",
       on_update: function(enabled) {
@@ -948,7 +971,7 @@ registerAddon(GameWisp);
   },
 
   chat_view_init: function(dom, ember) {
-    jQuery(dom).on("mouseenter", ".ffz-badge-2-maiwaifu", MaiWaifu.on_badge_hover);
+    jQuery(dom).on("mouseenter", ".ffz-badge-ffz-ap-maiwaifu", MaiWaifu.on_badge_hover);
     jQuery(document).on("mousemove", MaiWaifu.mouseMovement);
   },
   chat_view_destroy: function(dom, ember) {
