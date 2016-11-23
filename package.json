@@ -1,7 +1,7 @@
 {
   "name": "ffz-add-on-pack",
   "fullName": "The FFZ Add-On Pack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "devDependencies": {
     "grunt": "~1.0.1",
     "grunt-contrib-concat": "~1.0.1",
