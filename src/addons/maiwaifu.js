@@ -78,7 +78,7 @@ var MaiWaifu = {
   },
 
   chat_view_init: function(dom, ember) {
-    jQuery(dom).on("mouseenter", ".ffz-badge-2-maiwaifu", MaiWaifu.on_badge_hover);
+    jQuery(dom).on("mouseenter", ".ffz-badge-ffz-ap-maiwaifu", MaiWaifu.on_badge_hover);
     jQuery(document).on("mousemove", MaiWaifu.mouseMovement);
   },
   chat_view_destroy: function(dom, ember) {
