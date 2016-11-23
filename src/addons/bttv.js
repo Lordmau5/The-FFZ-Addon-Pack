@@ -20,7 +20,7 @@ var BTTV = {
     FrankerFaceZ.settings_info.bttv_global_emotes = {
       type: "boolean",
       value: BTTV.vars.global_emotes,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[BTTV] Global Emoticons",
       help: "Enable this to show global emotes.",
       on_update: function(enabled) {
@@ -55,7 +55,7 @@ var BTTV = {
     FrankerFaceZ.settings_info.bttv_gif_emotes = {
       type: "boolean",
       value: BTTV.vars.gif_emotes,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[BTTV] GIF Emoticons",
       help: "Enable this to show GIF emotes.",
       on_update: function(enabled) {
@@ -93,7 +93,7 @@ var BTTV = {
     FrankerFaceZ.settings_info.bttv_override_emotes = {
       type: "boolean",
       value: BTTV.vars.override_emotes,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[BTTV] Enable Override Emotes",
       help: "Enable this to show override emotes (like D:).",
       on_update: function(enabled) {
@@ -113,7 +113,7 @@ var BTTV = {
     FrankerFaceZ.settings_info.bttv_pro_emotes = {
       type: "boolean",
       value: BTTV.vars.pro_emotes,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[BTTV] Enable Pro Emotes",
       help: "Enable this to show Pro emotes from other users. (Requires refresh!)",
       on_update: function(enabled) {
@@ -132,7 +132,7 @@ var BTTV = {
     FrankerFaceZ.settings_info.bttv_show_emotes_in_menu = {
       type: "boolean",
       value: BTTV.vars.show_emotes_in_menu,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[BTTV] Show emotes in Emoticon Menu",
       help: "Enable this to show the emotes in the Emoticon Menu (you can still enter the emotes manually when this is disabled)",
       on_update: function(enabled) {

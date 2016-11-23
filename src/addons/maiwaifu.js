@@ -19,7 +19,7 @@ var MaiWaifu = {
     FrankerFaceZ.settings_info.maiwaifu_enabled = {
       type: "boolean",
       value: MaiWaifu.vars.enabled,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[MaiWaifu] Enabled",
       help: "Enable this to activate MaiWaifu.",
       on_update: function(enabled) {
@@ -30,7 +30,7 @@ var MaiWaifu = {
     FrankerFaceZ.settings_info.maiwaifu_trihex_only = {
       type: "boolean",
       value: MaiWaifu.vars.trihex_only,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[MaiWaifu] Trihex only",
       help: "Enable this to only make the MaiWaifu badges available on Trihex' stream.",
       on_update: function(enabled) {
@@ -41,7 +41,7 @@ var MaiWaifu = {
     FrankerFaceZ.settings_info.maiwaifu_use_click = {
       type: "boolean",
       value: MaiWaifu.vars.use_click,
-      category: "TOE",
+      category: "FFZ Add-On Pack",
       name: "[MaiWaifu] Click instead of Hover",
       help: "Enable this for having to click on the badge instead of hovering over it.",
       on_update: function(enabled) {
