@@ -208,7 +208,7 @@ var BTTV = {
         var _type = _types[i];
 
         var type = {
-          name: _type.name,
+          name: "bttv-" + _type.name,
           title: _type.description,
           image: _type.svg,
           no_invert: true
