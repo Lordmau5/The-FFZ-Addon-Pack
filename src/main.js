@@ -76,8 +76,22 @@ var checkExistance = function(attempts) {
     // Register with FFZ.
     ffz = FrankerFaceZ.get();
 
-    api = ffz.api("ThatOneExtension", "https://cdn.lordmau5.com/Mau5Badge_Alpha.png", version);
     api = ffz.api("FFZ Add-On Pack", "https://cdn.lordmau5.com/Mau5Badge_Alpha.png", version, "ffz-ap");
+
+    /* Debug toggle */
+
+    FrankerFaceZ.settings_info.ffz_ap_debug_mode = {
+      type: "boolean",
+      value: false,
+      category: "FFZ Add-On Pack",
+      name: "Enable debug mode",
+      help: "Will try to load the script from a local server hosted on port 3000.",
+      on_update: function(enabled) {
+        localStorage.ffz_ap_debug_mode = enabled;
+      }
+    };
+
+    /* ------------ */
 
     // Check for BTTV
     if(ffz.has_bttv) {
