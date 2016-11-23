@@ -14,7 +14,7 @@ var registerAddon = function(addon) {
   }
   else {
     addons.push(addon);
-    console.log("[TOE] Registered addon: " + addon.name);
+    console.log("[FFZ:AP] Registered addon: " + addon.name);
   }
 };
 
@@ -77,22 +77,22 @@ var checkExistance = function(attempts) {
     ffz = FrankerFaceZ.get();
 
     api = ffz.api("ThatOneExtension", "https://cdn.lordmau5.com/Mau5Badge_Alpha.png", version);
+    api = ffz.api("FFZ Add-On Pack", "https://cdn.lordmau5.com/Mau5Badge_Alpha.png", version, "ffz-ap");
 
     // Check for BTTV
     if(ffz.has_bttv) {
       api.log("BTTV was found. To ensure best possible compatibility, consider removing BTTV.");
     }
 
-    api.add_badge("that-one-extension", {
-      name: "that-one-extension",
-      title: "TOE Developer",
+    api.add_badge("developer", {
+      name: "developer",
+      title: "FFZ:AP Developer",
       image: "https://cdn.lordmau5.com/Mau5Badge.png",
       alpha_image: "https://cdn.lordmau5.com/Mau5Badge_Alpha.png",
       color: "#49acff"
     });
-    api.user_add_badge("lordmau5", 20, "that-one-extension");
-    api.user_add_badge("quanto", 20, "that-one-extension");
-    api.user_add_badge("faiizow", 20, "that-one-extension");
+    api.user_add_badge("lordmau5", 20, "developer");
+    api.user_add_badge("quantoqt", 20, "developer");
 
     api.log("Injected successfully.");
 
@@ -113,7 +113,7 @@ var checkExistance = function(attempts) {
       return setTimeout(checkExistance.bind(this, attempts), 1000);
     }
 
-    console.log("[ThatOneExtension] Could not find FFZ. Injection unsuccessful. (Host: " + window.location.host + ")");
+    console.log("[FFZ:AP] Could not find FFZ. Injection unsuccessful. (Host: " + window.location.host + ")");
   }
 };
 
