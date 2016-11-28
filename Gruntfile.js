@@ -47,7 +47,6 @@ module.exports = function(grunt) {
           port: 3000,
           hostname: '*',
           base: 'dist',
-          keepalive: true,
           protocol: 'https',
           middleware: function(connect, options, middlewares) {
             middlewares.unshift(function(req, res, next) {
@@ -75,5 +74,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
 
-  grunt.registerTask('web', ['connect']);
+  grunt.registerTask('dev', ['connect', 'watch']);
 };
