@@ -1,0 +1,32 @@
+{
+  "manifest_version": 2,
+  "name": "The FFZ Add-On Pack",
+  "short_name": "ffz-add-on-pack",
+  "version": "1.0.0",
+  "description": "A combination of add-ons for the Twitch extension \"FrankerFaceZ\"",
+
+  "icons": {
+    "48": "chrome/icon48.png",
+    "128": "chrome/icon128.png"
+  },
+
+  "background": {
+    "scripts": ["chrome/requests.js"]
+  },
+
+  "content_scripts": [ {
+    "all_frames": true,
+    "js": [ "chrome/script.js" ],
+    "matches": [ "*://*.twitch.tv/*" ],
+    "exclude_globs": [ "*://api.twitch.tv/*" ]
+  } ],
+
+  "permissions": [
+    "*://*.twitch.tv/*",
+    "*://*.frankerfacez.com/*",
+    "*://*.betterttv.net/*",
+    "*://cdn.lordmau5.com/*",
+    "webRequest",
+    "webRequestBlocking"
+  ]
+}
