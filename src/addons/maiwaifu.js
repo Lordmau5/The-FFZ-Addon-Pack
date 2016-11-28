@@ -8,6 +8,7 @@ var MaiWaifu = {
     trihex_only: false,
     use_click: false,
 
+    hover_timeout: false,
     socket: false,
     currentWaifu: false,
     pane: false,
@@ -78,7 +79,7 @@ var MaiWaifu = {
   },
 
   chat_view_init: function(dom, ember) {
-    jQuery(dom).on("mouseenter", ".ffz-badge-ffz-ap-maiwaifu", MaiWaifu.on_badge_hover);
+    jQuery(dom).on("mouseenter", ".ffz-badge-ffz-ap-maiwaifu", MaiWaifu.on_badge_hover).on("mouseleave", ".ffz-badge-ffz-ap-maiwaifu", MaiWaifu.on_badge_hover_end);
     jQuery(document).on("mousemove", MaiWaifu.mouseMovement);
   },
   chat_view_destroy: function(dom, ember) {
@@ -329,7 +330,14 @@ var MaiWaifu = {
     }
 
     var username = jQuery(this).parents(".chat-line")[0].getAttribute("data-sender");
-    MaiWaifu.openWaifuPane(username);
+
+    MaiWaifu.vars.hover_timeout = setTimeout(function() {
+      MaiWaifu.openWaifuPane(username);
+    }, 250);
+  },
+
+  on_badge_hover_end: function() {
+    clearTimeout(MaiWaifu.vars.hover_timeout);
   },
 
   on_badge_click: function(msg, e) {
