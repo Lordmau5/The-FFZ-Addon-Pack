@@ -75,5 +75,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
 
-  grunt.registerTask('dev', ['jshint', 'concat', 'uglify', 'connect']);
+  grunt.registerTask('web', ['connect']);
 };
