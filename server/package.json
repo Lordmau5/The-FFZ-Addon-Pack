@@ -1,0 +1,16 @@
+{
+  "name": "degif",
+  "version": "1.0.0",
+  "description": "Proxy server to turn GIFs into non-animated PNGs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stendec",
+  "license": "ISC",
+  "dependencies": {
+    "gm": "^1.23.0",
+    "mkdirp": "^0.5.1",
+    "request": "^2.79.0"
+  }
+}

@@ -25,7 +25,7 @@
     "*://*.twitch.tv/*",
     "*://*.frankerfacez.com/*",
     "*://*.betterttv.net/*",
-    "*://cdn.lordmau5.com/*",
+    "*://*.lordmau5.com/*",
     "webRequest",
     "webRequestBlocking"
   ]
