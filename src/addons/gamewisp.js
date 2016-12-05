@@ -1,10 +1,10 @@
 var GameWisp = {
-  name: "GameWisp",
+  name: 'GameWisp',
   log: function(string) {
-    api.log("[" + GameWisp.name + "] " + string);
+    api.log('[' + GameWisp.name + '] ' + string);
   },
   init: function() {
-    console.log("[GameWisp] Addon initialized!");
+    GameWisp.log('Addon initialized!');
   },
   doSettings: function() {
 

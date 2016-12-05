@@ -2,7 +2,7 @@ var addons = [],
     ffz,
     api,
 
-    version = "1.0.1";
+    version = '1.0.1';
 
 var registerAddon = function(addon) {
   if(isInvalidHost()) {
@@ -10,11 +10,11 @@ var registerAddon = function(addon) {
   }
 
   if(addons.includes(addon)) {
-    console.log("Not registering duplicate addon!");
+    console.log('Not registering duplicate addon!');
   }
   else {
     addons.push(addon);
-    console.log("[FFZ:AP] Registered addon: " + addon.name);
+    console.log('[FFZ:AP] Registered addon: ' + addon.name);
   }
 };
 
@@ -56,7 +56,7 @@ var chat_view_destroy = function(dom, ember) {
 
 /* ----- */
 
-var invalidHosts = ["api.", "tmi.", "spade.", "chatdepot.", "im."];
+var invalidHosts = ['api.', 'tmi.', 'spade.', 'chatdepot.', 'im.'];
 var isInvalidHost = function() {
   for(var i=0; i<invalidHosts.length; i++) {
     if(window.location.host.indexOf(invalidHosts[i]) != -1) {
@@ -76,16 +76,16 @@ var checkExistance = function(attempts) {
     // Register with FFZ.
     ffz = FrankerFaceZ.get();
 
-    api = ffz.api("FFZ Add-On Pack", "https://cdn.lordmau5.com/Mau5Badge_Alpha.png", version, "ffz-ap");
+    api = ffz.api('FFZ Add-On Pack', 'https://cdn.lordmau5.com/Mau5Badge_Alpha.png', version, 'ffz-ap');
 
     /* Debug toggle */
 
     FrankerFaceZ.settings_info.ffz_ap_debug_mode = {
-      type: "boolean",
+      type: 'boolean',
       value: false,
-      category: "FFZ Add-On Pack",
-      name: "Enable debug mode",
-      help: "Will try to load the script from a local server hosted on port 3000.",
+      category: 'FFZ Add-On Pack',
+      name: 'Enable debug mode',
+      help: 'Will try to load the script from a local server hosted on port 3000.',
       on_update: function(enabled) {
         localStorage.ffz_ap_debug_mode = enabled;
       }
@@ -95,28 +95,28 @@ var checkExistance = function(attempts) {
 
     // Check for BTTV
     if(ffz.has_bttv) {
-      api.log("BTTV was found. To ensure best possible compatibility, consider removing BTTV.");
+      api.log('BTTV was found. To ensure best possible compatibility, consider removing BTTV.');
     }
 
-    api.add_badge("developer", {
-      name: "developer",
-      title: "FFZ:AP Developer",
-      image: "https://cdn.lordmau5.com/Mau5Badge.png",
-      alpha_image: "https://cdn.lordmau5.com/Mau5Badge_Alpha.png",
-      color: "#49acff"
+    api.add_badge('developer', {
+      name: 'developer',
+      title: 'FFZ:AP Developer',
+      image: 'https://cdn.lordmau5.com/Mau5Badge.png',
+      alpha_image: 'https://cdn.lordmau5.com/Mau5Badge_Alpha.png',
+      color: '#49acff'
     });
-    api.user_add_badge("lordmau5", 20, "developer");
-    api.user_add_badge("quantoqt", 20, "developer");
+    api.user_add_badge('lordmau5', 20, 'developer');
+    api.user_add_badge('quantoqt', 20, 'developer');
 
-    api.log("Injected successfully.");
+    api.log('Injected successfully.');
 
     doSettings();
     init();
 
-    api.on("room-add", room_add);
-    api.on("room-message", room_message);
-    api.on("chat-view-init", chat_view_init);
-    api.on("chat-view-destroy", chat_view_destroy);
+    api.on('room-add', room_add);
+    api.on('room-message', room_message);
+    api.on('chat-view-init', chat_view_init);
+    api.on('chat-view-destroy', chat_view_destroy);
 
     api.iterate_rooms();
     api.iterate_chat_views();
@@ -127,9 +127,9 @@ var checkExistance = function(attempts) {
       return setTimeout(checkExistance.bind(this, attempts), 1000);
     }
 
-    console.log("[FFZ:AP] Could not find FFZ. Injection unsuccessful. (Host: " + window.location.host + ")");
+    console.log('[FFZ:AP] Could not find FFZ. Injection unsuccessful. (Host: ' + window.location.host + ')');
   }
 };
 
-// Finally intiialize ourselves!
+// Finally initialize ourselves!
 setTimeout(checkExistance, 3000);
