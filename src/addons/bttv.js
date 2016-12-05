@@ -268,7 +268,9 @@ var BTTV = {
       }
 
       var set = {
-        emoticons: emotes
+        emoticons: emotes,
+        title: 'BTTV Global Emotes',
+        sort: 101
       };
       api.register_global_set('BTTV-Global', set);
       api.emote_sets['BTTV-Global'].hidden = !BTTV.vars.show_emotes_in_menu;
