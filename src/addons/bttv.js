@@ -22,7 +22,7 @@ var BTTV = {
       value: BTTV.vars.global_emotes,
       category: 'FFZ Add-On Pack',
       name: '[BTTV] Global Emoticons',
-      help: 'Enable this to show global emotes.',
+      help: 'Enable this to show global emoticons.',
       on_update: function(enabled) {
         BTTV.vars.global_emotes = enabled;
 
@@ -35,7 +35,7 @@ var BTTV = {
       value: BTTV.vars.gif_emotes,
       category: 'FFZ Add-On Pack',
       name: '[BTTV] GIF Emoticons',
-      help: 'Enable this to show GIF emotes.',
+      help: 'Enable this to show GIF emoticons.',
       on_update: function(enabled) {
         BTTV.vars.gif_emotes = enabled;
 
@@ -48,8 +48,8 @@ var BTTV = {
       type: 'boolean',
       value: BTTV.vars.override_emotes,
       category: 'FFZ Add-On Pack',
-      name: '[BTTV] Enable Override Emotes',
-      help: 'Enable this to show override emotes (like D:).',
+      name: '[BTTV] Enable Override Emoticons',
+      help: 'Enable this to show override emoticons (like D:).',
       on_update: function(enabled) {
         BTTV.vars.override_emotes = enabled;
 
@@ -61,8 +61,8 @@ var BTTV = {
       type: 'boolean',
       value: BTTV.vars.pro_emotes,
       category: 'FFZ Add-On Pack',
-      name: '[BTTV] Enable Pro Emotes',
-      help: 'Enable this to show Pro emotes from other users. (Requires refresh!)',
+      name: '[BTTV] Enable Pro Emoticons',
+      help: 'Enable this to show Pro emoticons from yourself or other users.',
       on_update: function(enabled) {
         if(!enabled) {
           var i = BTTV.ProUsers.length;
@@ -81,7 +81,7 @@ var BTTV = {
       value: BTTV.vars.show_emotes_in_menu,
       category: 'FFZ Add-On Pack',
       name: '[BTTV] Show emotes in Emoticon Menu',
-      help: 'Enable this to show the emotes in the Emoticon Menu (you can still enter the emotes manually when this is disabled)',
+      help: 'Enable this to show the emoticons in the Emoticon Menu (you can still enter the emoticons manually when this is disabled)',
       on_update: function(enabled) {
         api.emote_sets['BTTV-Global'].hidden = !enabled;
 
@@ -269,7 +269,7 @@ var BTTV = {
 
       var set = {
         emoticons: emotes,
-        title: 'BTTV Global Emotes',
+        title: 'BTTV Global Emoticons',
         sort: 101
       };
       api.register_global_set('BTTV-Global', set);
@@ -342,7 +342,7 @@ var BTTV = {
 
       var set = {
         emoticons: channelBTTV,
-        title: 'Emoticons'
+        title: 'Channel Emoticons'
       };
 
       if(channelBTTV.length) {
@@ -435,7 +435,7 @@ BTTV.ProUser.prototype.loadEmotes = function() {
 
   var set = {
     emoticons: this.emotes,
-    title: 'Personal Emotes'
+    title: 'Personal Emoticons'
   };
 
   if(this.emotes.length) {
