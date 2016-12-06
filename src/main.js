@@ -14,7 +14,7 @@ var registerAddon = function(addon) {
   }
   else {
     addons.push(addon);
-    console.log('[FFZ:AP] Registered addon: ' + addon.name);
+    console.log('[FAP] Registered addon: ' + addon.name);
   }
 };
 
@@ -76,7 +76,7 @@ var checkExistance = function(attempts) {
     // Register with FFZ.
     ffz = FrankerFaceZ.get();
 
-    api = ffz.api('FFZ Add-On Pack', 'https://cdn.lordmau5.com/Mau5Badge_Alpha.png', version, 'ffz-ap');
+    api = ffz.api('FFZ Add-On Pack', 'https://cdn.lordmau5.com/Mau5Badge_Alpha.png', version, 'fap');
 
     /* Debug toggle */
 
@@ -100,7 +100,7 @@ var checkExistance = function(attempts) {
 
     api.add_badge('developer', {
       name: 'developer',
-      title: 'FFZ:AP Developer',
+      title: 'FAP Developer',
       image: 'https://cdn.lordmau5.com/Mau5Badge.png',
       alpha_image: 'https://cdn.lordmau5.com/Mau5Badge_Alpha.png',
       color: '#49acff'
@@ -127,7 +127,7 @@ var checkExistance = function(attempts) {
       return setTimeout(checkExistance.bind(this, attempts), 1000);
     }
 
-    console.log('[FFZ:AP] Could not find FFZ. Injection unsuccessful. (Host: ' + window.location.host + ')');
+    console.log('[FAP] Could not find FFZ. Injection unsuccessful. (Host: ' + window.location.host + ')');
   }
 };
 
