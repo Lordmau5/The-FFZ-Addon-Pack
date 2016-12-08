@@ -129,6 +129,10 @@ var BTTV = {
 
     api.unload_set(BTTV.vars.channels[room_id].set_id);
     BTTV.vars.channels[room_id] = null;
+
+    if(BTTV.vars.pro_emotes) {
+      BTTV.vars.socket.partChannel(room_id);
+    }
   },
   room_message: function(msg) {
     if(ffz.has_bttv) {
