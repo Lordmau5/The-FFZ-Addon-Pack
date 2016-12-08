@@ -86,8 +86,7 @@ var BTTV = {
         api.emote_sets['BTTV-Global'].hidden = !enabled;
 
         for(var name in BTTV.vars.channels) {
-          api.emote_sets[BTTV.vars.channels[name].emotes].hidden = !enabled;
-          api.emote_sets[BTTV.vars.channels[name].gifemotes_setid].hidden = !enabled;
+          api.emote_sets[BTTV.vars.channels[name].set_id].hidden = !enabled;
         }
       }
     };
@@ -337,7 +336,7 @@ var BTTV = {
       }
 
       BTTV.vars.channels[room_id] = {
-        emotes: 'BTTV-Channel-' + room_id
+        set_id: 'BTTV-Channel-' + room_id
       };
 
       var set = {
@@ -346,8 +345,8 @@ var BTTV = {
       };
 
       if(channelBTTV.length) {
-        api.register_room_set(room_id, BTTV.vars.channels[room_id].emotes, set); // Load normal emotes
-        api.emote_sets[BTTV.vars.channels[room_id].emotes].hidden = !BTTV.vars.show_emotes_in_menu;
+        api.register_room_set(room_id, BTTV.vars.channels[room_id].set_id, set); // Load normal emotes
+        api.emote_sets[BTTV.vars.channels[room_id].set_id].hidden = !BTTV.vars.show_emotes_in_menu;
       }
     }).fail(function(data) {
       if (data.status === 404) {
