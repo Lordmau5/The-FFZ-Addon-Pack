@@ -461,10 +461,10 @@ BTTV.ProUser.prototype.initialize = function() {
 /** Begin Socket **/
 
 BTTV.Socket.prototype.connect = function() {
-  if (ffz.get_user() === undefined) {
+  if(ffz.get_user() === undefined) {
     return;
   }
-  if (this._connected || this._connecting) {
+  if(this._connected || this._connecting) {
     return;
   }
   this._connecting = true;
@@ -499,7 +499,7 @@ BTTV.Socket.prototype.connect = function() {
   };
 
   this.socket.onclose = function() {
-    if (!_self._connected || !_self.socket) {
+    if(!_self._connected || !_self.socket) {
       return;
     }
 
@@ -515,11 +515,11 @@ BTTV.Socket.prototype.connect = function() {
     try {
       evt = JSON.parse(message.data);
     }
-    catch (e) {
+    catch(e) {
       BTTV.log('Socket: Error parsing message', e);
     }
 
-    if (!evt || !(evt.name in _self._events)) {
+    if(!evt || !(evt.name in _self._events)) {
       return;
     }
 
@@ -534,7 +534,7 @@ BTTV.Socket.prototype.reconnect = function() {
 
   this.disconnect();
 
-  if (this._connecting === false) {
+  if(this._connecting === false) {
     return;
   }
   this._connecting = false;
@@ -547,7 +547,7 @@ BTTV.Socket.prototype.reconnect = function() {
 BTTV.Socket.prototype.disconnect = function() {
   var _self = this;
 
-  if (this.socket) {
+  if(this.socket) {
     try {
       this.socket.close();
     }
@@ -560,7 +560,7 @@ BTTV.Socket.prototype.disconnect = function() {
 };
 
 BTTV.Socket.prototype.emit = function(evt, data) {
-  if (!this._connected || !this.socket) {
+  if(!this._connected || !this.socket) {
     return;
   }
 
@@ -571,10 +571,10 @@ BTTV.Socket.prototype.emit = function(evt, data) {
 };
 
 BTTV.Socket.prototype.broadcastMe = function(channel) {
-  if (!this._connected) {
+  if(!this._connected) {
     return;
   }
-  if (!ffz.get_user()) {
+  if(!ffz.get_user()) {
     return;
   }
 
@@ -585,27 +585,43 @@ BTTV.Socket.prototype.broadcastMe = function(channel) {
 };
 
 BTTV.Socket.prototype.joinChannel = function(channel) {
-  if (!this._connected) {
-    if (!this._connectionBuffer.includes(channel)) {
+  if(!this._connected) {
+    if(!this._connectionBuffer.includes(channel)) {
       this._connectionBuffer.push(channel);
     }
     return;
   }
 
-  if (!channel.length) {
+  if(!channel.length) {
     return;
   }
 
-  if (this._joinedChannels[channel]) {
-      this.emit('part_channel', {
-        name: channel
-      });
+  if(this._joinedChannels[channel]) {
+    this.emit('part_channel', {
+      name: channel
+    });
   }
 
   this.emit('join_channel', {
     name: channel
   });
   this._joinedChannels[channel] = true;
+};
+
+BTTV.Socket.prototype.partChannel = function(channel) {
+  if(!this._connected) {
+    return;
+  }
+  if(!channel.length) {
+    return;
+  }
+
+  if(this._joinedChannels[channel]) {
+    this.emit('part_channel', {
+      name: channel
+    });
+  }
+  this._joinedChannels[channel] = false;
 };
 
 registerAddon(BTTV);
