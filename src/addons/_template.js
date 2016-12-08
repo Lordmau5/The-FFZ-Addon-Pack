@@ -3,16 +3,22 @@ var _TEMPLATE = {
   log: function(string) {
     api.log('[' + _TEMPLATE.name + '] ' + string);
   },
+  vars: {
+
+  },
   doSettings: function() {
 
   },
   init: function() {
     _TEMPLATE.log('Addon initialized!');
   },
-  room_message: function(msg) {
+  room_add: function(room_id, reg_function) {
 
   },
-  room_add: function(room_id, reg_function, attempts) {
+  room_remove: function(room_id) {
+
+  },
+  room_message: function(msg) {
 
   },
   chat_view_init: function(dom, ember) {
