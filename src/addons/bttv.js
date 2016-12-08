@@ -80,7 +80,7 @@ var BTTV = {
       type: 'boolean',
       value: BTTV.vars.show_emotes_in_menu,
       category: 'FFZ Add-On Pack',
-      name: '[BTTV] Show emotes in Emoticon Menu',
+      name: '[BTTV] Show emoticons in Emoticon Menu',
       help: 'Enable this to show the emoticons in the Emoticon Menu (you can still enter the emoticons manually when this is disabled)',
       on_update: function(enabled) {
         api.emote_sets['BTTV-Global'].hidden = !enabled;
