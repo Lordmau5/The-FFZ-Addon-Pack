@@ -30,9 +30,15 @@ var init = function() {
   });
 };
 
-var room_add = function(room_id, reg_function, attempts) {
+var room_add = function(room_id, reg_function) {
   addons.forEach(function(addon) {
-    addon.room_add(room_id, reg_function, attempts);
+    addon.room_add(room_id, reg_function);
+  });
+};
+
+var room_remove = function(room_id) {
+  addons.forEach(function(addon) {
+    addon.room_remove(room_id);
   });
 };
 
@@ -114,6 +120,7 @@ var checkExistance = function(attempts) {
     init();
 
     api.on('room-add', room_add);
+    api.on('room-remove', room_remove);
     api.on('room-message', room_message);
     api.on('chat-view-init', chat_view_init);
     api.on('chat-view-destroy', chat_view_destroy);

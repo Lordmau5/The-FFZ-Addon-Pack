@@ -115,12 +115,20 @@ var BTTV = {
       BTTV.vars.socket.connect();
     }
   },
-  room_add: function(room_id, reg_function, attempts) {
+  room_add: function(room_id, reg_function) {
     if(ffz.has_bttv) {
       return;
     }
 
-    BTTV.addChannel(room_id, reg_function, attempts);
+    BTTV.addChannel(room_id, reg_function);
+  },
+  room_remove: function(room_id) {
+    if(ffz.has_bttv) {
+      return;
+    }
+
+    api.unload_set(BTTV.vars.channels[room_id].set_id);
+    BTTV.vars.channels[room_id] = null;
   },
   room_message: function(msg) {
     if(ffz.has_bttv) {
@@ -437,6 +445,7 @@ BTTV.ProUser.prototype.loadEmotes = function() {
     title: 'Personal Emoticons'
   };
 
+  api.unload_set(this._id_emotes);
   if(this.emotes.length) {
     api.load_set(this._id_emotes, set);
     api.user_add_set(this.username, this._id_emotes);
