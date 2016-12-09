@@ -196,14 +196,19 @@ var BTTV = {
     });
   },
 
-  override_emotes: [ ':\'(', 'D:' ],
+  override_emotes: [
+    ':\'(',
+    'D:'
+  ],
   isOverrideEmote: function(emote_regex) {
-    for(var i = 0; i < BTTV.override_emotes.length; i++) {
-      if(emote_regex === BTTV.override_emotes[i]) {
-        return true;
-      }
-    }
-    return false;
+    return BTTV.override_emotes.indexOf(emote_regex) != -1;
+  },
+
+  hat_emotes: [
+    
+  ],
+  isHatEmote: function(emote_regex) {
+    return BTTV.hat_emotes.indexOf(emote_regex) != -1;
   },
 
   updateGlobalEmotes: function(attempts) {
@@ -259,6 +264,11 @@ var BTTV = {
               emote.urls[2] = 'https://cache.lordmau5.com/' + emote.urls[2];
               emote.urls[4] = 'https://cache.lordmau5.com/' + emote.urls[4];
             }
+          }
+
+          if(BTTV.isHatEmote(_emote.regex)) {
+            emote.margins = '0px 0px 0px -28px';
+            emote.modifier = true;
           }
           globalBTTV.push(emote);
         }
