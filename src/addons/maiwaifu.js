@@ -59,7 +59,7 @@ var MaiWaifu = {
 
     MaiWaifu.vars.socket = new MaiWaifu.Socket();
     if(MaiWaifu.vars.enabled) {
-      MaiWaifu.vars.socket.connect(MaiWaifu.createWaifuPane());
+      MaiWaifu.vars.socket.connect();
     }
 
     api.add_badge("maiwaifu", {
@@ -70,6 +70,17 @@ var MaiWaifu = {
       no_tooltip: true,
       click_action: MaiWaifu.on_badge_click
     });
+
+    $('head').append('<link rel="stylesheet" href="https://cdn.lordmau5.com/ffz-ap/mw/jsCustomScrollbar.css"/>');
+    $('head').append('<script src="https://cdn.lordmau5.com/ffz-ap/mw/jsCustomScrollbar.js"></script>');
+
+    $('head').append('<link rel="stylesheet" href="https://cdn.lordmau5.com/ffz-ap/mw/waifu.css" type="text/css"/>');
+    $.get('https://cdn.lordmau5.com/ffz-ap/mw/waifu.template', function(data) {
+      MaiWaifu.vars.pane = document.createElement("div");
+      MaiWaifu.vars.pane.className = 'maiwaifu waifu';
+      MaiWaifu.vars.pane.innerHTML = data;
+      document.body.appendChild(MaiWaifu.vars.pane);
+    });
   },
   room_add: function(room_id, reg_function, attempts) {
     // Unused
@@ -79,33 +90,11 @@ var MaiWaifu = {
   },
 
   chat_view_init: function(dom, ember) {
-    jQuery(dom).on("mouseenter", ".ffz-badge-ffz-ap-maiwaifu", MaiWaifu.on_badge_hover).on("mouseleave", ".ffz-badge-ffz-ap-maiwaifu", MaiWaifu.on_badge_hover_end);
+    jQuery(dom).on("mouseenter", ".ffz-badge-fap-maiwaifu", MaiWaifu.on_badge_hover).on("mouseleave", ".ffz-badge-fap-maiwaifu", MaiWaifu.on_badge_hover_end);
     jQuery(document).on("mousemove", MaiWaifu.mouseMovement);
   },
   chat_view_destroy: function(dom, ember) {
     // Unused
-  },
-
-  createWaifuPane: function() {
-    // MaiWaifu.vars.currentWaifu = new Waifu();
-    MaiWaifu.vars.pane = document.createElement("div");
-    MaiWaifu.vars.pane.className = "waifuPane";
-    MaiWaifu.vars.pane.style.display = "none";
-    MaiWaifu.vars.pane.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
-    MaiWaifu.vars.pane.style.position = "absolute";
-    MaiWaifu.vars.pane.style.zIndex = "9999";
-    MaiWaifu.vars.pane.style.color = "#FFF";
-    MaiWaifu.vars.pane.style.width = "240px";
-    MaiWaifu.vars.pane.style.padding = "20px";
-
-    MaiWaifu.vars.boundingBox = document.createElement("div");
-    MaiWaifu.vars.boundingBox.style.marginLeft = "40px";
-    MaiWaifu.vars.boundingBox.style.position = "absolute";
-    MaiWaifu.vars.boundingBox.style.paddingLeft = "10px";
-    MaiWaifu.vars.boundingBox.style.top = "0px";
-
-    document.body.appendChild(MaiWaifu.vars.boundingBox);
-    MaiWaifu.vars.boundingBox.appendChild(MaiWaifu.vars.pane);
   },
 
   mouseMovement: function(event) {
@@ -113,7 +102,7 @@ var MaiWaifu = {
       return;
     }
 
-    if(event.target.className.indexOf("waifu") != -1) {
+    if(event.target && event.target.className.indexOf("maiwaifu") != -1) {
       MaiWaifu.vars.mouseMovement = 0;
     }
     else {
@@ -125,57 +114,47 @@ var MaiWaifu = {
   },
 
   openWaifuPane: function(username) {
-    MaiWaifu.requestWaifu(username, function(){
-      MaiWaifu.vars.pane.topCoord = 100; //e.clientY;
+    MaiWaifu.requestWaifu(username, function() {
+      MaiWaifu.fadeInWaifu();
+      MaiWaifu.vars.mouseMovement = 0;
     });
-
-    MaiWaifu.vars.mouseMovement = 0;
   },
 
   updateWaifuPane: function(callback) {
-    // var chat = document.getElementsByClassName("chat-room")[0];
-    // var chatRect = chat.getBoundingClientRect();
-    MaiWaifu.fadeInWaifu();
-    MaiWaifu.vars.currentSlide = 1;
-    clearInterval(MaiWaifu.vars.pane.slideshow);
-    MaiWaifu.vars.pane.innerHTML = "";
-    MaiWaifu.vars.boundingBox.style.left = "500px"; //chatRect.left + "px";
-    MaiWaifu.vars.boundingBox.style.width = "300px"; //chat.offsetWidth - 40 + "px";
+    var waifu = MaiWaifu.vars.currentWaifu;
 
-    //Waifu Header
-    var header = document.createElement('div');
-    header.className = "waifuHeader";
-    header.textContent = MaiWaifu.vars.currentWaifu.user.capitalize() + "'s "+ MaiWaifu.vars.currentWaifu.gender.capitalize() +": ";
-    header.style.marginBottom = "5px";
+    var setHeaders = function(xhr) {
+      xhr.setRequestHeader('Client-ID', 'osnmdi33550lb0qumxv5p4lslx9ef1o');
+    };
 
-    var waifuName = document.createElement('div');
-    waifuName.className = "waifuName";
-    waifuName.textContent = MaiWaifu.vars.currentWaifu.waifu;
-    waifuName.style.marginBottom = "10px";
-    waifuName.style.fontWeight = "bolder";
+    $('.waifu #header #avatar_container #avatar').css('background-image', 'none');
+    $('.waifu #header #avatar_container #placeholder').css('background-image', 'url("https://cdn.lordmau5.com/ffz-ap/mw/bestgirl.png")');
 
-    //Images
+    $.ajax({
+      url: 'https://api.twitch.tv/kraken/users/' + waifu.user,
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        $('.waifu #header #avatar_container #avatar').css('background-image', 'url(' + data.logo + ')').fadeTo('1s', 1);
+        $('.waifu #header #avatar_container #placeholder').css('background-image', 'none');
+      },
+      error: function() {
+        console.log('ERROR');
+      },
+      beforeSend: setHeaders
+    });
 
-    //Preload Images
-    for(var i=0; i<MaiWaifu.vars.currentWaifu.images.length; i++) {
+    $('.waifu #header #username #user').text(waifu.user.capitalize() + '\'s ' + waifu.gender.capitalize());
+    $('.waifu #header #username #waifu').text(waifu.waifu);
+
+    for(var i=0; i<waifu.images.length; i++) {
       var preloadedImage = new Image();
-      preloadedImage.src = MaiWaifu.vars.currentWaifu.images[i];
+      preloadedImage.src = waifu.images[i];
     }
 
-    var pic = document.createElement('div');
-    pic.className = "waifuPic";
-    pic.style.width = "200px";
-    pic.style.height = "200px";
-    pic.style.backgroundSize="contain";
-    pic.style.marginBottom = "10px";
-    pic.style.transition = "ease 2s";
-    pic.style.transitionDelay = "200ms";
-
     var image = MaiWaifu.vars.currentWaifu.images[0].match(/imgur\.com\/([A-Za-z0-9\.]+)/)[1];
-    pic.style.backgroundImage = "url(https://miku.mywaif.us/imgur/?" + image + ")";
-    pic.style.backgroundRepeat = "no-repeat";
-    pic.style.backgroundPosition = "center center";
 
+    $('.waifu #image').css('background-image', 'url(https://miku.mywaif.us/imgur/?' + image + ')');
     MaiWaifu.vars.pane.slideshow = setInterval(function() {
       if(!MaiWaifu.vars.currentWaifu) {
         clearInterval(MaiWaifu.vars.pane.slideshow);
@@ -184,7 +163,7 @@ var MaiWaifu = {
 
       if(MaiWaifu.vars.currentSlide < MaiWaifu.vars.currentWaifu.images.length) {
         image = MaiWaifu.vars.currentWaifu.images[MaiWaifu.vars.currentSlide].match(/imgur\.com\/([A-Za-z0-9\.]+)/)[1];//dem greedz
-        pic.style.backgroundImage = "url(https://miku.mywaif.us/imgur/?" + image + ")";
+        $('.waifu #image').css('background-image', 'url(https://miku.mywaif.us/imgur/?' + image + ')');
         MaiWaifu.vars.currentSlide++;
       }
       else {
@@ -192,86 +171,36 @@ var MaiWaifu = {
       }
     },5000);
 
-    //Waifu Status
-    var stats = document.createElement('div');
-    stats.className = "waifuStats";
+    $('.waifu #info #series_container #series').text(waifu.series);
+    $('.waifu #info #type_container #type').text(waifu.type);
 
-    var line = document.createElement('br');
-    line.className = "waifuSpace";
-    //line.style.paddingTop = "10px";
+    $('.waifu #info #description').text(waifu.summary);
 
-    var seriesTitle = document.createElement('div');
-    seriesTitle.className = "waifuSeries";
-    seriesTitle.innerHTML = "Series:";
-    seriesTitle.style.fontWeight = "bold";
-    seriesTitle.style.float = "left";
-    seriesTitle.style.paddingRight = "5px";
-
-    var series = document.createElement('div');
-    series.className = "waifuSeries";
-    series.textContent = MaiWaifu.vars.currentWaifu.series;
-
-    var typeTitle = document.createElement('div');
-    typeTitle.className = "waifuType";
-    typeTitle.innerHTML = "Type:";
-    typeTitle.style.fontWeight = "bold";
-    typeTitle.style.float = "left";
-    typeTitle.style.paddingRight = "5px";
-
-    var type = document.createElement('div');
-    type.textContent = MaiWaifu.vars.currentWaifu.type;
-    type.className = "waifuType";
-
-    //Summary
-    var summary = document.createElement('div');
-    summary.className = "waifuSummary";
-    summary.textContent = MaiWaifu.vars.currentWaifu.summary;
-    summary.style.position = "relative";
-
-    //Append everything to stats
-    stats.appendChild(line);
-    stats.appendChild(seriesTitle);
-    stats.appendChild(series);
-    stats.appendChild(typeTitle);
-    stats.appendChild(type);
-    stats.appendChild(line);
-    stats.appendChild(summary);
-
-    if(MaiWaifu.vars.currentWaifu.subbedSince) {
-      var subLine = document.createElement('br');
-      subLine.className = "waifuSpace";
-      //subLine.style.paddingTop = "10px";
-      stats.appendChild(subLine);
-
-      var subbedSince = document.createElement('div');
-      subbedSince.className = "waifuSubbedSince";
-      subbedSince.innerHTML = "Subbed for " + MaiWaifu.vars.currentWaifu.subbedSince + " months.";
-      stats.appendChild(subbedSince);
-    }
-
-    MaiWaifu.vars.pane.appendChild(header);
-    MaiWaifu.vars.pane.appendChild(waifuName);
-    MaiWaifu.vars.pane.appendChild(pic);
-    MaiWaifu.vars.pane.appendChild(stats);
-
+    $('.waifu #report_container').css('display', 'none');
     if(!ffz.get_user() || ffz.get_user() && ffz.get_user().login !== MaiWaifu.vars.currentWaifu.user) {
-      var reportContainer = document.createElement('div');
-      reportContainer.className = "waifu ReportContainer";
-      reportContainer.style.cssFloat = "right";
+      $('.waifu #report_container').css('display', 'inline-flex');
 
-      var reportButton = document.createElement('a');
-      reportButton.className = "waifu ReportButton";
-      reportButton.title = "Report Meme or Nudity";
-
-      var reportText = document.createTextNode("Report");
-      reportButton.appendChild(reportText);
-      reportButton.onclick = function() {
-        MaiWaifu.reportUser(MaiWaifu.vars.currentWaifu.user, reportButton, reportText);
-      };
-
-      reportContainer.appendChild(reportButton);
-      MaiWaifu.vars.pane.appendChild(reportContainer);
+      // var reportContainer = document.createElement('div');
+      // reportContainer.className = "waifu ReportContainer";
+      // reportContainer.style.cssFloat = "right";
+      //
+      // var reportButton = document.createElement('a');
+      // reportButton.className = "waifu ReportButton";
+      // reportButton.title = "Report Meme or Nudity";
+      //
+      // var reportText = document.createTextNode("Report");
+      // reportButton.appendChild(reportText);
+      // reportButton.onclick = function() {
+      //   MaiWaifu.reportUser(MaiWaifu.vars.currentWaifu.user, reportButton, reportText);
+      // };
+      //
+      // reportContainer.appendChild(reportButton);
+      // MaiWaifu.vars.pane.appendChild(reportContainer);
     }
+
+    // TODO: Subbed since
+
+    $('.waifu .info_container').customScrollbar();
 
     callback();
   },
@@ -298,30 +227,12 @@ var MaiWaifu = {
   },
 
   fadeOutWaifu: function() {
-    var op = 1;
-    var timer = setInterval(function () {
-      if (op <= 0.1){
-        clearInterval(timer);
-        MaiWaifu.vars.pane.style.display = "none";
-        MaiWaifu.vars.currentWaifu = false;
-      }
-      MaiWaifu.vars.pane.style.opacity = op;
-      MaiWaifu.vars.pane.style.filter = "alpha(opacity=" + op * 100 + ")";
-      op -= op * 0.1;
-    }, 10);
+    MaiWaifu.vars.currentWaifu = false;
+    $('.waifu').fadeOut(1000);
   },
 
   fadeInWaifu: function() {
-    var op = 0.1;
-    MaiWaifu.vars.pane.style.display = "block";
-    var timer = setInterval(function () {
-      if (op >= 1){
-        clearInterval(timer);
-      }
-      MaiWaifu.vars.pane.style.opacity = op;
-      MaiWaifu.vars.pane.style.filter = "alpha(opacity=" + op * 100 + ")";
-      op += op * 0.1;
-    }, 10);
+    $('.waifu').fadeIn(1000);
   },
 
   on_badge_hover: function() {
@@ -370,7 +281,7 @@ var MaiWaifu = {
 
 /* Prototyping */
 
-MaiWaifu.Socket.prototype.connect = function(waifuPane) {
+MaiWaifu.Socket.prototype.connect = function() {
   if(!MaiWaifu.vars.enabled) {
     return;
   }
@@ -389,13 +300,13 @@ MaiWaifu.Socket.prototype.connect = function(waifuPane) {
 
       MaiWaifu.vars.currentWaifu = new MaiWaifu.Waifu(w.user, w.waifu, w.series, w.images, w.lewd, w.gender, w.type, w.summary, w.subbedSince);
       MaiWaifu.updateWaifuPane(function() {
-        var topValue = MaiWaifu.vars.pane.topCoord - MaiWaifu.vars.pane.offsetHeight;
-        if(topValue < 0) {
-          MaiWaifu.vars.pane.style.top = "0px";
-        }
-        else {
-          MaiWaifu.vars.pane.style.top = MaiWaifu.vars.pane.topCoord - MaiWaifu.vars.pane.offsetHeight + "px";
-        }
+        // var topValue = MaiWaifu.vars.pane.topCoord - MaiWaifu.vars.pane.offsetHeight;
+        // if(topValue < 0) {
+        //   MaiWaifu.vars.pane.style.top = "0px";
+        // }
+        // else {
+        //   MaiWaifu.vars.pane.style.top = MaiWaifu.vars.pane.topCoord - MaiWaifu.vars.pane.offsetHeight + "px";
+        // }
       });
     }
     else {
