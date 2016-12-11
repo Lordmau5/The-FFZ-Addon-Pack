@@ -204,11 +204,16 @@ var BTTV = {
     return BTTV.override_emotes.indexOf(emote_regex) != -1;
   },
 
-  hat_emotes: [
-    
-  ],
+  hat_emotes: {
+    'IceCold': '0px 2px 0px 0px',
+    'SantaHat': '0px 4px 1px 0px',
+    'TopHat': '0px 2px 2px 0px',
+    'SoSnowy': '0px 2px 0px 0px',
+    'CandyCane': '0px 2px 0px 0px',
+    'ReinDeer': '0px 2px 0px 0px'
+  },
   isHatEmote: function(emote_regex) {
-    return BTTV.hat_emotes.indexOf(emote_regex) != -1;
+    return emote_regex in BTTV.hat_emotes;
   },
 
   updateGlobalEmotes: function(attempts) {
@@ -267,7 +272,7 @@ var BTTV = {
           }
 
           if(BTTV.isHatEmote(_emote.regex)) {
-            emote.margins = '0px 0px 0px -28px';
+            emote.margins = BTTV.hat_emotes[_emote.regex];
             emote.modifier = true;
           }
           globalBTTV.push(emote);
