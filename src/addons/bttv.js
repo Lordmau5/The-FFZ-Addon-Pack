@@ -26,7 +26,7 @@ var BTTV = {
       on_update: function(enabled) {
         BTTV.vars.global_emotes = enabled;
 
-        BTTV.updateGlobalEmotes();
+        BTTV.update_global_emotes();
       }
     };
 
@@ -39,7 +39,7 @@ var BTTV = {
       on_update: function(enabled) {
         BTTV.vars.gif_emotes = enabled;
 
-        BTTV.updateGlobalEmotes();
+        BTTV.update_global_emotes();
         api.iterate_rooms();
       }
     };
@@ -53,7 +53,7 @@ var BTTV = {
       on_update: function(enabled) {
         BTTV.vars.override_emotes = enabled;
 
-        BTTV.updateGlobalEmotes();
+        BTTV.update_global_emotes();
       }
     };
 
@@ -107,9 +107,9 @@ var BTTV = {
     }
 
     BTTV.vars.socket = new BTTV.Socket();
-    BTTV.addBadges();
+    BTTV.add_badges();
     if(BTTV.vars.global_emotes) {
-      BTTV.updateGlobalEmotes();
+      BTTV.update_global_emotes();
     }
     if(BTTV.vars.pro_emotes) {
       BTTV.vars.socket.connect();
@@ -120,7 +120,7 @@ var BTTV = {
       return;
     }
 
-    BTTV.addChannel(room_id, reg_function);
+    BTTV.update_channel(room_id, reg_function);
   },
   room_remove: function(room_id) {
     if(ffz.has_bttv) {
@@ -131,7 +131,7 @@ var BTTV = {
     BTTV.vars.channels[room_id] = null;
 
     if(BTTV.vars.pro_emotes) {
-      BTTV.vars.socket.partChannel(room_id);
+      BTTV.vars.socket.part_channel(room_id);
     }
   },
   room_message: function(msg) {
@@ -140,7 +140,7 @@ var BTTV = {
     }
 
     if(BTTV.vars.pro_emotes && ffz.get_user() && msg.from === ffz.get_user().login) {
-      BTTV.vars.socket.broadcastMe(msg.room);
+      BTTV.vars.socket.broadcast_me(msg.room);
     }
   },
   chat_view_init: function(dom, ember) {
@@ -150,7 +150,7 @@ var BTTV = {
     // Unused
   },
 
-  addBadges: function(attempts) {
+  add_badges: function(attempts) {
     $.getJSON('https://api.betterttv.net/2/badges')
     .done(function(data) {
       var types = [],
@@ -191,7 +191,7 @@ var BTTV = {
       attempts = (attempts || 0) + 1;
       if (attempts < 12) {
         BTTV.log('Failed to fetch badges. Trying again in 5 seconds.');
-        return setTimeout(BTTV.addBadges.bind(this, attempts), 5000);
+        return setTimeout(BTTV.add_badges.bind(this, attempts), 5000);
       }
     });
   },
@@ -200,7 +200,7 @@ var BTTV = {
     ':\'(',
     'D:'
   ],
-  isOverrideEmote: function(emote_regex) {
+  is_override_emote: function(emote_regex) {
     return BTTV.override_emotes.indexOf(emote_regex) != -1;
   },
 
@@ -212,11 +212,11 @@ var BTTV = {
     'CandyCane': '0px 2px 0px 0px',
     'ReinDeer': '0px 2px 0px 0px'
   },
-  isHatEmote: function(emote_regex) {
+  is_hat_emote: function(emote_regex) {
     return emote_regex in BTTV.hat_emotes;
   },
 
-  updateGlobalEmotes: function(attempts) {
+  update_global_emotes: function(attempts) {
     BTTV.vars.global_emotes_loaded = false;
     api.unregister_global_set('BTTV-Global');
 
@@ -259,7 +259,7 @@ var BTTV = {
           };
         }
 
-        if(BTTV.isOverrideEmote(_emote.regex)) {
+        if(BTTV.is_override_emote(_emote.regex)) {
           overrideEmotes.push(emote);
         }
         else {
@@ -271,7 +271,7 @@ var BTTV = {
             }
           }
 
-          if(BTTV.isHatEmote(_emote.regex)) {
+          if(BTTV.is_hat_emote(_emote.regex)) {
             emote.margins = BTTV.hat_emotes[_emote.regex];
             emote.modifier = true;
           }
@@ -310,14 +310,14 @@ var BTTV = {
       attempts = (attempts || 0) + 1;
       if(attempts < 12) {
         BTTV.log('Failed to fetch global emotes. Trying again in 5 seconds.');
-        return setTimeout(BTTV.updateGlobalEmotes.bind(this, attempts), 5000);
+        return setTimeout(BTTV.update_global_emotes.bind(this, attempts), 5000);
       }
     });
   },
 
-  addChannel: function(room_id, reg_function, attempts) {
+  update_channel: function(room_id, reg_function, attempts) {
     if(BTTV.vars.pro_emotes) {
-      BTTV.vars.socket.joinChannel(room_id);
+      BTTV.vars.socket.join_channel(room_id);
     }
 
     $.getJSON('https://api.betterttv.net/2/channels/' + room_id)
@@ -383,7 +383,7 @@ var BTTV = {
       attempts = (attempts || 0) + 1;
       if (attempts < 12) {
         BTTV.log('Failed to fetch channel emotes. Trying again in 5 seconds.');
-        return setTimeout(BTTV.addChannel.bind(this, room_id, reg_function, attempts), 5000);
+        return setTimeout(BTTV.update_channel.bind(this, room_id, reg_function, attempts), 5000);
       }
     });
   },
@@ -418,7 +418,7 @@ var BTTV = {
       if (subscription.pro && subscription.emotes) {
         if(subscription.name in BTTV.ProUsers) {
           BTTV.ProUsers[subscription.name].emotes_array = subscription.emotes;
-          BTTV.ProUsers[subscription.name].loadEmotes();
+          BTTV.ProUsers[subscription.name].load_emotes();
         }
         else {
           new BTTV.ProUser(subscription.name, subscription.emotes);
@@ -430,7 +430,7 @@ var BTTV = {
 
 /* Prototyping */
 
-BTTV.ProUser.prototype.loadEmotes = function() {
+BTTV.ProUser.prototype.load_emotes = function() {
   this.emotes = [];
 
   this.emotes_array.forEach(function(_emote, index, array) {
@@ -474,13 +474,13 @@ BTTV.ProUser.prototype.loadEmotes = function() {
 BTTV.ProUser.prototype.initialize = function() {
   this._id_emotes = 'BTTV-ProUser-' + this.username;
 
-  this.loadEmotes();
+  this.load_emotes();
 };
 
 /** Begin Socket **/
 
 BTTV.Socket.prototype.connect = function() {
-  if(ffz.get_user() === undefined) {
+  if(!ffz.get_user()) {
     return;
   }
   if(this._connected || this._connecting) {
@@ -503,8 +503,8 @@ BTTV.Socket.prototype.connect = function() {
       var i = _self._connectionBuffer.length;
       while(i--) {
         var channel = _self._connectionBuffer[i];
-        _self.joinChannel(channel);
-        _self.broadcastMe(channel);
+        _self.join_channel(channel);
+        _self.broadcast_me(channel);
       }
       _self._connectionBuffer = [];
     }
@@ -589,7 +589,7 @@ BTTV.Socket.prototype.emit = function(evt, data) {
   }));
 };
 
-BTTV.Socket.prototype.broadcastMe = function(channel) {
+BTTV.Socket.prototype.broadcast_me = function(channel) {
   if(!this._connected) {
     return;
   }
@@ -603,7 +603,7 @@ BTTV.Socket.prototype.broadcastMe = function(channel) {
   });
 };
 
-BTTV.Socket.prototype.joinChannel = function(channel) {
+BTTV.Socket.prototype.join_channel = function(channel) {
   if(!this._connected) {
     if(!this._connectionBuffer.includes(channel)) {
       this._connectionBuffer.push(channel);
@@ -616,9 +616,7 @@ BTTV.Socket.prototype.joinChannel = function(channel) {
   }
 
   if(this._joinedChannels[channel]) {
-    this.emit('part_channel', {
-      name: channel
-    });
+    this.part_channel(channel);
   }
 
   this.emit('join_channel', {
@@ -627,7 +625,7 @@ BTTV.Socket.prototype.joinChannel = function(channel) {
   this._joinedChannels[channel] = true;
 };
 
-BTTV.Socket.prototype.partChannel = function(channel) {
+BTTV.Socket.prototype.part_channel = function(channel) {
   if(!this._connected) {
     return;
   }
