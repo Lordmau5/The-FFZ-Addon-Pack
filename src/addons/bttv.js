@@ -170,7 +170,7 @@ var BTTV = {
           no_invert: true
         };
 
-        types[type.name] = type;
+        types[_type.name] = type;
         api.add_badge(type.name, type);
       }
 
@@ -178,7 +178,7 @@ var BTTV = {
       while(i--) {
         var _user = _users[i];
 
-        if(types[_user.type] !== undefined) {
+        if(types[_user.type]) {
           BTTV.log('Adding badge "' + _user.type + '" for user "' + _user.name + '".');
           api.user_add_badge(_user.name, 21, _user.type);
         }
