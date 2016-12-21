@@ -90,7 +90,7 @@ var MaiWaifu = {
   },
 
   chat_view_init: function(dom, ember) {
-    jQuery(dom).on("mouseenter", ".ffz-badge-fap-maiwaifu", MaiWaifu.on_badge_hover).on("mouseleave", ".ffz-badge-fap-maiwaifu", MaiWaifu.on_badge_hover_end);
+    jQuery(dom).on("mouseenter", ".ffz-badge-ffzap-maiwaifu", MaiWaifu.on_badge_hover).on("mouseleave", ".ffz-badge-ffzap-maiwaifu", MaiWaifu.on_badge_hover_end);
     jQuery(document).on("mousemove", MaiWaifu.mouseMovement);
   },
   chat_view_destroy: function(dom, ember) {

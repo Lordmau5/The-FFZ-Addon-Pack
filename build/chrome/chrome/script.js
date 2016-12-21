@@ -6,13 +6,13 @@ function inject() {
     var xhr = new XMLHttpRequest();
 		xhr.open('GET', '//localhost:3000/', true);
 		xhr.onload = function(e) {
-      console.log('FAP: Development Server is present.');
+      console.log('FFZ:AP: Development Server is present.');
 			script.src = '//localhost:3000/ffz-add-on-pack.js';
 			document.body.classList.add('ffz-ap-dev');
 			document.head.appendChild(script);
     };
     xhr.onerror = function(e) {
-      console.log('FAP: Development Server is not present. Using CDN.');
+      console.log('FFZ:AP: Development Server is not present. Using CDN.');
 			script.src = '//cdn.lordmau5.com/ffz-ap/ffz-add-on-pack.min.js?_=' + Date.now();
 			document.head.appendChild(script);
     };
