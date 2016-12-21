@@ -296,6 +296,7 @@ var BTTV = {
       var set = {
         emoticons: emotes,
         title: 'BTTV Global Emoticons',
+        icon: 'https://cdn.betterttv.net/tags/developer.png',
         sort: 101
       };
       api.register_global_set('BTTV-Global', set);
@@ -368,6 +369,7 @@ var BTTV = {
 
       var set = {
         emoticons: channelBTTV,
+        icon: 'https://cdn.betterttv.net/tags/developer.png',
         title: 'Channel Emoticons'
       };
 
@@ -461,7 +463,8 @@ BTTV.ProUser.prototype.load_emotes = function() {
 
   var set = {
     emoticons: this.emotes,
-    title: 'Personal Emoticons'
+    title: 'Personal Emoticons',
+    icon: 'https://cdn.betterttv.net/tags/developer.png'
   };
 
   api.unload_set(this._id_emotes);
