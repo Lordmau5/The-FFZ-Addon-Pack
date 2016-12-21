@@ -90,11 +90,15 @@ var checkExistance = function(attempts) {
     }
 
     api.add_badge('developer', {
+      color: '#FAAF19',
+      image: 'https://cdn.lordmau5.com/ffz-ap/DevBadge_18.png',
       name: 'developer',
       title: 'FFZ:AP Developer',
-      image: 'https://cdn.lordmau5.com/Mau5Badge.png',
-      alpha_image: 'https://cdn.lordmau5.com/Mau5Badge_Alpha.png',
-      color: '#49acff'
+      urls: {
+        1: 'https://cdn.lordmau5.com/ffz-ap/DevBadge_18.png',
+        2: 'https://cdn.lordmau5.com/ffz-ap/DevBadge_36.png',
+        4: 'https://cdn.lordmau5.com/ffz-ap/DevBadge_72.png'
+      }
     });
     api.user_add_badge('lordmau5', 20, 'developer');
     api.user_add_badge('quantoqt', 20, 'developer');
