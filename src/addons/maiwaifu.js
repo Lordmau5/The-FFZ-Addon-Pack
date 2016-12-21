@@ -341,4 +341,4 @@ MaiWaifu.Socket.prototype.requestWaifu = function(username, callback) {
   callback();
 };
 
-registerAddon(MaiWaifu);
+// registerAddon(MaiWaifu);
