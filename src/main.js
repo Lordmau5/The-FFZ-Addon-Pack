@@ -84,21 +84,6 @@ var checkExistance = function(attempts) {
 
     api = ffz.api('FFZ Add-On Pack', 'https://cdn.lordmau5.com/Mau5Badge_Alpha.png', version, 'ffzap');
 
-    /* Debug toggle */
-
-    FrankerFaceZ.settings_info.ffz_ap_debug_mode = {
-      type: 'boolean',
-      value: false,
-      category: 'FFZ Add-On Pack',
-      name: 'Enable debug mode',
-      help: 'Will try to load the script from a local server hosted on port 3000.',
-      on_update: function(enabled) {
-        localStorage.ffz_ap_debug_mode = enabled;
-      }
-    };
-
-    /* ------------ */
-
     // Check for BTTV
     if(ffz.has_bttv) {
       api.log('BTTV was found. To ensure best possible compatibility, consider removing BTTV.');
