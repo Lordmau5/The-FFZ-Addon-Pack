@@ -30,7 +30,7 @@ function ffzap_init() {
 
     script.id = 'ffzap_script';
     script.type = 'text/javascript';
-    script.src = 'https://cdn.lordmau5.com/ffz-ap/ffz-add-on-pack.min.js';
+    script.src = 'https://cdn.lordmau5.com/ffz-ap/ffz-ap.min.js';
 
     document.head.appendChild(script);
 }
