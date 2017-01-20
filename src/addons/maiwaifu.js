@@ -54,6 +54,20 @@ var MaiWaifu = {
     MaiWaifu.vars.trihex_only = ffz.settings.get("maiwaifu_trihex_only");
     MaiWaifu.vars.use_click = ffz.settings.get("maiwaifu_use_click");
   },
+  preinit: function() {
+    // MaiWaifu.log('Addon pre-initialized!');
+
+    $('head').append('<link rel="stylesheet" href="https://cdn.lordmau5.com/ffz-ap/mw/jsCustomScrollbar.css"/>');
+    $('head').append('<script src="https://cdn.lordmau5.com/ffz-ap/mw/jsCustomScrollbar.js"></script>');
+
+    $('head').append('<link rel="stylesheet" href="https://cdn.lordmau5.com/ffz-ap/mw/waifu.css" type="text/css"/>');
+    $.get('https://cdn.lordmau5.com/ffz-ap/mw/waifu.template', function(data) {
+      MaiWaifu.vars.pane = document.createElement("div");
+      MaiWaifu.vars.pane.className = 'maiwaifu waifu';
+      MaiWaifu.vars.pane.innerHTML = data;
+      document.body.appendChild(MaiWaifu.vars.pane);
+    });
+  },
   init: function() {
     console.log("[MaiWaifu] Addon initialized!");
 
@@ -69,17 +83,6 @@ var MaiWaifu = {
       no_invert: true,
       no_tooltip: true,
       click_action: MaiWaifu.on_badge_click
-    });
-
-    $('head').append('<link rel="stylesheet" href="https://cdn.lordmau5.com/ffz-ap/mw/jsCustomScrollbar.css"/>');
-    $('head').append('<script src="https://cdn.lordmau5.com/ffz-ap/mw/jsCustomScrollbar.js"></script>');
-
-    $('head').append('<link rel="stylesheet" href="https://cdn.lordmau5.com/ffz-ap/mw/waifu.css" type="text/css"/>');
-    $.get('https://cdn.lordmau5.com/ffz-ap/mw/waifu.template', function(data) {
-      MaiWaifu.vars.pane = document.createElement("div");
-      MaiWaifu.vars.pane.className = 'maiwaifu waifu';
-      MaiWaifu.vars.pane.innerHTML = data;
-      document.body.appendChild(MaiWaifu.vars.pane);
     });
   },
   room_add: function(room_id, reg_function, attempts) {

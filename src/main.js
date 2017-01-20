@@ -15,6 +15,8 @@ var registerAddon = function(addon) {
   else {
     addons.push(addon);
     console.log('[FFZ:AP] Registered addon: ' + addon.name);
+    addon.preinit();
+    console.log('[FFZ:AP] pre-initialized addon: ' + addon.name);
   }
 };
 
