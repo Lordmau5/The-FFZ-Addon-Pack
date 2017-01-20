@@ -2,7 +2,7 @@ var addons = [],
     ffz,
     api,
 
-    version = '1.0.1';
+    version = '2.0.1';
 
 var registerAddon = function(addon) {
   if(isInvalidHost()) {
@@ -16,7 +16,7 @@ var registerAddon = function(addon) {
     addons.push(addon);
     console.log('[FFZ:AP] Registered addon: ' + addon.name);
     addon.preinit();
-    console.log('[FFZ:AP] pre-initialized addon: ' + addon.name);
+    console.log('[FFZ:AP] Pre-initialized addon: ' + addon.name);
   }
 };
 
@@ -80,7 +80,6 @@ var checkExistance = function(attempts) {
   }
 
   if(window.FrankerFaceZ !== undefined && window.jQuery !== undefined && window.App !== undefined) {
-
     // Register with FFZ.
     ffz = FrankerFaceZ.get();
 
