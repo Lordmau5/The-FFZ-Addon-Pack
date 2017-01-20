@@ -15,7 +15,8 @@ module.exports = function(grunt) {
     uglify: {
       options: {
         // the banner is inserted at the top of the output
-        banner: '/*! <%= pkg.fullName %> <%= grunt.template.today("dd-mm-yyyy HH:MM:ss") %> */\n',
+        banner: '/*! <%= pkg.fullName %> <%= grunt.template.today("dd-mm-yyyy HH:MM:ss") %> */\n(function init(){',
+        footer: '}());',
         mangle: {
           toplevel: true
         }
