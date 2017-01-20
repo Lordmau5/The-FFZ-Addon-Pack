@@ -13,7 +13,7 @@ function inject() {
     };
     xhr.onerror = function(e) {
       console.log('FFZ:AP: Development Server is not present. Using CDN.');
-			script.src = '//cdn.lordmau5.com/ffz-ap/ffz-add-on-pack.min.js?_=' + Date.now();
+			script.src = '//lordmau5.com/nocache/ffz-ap/ffz-add-on-pack.min.js?_=' + Date.now();
 			document.head.appendChild(script);
     };
     return xhr.send(null);
