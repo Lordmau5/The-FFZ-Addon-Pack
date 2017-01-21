@@ -83,7 +83,7 @@ var checkExistance = function(attempts) {
     // Register with FFZ.
     ffz = FrankerFaceZ.get();
 
-    api = ffz.api('FFZ Add-On Pack', 'https://cdn.lordmau5.com/Mau5Badge_Alpha.png', version, 'ffzap');
+    api = ffz.api('FFZ Add-On Pack', 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png', version, 'ffzap');
 
     // Check for BTTV
     if(ffz.has_bttv) {
@@ -91,18 +91,35 @@ var checkExistance = function(attempts) {
     }
 
     api.add_badge('developer', {
-      color: '#FAAF19',
-      image: 'https://cdn.lordmau5.com/ffz-ap/DevBadge_18.png',
+      color: '#FF1493',
+      image: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
       name: 'developer',
       title: 'FFZ:AP Developer',
       urls: {
-        1: 'https://cdn.lordmau5.com/ffz-ap/DevBadge_18.png',
-        2: 'https://cdn.lordmau5.com/ffz-ap/DevBadge_36.png',
-        4: 'https://cdn.lordmau5.com/ffz-ap/DevBadge_72.png'
+        1: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
+        2: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_36.png',
+        4: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_72.png'
       }
     });
+    api.add_badge('supporter', {
+      color: '#5383d2',
+      image: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
+      name: 'supporter',
+      title: 'FFZ:AP Supporter',
+      urls: {
+        1: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
+        2: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_36.png',
+        4: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_72.png'
+      }
+    });
+
     api.user_add_badge('lordmau5', 20, 'developer');
     api.user_add_badge('quantoqt', 20, 'developer');
+
+    api.user_add_badge('wolsk', 20, 'supporter');
+    api.user_add_badge('mie_dax', 20, 'supporter');
+    api.user_add_badge('trihex', 20, 'supporter');
+    api.user_add_badge('getcuckedxddd', 20, 'supporter');
 
     api.log('Injected successfully.');
 
