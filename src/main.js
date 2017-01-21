@@ -2,7 +2,7 @@ var addons = [],
     ffz,
     api,
 
-    version = '2.0.1';
+    version = '2.0.2';
 
 var registerAddon = function(addon) {
   if(isInvalidHost()) {
