@@ -9,7 +9,7 @@ Have a look into the [template add-on file](src/addons/_template.js) to see the 
 
 Currently it only supports BetterTTV as an add-on, though MaiWaifu and GameWisp are already heavily being worked on.
 
-## Download
+## Download / Website
 
 If you haven't come here for the code, you probably want to download the extension!
 
