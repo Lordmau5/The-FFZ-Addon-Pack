@@ -101,6 +101,9 @@ var checkExistance = function(attempts) {
         4: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_72.png'
       }
     });
+    api.user_add_badge('lordmau5', 20, 'developer');
+    api.user_add_badge('quantoqt', 20, 'developer');
+
     api.add_badge('supporter', {
       color: '#5383d2',
       image: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
@@ -112,14 +115,22 @@ var checkExistance = function(attempts) {
         4: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_72.png'
       }
     });
-
-    api.user_add_badge('lordmau5', 20, 'developer');
-    api.user_add_badge('quantoqt', 20, 'developer');
-
-    api.user_add_badge('wolsk', 20, 'supporter');
     api.user_add_badge('mie_dax', 20, 'supporter');
     api.user_add_badge('trihex', 20, 'supporter');
     api.user_add_badge('getcuckedxddd', 20, 'supporter');
+
+    api.add_badge('catbag', {
+      color: '#5383d2',
+      image: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_18.png',
+      name: 'catbag',
+      title: 'FFZ:AP CatBag',
+      urls: {
+        1: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_18.png',
+        2: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_36.png',
+        4: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_72.png'
+      }
+    });
+    api.user_add_badge('wolsk', 20, 'catbag');
 
     api.log('Injected successfully.');
 
