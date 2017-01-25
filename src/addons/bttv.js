@@ -298,7 +298,8 @@ var BTTV = {
 
       var set = {
         emoticons: emotes,
-        title: 'BTTV Global Emoticons',
+        title: 'Global Emoticons',
+        source: 'BetterTTV',
         icon: 'https://cdn.betterttv.net/tags/developer.png',
         sort: 101
       };
@@ -433,7 +434,7 @@ var BTTV = {
   }
 };
 
-/* Prototyping */
+/** Prototyping **/
 
 BTTV.ProUser.prototype.load_emotes = function() {
   this.emotes = [];
