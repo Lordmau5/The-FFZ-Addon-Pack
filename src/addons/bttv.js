@@ -5,7 +5,7 @@ var BTTV = {
   },
   vars: {
     global_emotes: true,
-    gif_emotes: false,
+    gif_emotes: 1,
     override_emotes: false,
     pro_emotes: true,
     show_emotes_in_menu: true,
@@ -31,13 +31,19 @@ var BTTV = {
     };
 
     FrankerFaceZ.settings_info.bttv_gif_emotes = {
-      type: 'boolean',
+      type: 'select',
       value: BTTV.vars.gif_emotes,
       category: 'FFZ Add-On Pack',
       name: '[BTTV] GIF Emoticons',
-      help: 'Enable this to show GIF emoticons.',
-      on_update: function(enabled) {
-        BTTV.vars.gif_emotes = enabled;
+      help: 'Change the mode on how GIF emoticons work.',
+      options: {
+          0: 'Disabled',
+          1: 'Static Images',
+          2: 'Animated Images'
+      },
+      process_value: FrankerFaceZ.utils.process_int(1, 1, 2),
+      on_update: function(val) {
+        BTTV.vars.gif_emotes = val;
 
         BTTV.update_global_emotes();
         api.iterate_rooms();
@@ -266,11 +272,16 @@ var BTTV = {
           overrideEmotes.push(emote);
         }
         else {
-          if(_emote.imageType === 'gif' && !BTTV.vars.gif_emotes) {
-            emote.urls[1] = 'https://cache.lordmau5.com/' + emote.urls[1];
-            if(id) {
-              emote.urls[2] = 'https://cache.lordmau5.com/' + emote.urls[2];
-              emote.urls[4] = 'https://cache.lordmau5.com/' + emote.urls[4];
+          if(_emote.imageType === 'gif') { // If the emote is a GIF
+            if(BTTV.vars.gif_emotes === 0) { // If the GIF setting is set to "Disabled", ignore it.
+              continue;
+            }
+            else if(BTTV.vars.gif_emotes == 1) { // If the GIF setting is set to "Static", route them through the cache.
+              emote.urls[1] = 'https://cache.lordmau5.com/' + emote.urls[1];
+              if(id) {
+                emote.urls[2] = 'https://cache.lordmau5.com/' + emote.urls[2];
+                emote.urls[4] = 'https://cache.lordmau5.com/' + emote.urls[4];
+              }
             }
           }
 
