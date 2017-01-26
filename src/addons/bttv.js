@@ -365,10 +365,15 @@ var BTTV = {
           require_spaces: req_spaces
         };
 
-        if(_emote.imageType === 'gif' && !BTTV.vars.gif_emotes) {
-          emote.urls[1] = 'https://cache.lordmau5.com/' + emote.urls[1];
-          emote.urls[2] = 'https://cache.lordmau5.com/' + emote.urls[2];
-          emote.urls[4] = 'https://cache.lordmau5.com/' + emote.urls[4];
+        if(_emote.imageType === 'gif') {
+          if(BTTV.vars.gif_emotes === 0) { // If the GIF setting is set to "Disabled", ignore it.
+            continue;
+          }
+          else if(BTTV.vars.gif_emotes == 1) { // If the GIF setting is set to "Static", route them through the cache.
+            emote.urls[1] = 'https://cache.lordmau5.com/' + emote.urls[1];
+            emote.urls[2] = 'https://cache.lordmau5.com/' + emote.urls[2];
+            emote.urls[4] = 'https://cache.lordmau5.com/' + emote.urls[4];
+          }
         }
 
         channelBTTV.push(emote);
@@ -450,7 +455,8 @@ var BTTV = {
 BTTV.ProUser.prototype.load_emotes = function() {
   this.emotes = [];
 
-  this.emotes_array.forEach(function(_emote, index, array) {
+  for(var i=0; i<this.emotes_array.length; i++) {
+    var _emote = this.emotes_array[i];
     var emote = {
       urls: {
         1: 'https://cdn.betterttv.net/emote/' + _emote.id + '/1x',
@@ -468,13 +474,18 @@ BTTV.ProUser.prototype.load_emotes = function() {
       require_spaces: true
     };
 
-    if(_emote.imageType === 'gif' && !BTTV.vars.gif_emotes) {
-      emote.urls[1] = 'https://cache.lordmau5.com/' + emote.urls[1];
-      emote.urls[2] = 'https://cache.lordmau5.com/' + emote.urls[2];
-      emote.urls[4] = 'https://cache.lordmau5.com/' + emote.urls[4];
+    if(_emote.imageType === 'gif') {
+      if(BTTV.vars.gif_emotes === 0) { // If the GIF setting is set to "Disabled", ignore it.
+        continue;
+      }
+      else if(BTTV.vars.gif_emotes == 1) { // If the GIF setting is set to "Static", route them through the cache.
+        emote.urls[1] = 'https://cache.lordmau5.com/' + emote.urls[1];
+        emote.urls[2] = 'https://cache.lordmau5.com/' + emote.urls[2];
+        emote.urls[4] = 'https://cache.lordmau5.com/' + emote.urls[4];
+      }
     }
     this.emotes.push(emote);
-  }, this);
+  }
 
   var set = {
     emoticons: this.emotes,
