@@ -9,6 +9,9 @@ var _TEMPLATE = {
   doSettings: function() {
 
   },
+  preinit: function() {
+
+  },
   init: function() {
     _TEMPLATE.log('Addon initialized!');
   },
