@@ -101,7 +101,6 @@ var BTTV = {
       }
     };
 
-
     BTTV.vars.global_emotes = ffz.settings.get('bttv_global_emotes');
     BTTV.vars.gif_emotes = ffz.settings.get('bttv_gif_emotes');
     BTTV.vars.override_emotes = ffz.settings.get('bttv_override_emotes');
@@ -109,7 +108,7 @@ var BTTV = {
     BTTV.vars.show_emotes_in_menu = ffz.settings.get('bttv_show_emotes_in_menu');
   },
   preinit: function() {
-    // BTTV.log('Addon pre-initialized!');
+    // Unused
   },
   init: function() {
     BTTV.log('Addon initialized!');
