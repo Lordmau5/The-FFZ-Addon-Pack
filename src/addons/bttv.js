@@ -17,6 +17,10 @@ var BTTV = {
     gif_emotes_loaded: false
   },
   doSettings: function() {
+    if(ffz.has_bttv) {
+      return;
+    }
+
     FrankerFaceZ.settings_info.bttv_global_emotes = {
       type: 'boolean',
       value: BTTV.vars.global_emotes,
