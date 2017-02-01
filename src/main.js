@@ -137,6 +137,15 @@ var checkExistance = function(attempts) {
     doSettings();
     init();
 
+    api.emote_url_generator = function(set_id, emote_id) {
+      if(set_id.startsWith('BTTV')) {
+        return 'https://manage.betterttv.net/emotes/' + emote_id;
+      }
+      else if(set_id.startsWith('GameWisp-Sub')) {
+        return 'https://twitch.tv/' + emote_id.split('-')[0];
+      }
+    };
+
     api.on('room-add', room_add);
     api.on('room-remove', room_remove);
     api.on('room-message', room_message);
