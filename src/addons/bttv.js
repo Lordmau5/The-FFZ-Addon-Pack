@@ -217,12 +217,13 @@ var BTTV = {
   },
 
   hat_emotes: {
-    'IceCold': '0px 2px 0px 0px',
-    'SantaHat': '0px 4px 1px 0px',
-    'TopHat': '0px 2px 2px 0px',
-    'SoSnowy': '0px 2px 0px 0px',
-    'CandyCane': '0px 2px 0px 0px',
-    'ReinDeer': '0px 2px 0px 0px'
+    /* Christmas Emotes */
+    // 'IceCold': '0px 2px 0px 0px',
+    // 'SantaHat': '0px 4px 1px 0px',
+    // 'TopHat': '0px 2px 2px 0px',
+    // 'SoSnowy': '0px 2px 0px 0px',
+    // 'CandyCane': '0px 2px 0px 0px',
+    // 'ReinDeer': '0px 2px 0px 0px'
   },
   is_hat_emote: function(emote_regex) {
     return emote_regex in BTTV.hat_emotes;
