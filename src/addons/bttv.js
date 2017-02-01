@@ -74,15 +74,24 @@ var BTTV = {
       name: '[BTTV] Enable Pro Emoticons',
       help: 'Enable this to show Pro emoticons from yourself or other users.',
       on_update: function(enabled) {
-        if(!enabled) {
-          var i = BTTV.ProUsers.length;
-          while(i--) {
-            var user = BTTV.ProUsers[i];
-            api.unload_set(user._id_emotes);
+        BTTV.vars.pro_emotes = enabled;
+
+        if(enabled) {
+          BTTV.vars.socket.connect();
+
+          for(var i=0; i<BTTV.vars.channels.length; i++) {
+            var channel = BTTV.vars.channels[i];
+            BTTV.room_add(channel);
           }
         }
+        else {
+          for(var key in BTTV.ProUsers) {
+            BTTV.ProUsers[key].unload();
+          }
+          BTTV.ProUsers = {};
 
-        BTTV.vars.pro_emotes = enabled;
+          BTTV.vars.socket.disconnect_int();
+        }
       }
     };
 
@@ -510,6 +519,12 @@ BTTV.ProUser.prototype.initialize = function() {
   this.load_emotes();
 };
 
+BTTV.ProUser.prototype.unload = function() {
+  BTTV.log('Unloading user ' + this.username);
+
+  api.unload_set(this._id_emotes);
+};
+
 /** Begin Socket **/
 
 BTTV.Socket.prototype.connect = function() {
@@ -555,7 +570,7 @@ BTTV.Socket.prototype.connect = function() {
       return;
     }
 
-    BTTV.log('Socket: Disconnected from socket server.');
+    BTTV.log('Socket: Lost connection to socket server...');
 
     _self._connectAttempts++;
     _self.reconnect();
@@ -591,6 +606,8 @@ BTTV.Socket.prototype.reconnect = function() {
   }
   this._connecting = false;
 
+  BTTV.log('Socket: Trying to reconnect to socket server...');
+
   setTimeout(function() {
     _self.connect();
   }, Math.random() * (Math.pow(2, this._connectAttempts) - 1) * 30000);
@@ -609,6 +626,13 @@ BTTV.Socket.prototype.disconnect = function() {
   delete this.socket;
 
   this._connected = false;
+  this._connecting = false;
+};
+
+BTTV.Socket.prototype.disconnect_int = function() {
+  this.disconnect();
+
+  BTTV.log('Socket: Disconnected from socket server.');
 };
 
 BTTV.Socket.prototype.emit = function(evt, data) {
