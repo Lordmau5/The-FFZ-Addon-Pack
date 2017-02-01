@@ -127,12 +127,12 @@ var BTTV = {
       BTTV.vars.socket.connect();
     }
   },
-  room_add: function(room_id, reg_function) {
+  room_add: function(room_id) {
     if(ffz.has_bttv) {
       return;
     }
 
-    BTTV.update_channel(room_id, reg_function);
+    BTTV.update_channel(room_id);
   },
   room_remove: function(room_id) {
     if(ffz.has_bttv) {
@@ -334,7 +334,7 @@ var BTTV = {
     });
   },
 
-  update_channel: function(room_id, reg_function, attempts) {
+  update_channel: function(room_id, attempts) {
     if(BTTV.vars.pro_emotes) {
       BTTV.vars.socket.join_channel(room_id);
     }
@@ -408,7 +408,7 @@ var BTTV = {
       attempts = (attempts || 0) + 1;
       if (attempts < 12) {
         BTTV.log('Failed to fetch channel emotes. Trying again in 5 seconds.');
-        return setTimeout(BTTV.update_channel.bind(this, room_id, reg_function, attempts), 5000);
+        return setTimeout(BTTV.update_channel.bind(this, room_id, attempts), 5000);
       }
     });
   },

@@ -44,7 +44,7 @@ var GameWisp = {
   init: function() {
     GameWisp.log('Addon initialized!');
   },
-  room_add: function(room_id, reg_function) {
+  room_add: function(room_id) {
 
   },
   room_remove: function(room_id) {

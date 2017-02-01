@@ -85,7 +85,7 @@ var MaiWaifu = {
       click_action: MaiWaifu.on_badge_click
     });
   },
-  room_add: function(room_id, reg_function, attempts) {
+  room_add: function(room_id) {
     // Unused
   },
   room_message: function(msg) {

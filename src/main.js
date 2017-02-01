@@ -32,9 +32,9 @@ var init = function() {
   });
 };
 
-var room_add = function(room_id, reg_function) {
+var room_add = function(room_id) {
   addons.forEach(function(addon) {
-    addon.room_add(room_id, reg_function);
+    addon.room_add(room_id);
   });
 };
 
