@@ -19,7 +19,7 @@ function inject() {
     return xhr.send(null);
   }
 
-  script.src = '//cdn.lordmau5.com/ffz-ap/ffz-ap.min.js?_=' + Date.now();
+  script.src = '//cdn.lordmau5.com/ffz-ap/ffz-ap.min.js';
 	document.head.appendChild(script);
 }
 
