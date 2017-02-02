@@ -100,10 +100,10 @@ var GameWisp = {
 
         static_label: '<img src="https://cdn.lordmau5.com/ffz-ap/gamewisp/icon_16x.png"/>',
         label: function(view, channel, is_hosting) {
-          if(!GameWisp.isEnbled()) {
+          if(!GameWisp.isEnabled()) {
             return '';
           }
-          
+
           var label = '', id = channel.get('id');
           if(id in GameWisp.vars.subbed_to) {
             label = GameWisp.vars.subbed_to[id].subbed ? 'Visit Channel' : 'Subscribe';
