@@ -110,7 +110,7 @@ var GameWisp = {
 
           // var id = channel.get('id');
           // return GameWisp.vars.subbed_to[id];
-          return false;
+          return !GameWisp.isEnabled();
       	},
 
         click: function(event, button, view, channel, is_hosting) {
