@@ -1,7 +1,10 @@
 var MaiWaifu = {
-  name: "MaiWaifu",
-  log: function(string) {
-    api.log("[" + MaiWaifu.name + "] " + string);
+  name: 'MaiWaifu',
+  log: function(string, data) {
+    api.log('[' + MaiWaifu.name + '] ' + string, data);
+  },
+  debug: function(string, data) {
+    api.log('[' + MaiWaifu.name + ' - DEBUG] ' + string, data);
   },
   vars: {
     enabled: true,
@@ -69,7 +72,7 @@ var MaiWaifu = {
     });
   },
   init: function() {
-    console.log("[MaiWaifu] Addon initialized!");
+    MaiWaifu.log('Addon initialized!');
 
     MaiWaifu.vars.socket = new MaiWaifu.Socket();
     if(MaiWaifu.vars.enabled) {
@@ -142,7 +145,7 @@ var MaiWaifu = {
         $('.waifu #header #avatar_container #placeholder').css('background-image', 'none');
       },
       error: function() {
-        console.log('ERROR');
+        MaiWaifu.log('Error whilst trying to fetch user avatar! (User: ' + waifu.user + ')');
       },
       beforeSend: setHeaders
     });
@@ -314,10 +317,10 @@ MaiWaifu.Socket.prototype.connect = function() {
     }
     else {
       if(incomingMessage.length == 1) {
-        if(MaiWaifu.Waifus.indexOf(incomingMessage[0]) > -1) {
-          MaiWaifu.Waifus.push(incomingMessage);
-          api.user_add_badge(incomingMessage[0], 21, "maiwaifu");
-          MaiWaifu.log("Socket: Added " + incomingMessage[0] + " to waifu list.");
+        if(MaiWaifu.vars.users.indexOf(incomingMessage[0]) > -1) {
+          MaiWaifu.vars.users.push(incomingMessage);
+          MaiWaifu.update_user_badge(incomingMessage[0]);
+          MaiWaifu.log('Socket: Added ' + incomingMessage[0] + ' to waifu list.');
         }
       }
       else {

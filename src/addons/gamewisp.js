@@ -1,7 +1,10 @@
 var GameWisp = {
   name: 'GameWisp',
-  log: function(string) {
-    api.log('[' + GameWisp.name + '] ' + string);
+  log: function(string, data) {
+    api.log('[' + GameWisp.name + '] ' + string, data);
+  },
+  debug: function(string, data) {
+    api.log('[' + GameWisp.name + ' - DEBUG] ' + string, data);
   },
   vars: {
     enable_global_emoticons: true,
@@ -236,7 +239,7 @@ var GameWisp = {
 
   SocketEvents: {
     initialize_room: function(data) {
-      GameWisp.log('Initializing room! (' + data.room + ')');
+      GameWisp.debug('Initializing room! (Room: ' + data.room + ')');
 
       if(data.gameWispChannel && data.gameWispChannel.isLaunched) {
         GameWisp.vars.subbed_to[data.room] = {
@@ -269,7 +272,7 @@ var GameWisp = {
       api.update_metadata('gamewisp-subscribe');
     },
     update_room: function(data) {
-      // GameWisp.log('Updating room! (' + data.room + ')');
+      GameWisp.debug('Updating room! (User: ' + data.user.name + ', Room: ' + data.room + ')');
 
       for(var i=0; i<data.emotes.length; i++) {
         var _emote = data.emotes[i];
@@ -290,7 +293,7 @@ var GameWisp = {
       }
     },
     leave_room: function(data) {
-      // GameWisp.log('Leaving room! (' + data.room + ')');
+      GameWisp.log('Leaving room! (User: ' + data.user + ', Room: ' + data.room + ')');
 
       // if(!GameWisp.removeUserChannel(data.user, data.room)) {
       //   GameWisp.Subs[data.user].unload();
@@ -343,7 +346,7 @@ GameWisp.Sub.prototype.initialize = function() {
 };
 
 GameWisp.Sub.prototype.unload = function() {
-  GameWisp.log('Unloading user ' + this.username);
+  GameWisp.debug('Unloading user! (User: ' + this.username + ')');
 
   for(var i=0; i<this.channels.length; i++) {
     api.unload_set(this._id_emotes + '-' + this.channels[i]);
@@ -411,7 +414,7 @@ GameWisp.Socket.prototype.connect = function() {
       return;
     }
 
-    // GameWisp.log('Socket: Received event', evt);
+    GameWisp.debug('Socket: Received event', evt);
 
     _self._events[evt](message.data);
   };

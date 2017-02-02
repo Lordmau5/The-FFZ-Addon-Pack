@@ -1,7 +1,10 @@
 var _TEMPLATE = {
   name: '_TEMPLATE',
-  log: function(string) {
-    api.log('[' + _TEMPLATE.name + '] ' + string);
+  log: function(string, data) {
+    api.log('[' + _TEMPLATE.name + '] ' + string, data);
+  },
+  debug: function(string, data) {
+    api.log('[' + _TEMPLATE.name + ' - DEBUG] ' + string, data);
   },
   vars: {
 

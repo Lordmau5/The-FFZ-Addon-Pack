@@ -1,7 +1,10 @@
 var BTTV = {
   name: 'BetterTTV',
-  log: function(string) {
-    api.log('[' + BTTV.name + '] ' + string);
+  log: function(string, data) {
+    api.log('[' + BTTV.name + '] ' + string, data);
+  },
+  debug: function(string, data) {
+    api.log('[' + BTTV.name + ' - DEBUG] ' + string, data);
   },
   vars: {
     global_emotes: true,
@@ -200,7 +203,7 @@ var BTTV = {
         var _user = _users[i];
 
         if(types[_user.type]) {
-          BTTV.log('Adding badge "' + _user.type + '" for user "' + _user.name + '".');
+          BTTV.debug('Adding badge "' + _user.type + '" for user "' + _user.name + '".');
           api.user_add_badge(_user.name, 21, _user.type);
         }
       }
@@ -583,14 +586,14 @@ BTTV.Socket.prototype.connect = function() {
       evt = JSON.parse(message.data);
     }
     catch(e) {
-      BTTV.log('Socket: Error parsing message', e);
+      BTTV.debug('Socket: Error parsing message', e);
     }
 
     if(!evt || !(evt.name in _self._events)) {
       return;
     }
 
-    BTTV.log('Socket: Received event', evt);
+    BTTV.debug('Socket: Received event', evt);
 
     _self._events[evt.name](evt.data);
   };
