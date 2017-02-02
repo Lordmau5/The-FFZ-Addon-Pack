@@ -12,6 +12,9 @@ var _TEMPLATE = {
   doSettings: function() {
 
   },
+  isEnabled: function() {
+    return true;
+  },
   preinit: function() {
 
   },

@@ -73,6 +73,9 @@ var GameWisp = {
     GameWisp.vars.enable_emoticons = ffz.settings.get('gamewisp_enable_emoticons');
     // GameWisp.vars.enable_badges = ffz.settings.get('gamewisp_enable_badges');
   },
+  isEnabled: function() {
+    return GameWisp.vars.enable_global_emoticons || GameWisp.vars.enable_emoticons;
+  },
   preinit: function() {
     $('head').append('<script src="https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js"></script>');
   },

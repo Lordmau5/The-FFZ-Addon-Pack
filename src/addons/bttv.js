@@ -119,6 +119,9 @@ var BTTV = {
     BTTV.vars.pro_emotes = ffz.settings.get('bttv_pro_emotes');
     BTTV.vars.show_emotes_in_menu = ffz.settings.get('bttv_show_emotes_in_menu');
   },
+  isEnabled: function() {
+    return !ffz.has_bttv;
+  },
   preinit: function() {
     // Unused
   },
