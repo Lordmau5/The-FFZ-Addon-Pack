@@ -11,6 +11,7 @@ var BTTV = {
     gif_emotes: 1,
     override_emotes: false,
     pro_emotes: true,
+    channel_emotes: true,
     show_emotes_in_menu: true,
 
     channels: {},
@@ -98,6 +99,19 @@ var BTTV = {
       }
     };
 
+    FrankerFaceZ.settings_info.bttv_channel_emotes = {
+      type: 'boolean',
+      value: BTTV.vars.channel_emotes,
+      category: 'FFZ Add-On Pack',
+      name: '[BTTV] Enable Channel Emoticons',
+      help: 'Enable this to show per-channel emoticons.',
+      on_update: function(enabled) {
+        BTTV.vars.channel_emotes = enabled;
+
+        api.iterate_rooms();
+      }
+    };
+
     FrankerFaceZ.settings_info.bttv_show_emotes_in_menu = {
       type: 'boolean',
       value: BTTV.vars.show_emotes_in_menu,
@@ -105,6 +119,8 @@ var BTTV = {
       name: '[BTTV] Show emoticons in Emoticon Menu',
       help: 'Enable this to show the emoticons in the Emoticon Menu (you can still enter the emoticons manually when this is disabled)',
       on_update: function(enabled) {
+        BTTV.vars.show_emotes_in_menu = enabled;
+
         api.emote_sets['BTTV-Global'].hidden = !enabled;
 
         for(var name in BTTV.vars.channels) {
@@ -117,6 +133,7 @@ var BTTV = {
     BTTV.vars.gif_emotes = ffz.settings.get('bttv_gif_emotes');
     BTTV.vars.override_emotes = ffz.settings.get('bttv_override_emotes');
     BTTV.vars.pro_emotes = ffz.settings.get('bttv_pro_emotes');
+    BTTV.vars.channel_emotes = ffz.settings.get('bttv_channel_emotes');
     BTTV.vars.show_emotes_in_menu = ffz.settings.get('bttv_show_emotes_in_menu');
   },
   isEnabled: function() {
@@ -248,6 +265,10 @@ var BTTV = {
     BTTV.vars.global_emotes_loaded = false;
     api.unregister_global_set('BTTV-Global');
 
+    if(!BTTV.vars.global_emotes) {
+      return;
+    }
+
     $.getJSON('https://api.betterttv.net/emotes')
     .done(function(data) {
       var globalBTTV = [],
@@ -355,6 +376,10 @@ var BTTV = {
       BTTV.vars.socket.join_channel(room_id);
     }
 
+    if(room_id in BTTV.vars.channels) {
+      api.unregister_room_set(room_id, BTTV.vars.channels[room_id].set_id);
+    }
+
     $.getJSON('https://api.betterttv.net/2/channels/' + room_id)
     .done(function(data) {
       var channelBTTV = [],
@@ -385,17 +410,20 @@ var BTTV = {
         };
 
         if(_emote.imageType === 'gif') {
-          if(BTTV.vars.gif_emotes === 0) { // If the GIF setting is set to "Disabled", ignore it.
-            continue;
-          }
-          else if(BTTV.vars.gif_emotes == 1) { // If the GIF setting is set to "Static", route them through the cache.
-            emote.urls[1] = 'https://cache.lordmau5.com/' + emote.urls[1];
-            emote.urls[2] = 'https://cache.lordmau5.com/' + emote.urls[2];
-            emote.urls[4] = 'https://cache.lordmau5.com/' + emote.urls[4];
+          switch (BTTV.vars.gif_emotes) {
+            case 0:
+              continue;
+            case 1:
+              emote.urls[1] = 'https://cache.lordmau5.com/' + emote.urls[1];
+              emote.urls[2] = 'https://cache.lordmau5.com/' + emote.urls[2];
+              emote.urls[4] = 'https://cache.lordmau5.com/' + emote.urls[4];
+
+              channelBTTV.push(emote);
+              break;
+            case 2:
+              channelBTTV.push(emote);
           }
         }
-
-        channelBTTV.push(emote);
       }
 
       if(!channelBTTV.length) {
@@ -412,7 +440,7 @@ var BTTV = {
         title: 'Channel Emoticons'
       };
 
-      if(channelBTTV.length) {
+      if(channelBTTV.length && BTTV.vars.channel_emotes) {
         api.register_room_set(room_id, BTTV.vars.channels[room_id].set_id, set); // Load normal emotes
         api.emote_sets[BTTV.vars.channels[room_id].set_id].hidden = !BTTV.vars.show_emotes_in_menu;
       }
@@ -526,7 +554,7 @@ BTTV.ProUser.prototype.initialize = function() {
 };
 
 BTTV.ProUser.prototype.unload = function() {
-  BTTV.log('Unloading user ' + this.username);
+  BTTV.debug('Unloading user! (User: ' + this.username + ')');
 
   api.unload_set(this._id_emotes);
 };
