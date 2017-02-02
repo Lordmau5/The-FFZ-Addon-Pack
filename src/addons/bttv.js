@@ -424,6 +424,9 @@ var BTTV = {
               channelBTTV.push(emote);
           }
         }
+        else {
+          channelBTTV.push(emote);
+        }
       }
 
       if(!channelBTTV.length) {
