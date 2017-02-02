@@ -25,6 +25,7 @@ var GameWisp = {
       help: 'Enable this to show GameWisp global emoticons.',
       on_update: function(enabled) {
         GameWisp.vars.enable_global_emoticons = enabled;
+        api.update_metadata('gamewisp-subscribe');
 
         GameWisp.update_globals();
       }
@@ -38,6 +39,7 @@ var GameWisp = {
       help: 'Enable this to show GameWisp sub emoticons.',
       on_update: function(enabled) {
         GameWisp.vars.enable_emoticons = enabled;
+        api.update_metadata('gamewisp-subscribe');
 
         if(enabled) {
           GameWisp.vars.socket.connect();
@@ -98,6 +100,10 @@ var GameWisp = {
 
         static_label: '<img src="https://cdn.lordmau5.com/ffz-ap/gamewisp/icon_16x.png"/>',
         label: function(view, channel, is_hosting) {
+          if(!GameWisp.isEnbled()) {
+            return '';
+          }
+          
           var label = '', id = channel.get('id');
           if(id in GameWisp.vars.subbed_to) {
             label = GameWisp.vars.subbed_to[id].subbed ? 'Visit Channel' : 'Subscribe';
@@ -114,6 +120,10 @@ var GameWisp = {
       	},
 
         click: function(event, button, view, channel, is_hosting) {
+          if(!GameWisp.isEnabled()) {
+            return;
+          }
+
           var id = channel.get('id');
           if(id in GameWisp.vars.subbed_to) {
             window.open(GameWisp.vars.subbed_to[id].gwData.url, '_blank');
