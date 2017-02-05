@@ -62,6 +62,12 @@ var chat_view_destroy = function(dom, ember) {
   });
 };
 
+var bttv_initialized = function() {
+  addons.forEach(function(addon) {
+    addon.bttv_initialized();
+  });
+};
+
 /* ----- */
 
 var invalidHosts = ['api.', 'tmi.', 'spade.', 'chatdepot.', 'im.'];
@@ -151,6 +157,7 @@ var checkExistance = function(attempts) {
     api.on('room-message', room_message);
     api.on('chat-view-init', chat_view_init);
     api.on('chat-view-destroy', chat_view_destroy);
+    api.on('bttv-initialized', bttv_initialized);
 
     api.iterate_rooms();
     api.iterate_chat_views();
