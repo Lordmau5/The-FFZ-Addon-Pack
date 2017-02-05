@@ -124,6 +124,7 @@ var checkExistance = function(attempts) {
     api.user_add_badge('mie_dax', 20, 'supporter');
     api.user_add_badge('trihex', 20, 'supporter');
     api.user_add_badge('getcuckedxddd', 20, 'supporter');
+    api.user_add_badge('jugachi', 20, 'supporter');
 
     api.add_badge('catbag', {
       color: '#5383d2',
