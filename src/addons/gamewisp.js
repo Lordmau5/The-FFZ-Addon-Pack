@@ -13,6 +13,7 @@ var GameWisp = {
   vars: {
     enable_global_emoticons: true,
     enable_emoticons: true,
+    enable_sub_button: true,
     enable_badges: true,
 
     socket: false,
@@ -64,6 +65,18 @@ var GameWisp = {
       }
     };
 
+    FrankerFaceZ.settings_info.gamewisp_enable_sub_button = {
+      type: 'boolean',
+      value: GameWisp.vars.enable_sub_button,
+      category: 'FFZ Add-On Pack',
+      name: '[GameWisp] Enable Subscribe Button',
+      help: 'Enable this to show the GameWisp subscribe / visit channel button.',
+      on_update: function(enabled) {
+        GameWisp.vars.enable_sub_button = enabled;
+        api.update_metadata('gamewisp-subscribe');
+      }
+    };
+
     // FrankerFaceZ.settings_info.gamewisp_enable_badges = {
     //   type: 'boolean',
     //   value: GameWisp.vars.enable_badges,
@@ -77,6 +90,7 @@ var GameWisp = {
 
     GameWisp.vars.enable_global_emoticons = ffz.settings.get('gamewisp_enable_global_emoticons');
     GameWisp.vars.enable_emoticons = ffz.settings.get('gamewisp_enable_emoticons');
+    GameWisp.vars.enable_sub_button = ffz.settings.get('gamewisp_enable_sub_button');
     // GameWisp.vars.enable_badges = ffz.settings.get('gamewisp_enable_badges');
   },
   isEnabled: function() {
@@ -104,7 +118,7 @@ var GameWisp = {
 
         static_label: '<img src="https://cdn.lordmau5.com/ffz-ap/gamewisp/icon_16x.png"/>',
         label: function(view, channel, is_hosting) {
-          if(!GameWisp.isEnabled()) {
+          if(!GameWisp.isEnabled() || !GameWisp.vars.enable_sub_button) {
             return '';
           }
 
@@ -120,7 +134,7 @@ var GameWisp = {
 
           // var id = channel.get('id');
           // return GameWisp.vars.subbed_to[id];
-          return !GameWisp.isEnabled();
+          return !GameWisp.isEnabled() || !GameWisp.vars.enable_sub_button;
       	},
 
         click: function(event, button, view, channel, is_hosting) {
