@@ -10,10 +10,6 @@
     "128": "chrome/icon128.png"
   },
 
-  "background": {
-    "scripts": ["chrome/requests.js"]
-  },
-
   "content_scripts": [ {
     "all_frames": true,
     "js": [ "chrome/script.js" ],
@@ -22,10 +18,6 @@
   } ],
 
   "permissions": [
-    "*://*.twitch.tv/*",
-    "*://*.betterttv.net/*",
-    "*://*.lordmau5.com/*",
-    "webRequest",
-    "webRequestBlocking"
+    "*://*.twitch.tv/*"
   ]
 }
