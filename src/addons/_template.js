@@ -4,6 +4,10 @@ var _TEMPLATE = {
     api.log('[' + _TEMPLATE.name + '] ' + string, data);
   },
   debug: function(string, data) {
+    if(!localStorage.ffz_ap_debug_mode) {
+      return;
+    }
+
     api.log('[' + _TEMPLATE.name + ' - DEBUG] ' + string, data);
   },
   vars: {

@@ -4,6 +4,10 @@ var MaiWaifu = {
     api.log('[' + MaiWaifu.name + '] ' + string, data);
   },
   debug: function(string, data) {
+    if(!localStorage.ffz_ap_debug_mode) {
+      return;
+    }
+
     api.log('[' + MaiWaifu.name + ' - DEBUG] ' + string, data);
   },
   vars: {

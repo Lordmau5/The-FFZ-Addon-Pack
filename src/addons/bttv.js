@@ -4,6 +4,10 @@ var BTTV = {
     api.log('[' + BTTV.name + '] ' + string, data);
   },
   debug: function(string, data) {
+    if(!localStorage.ffz_ap_debug_mode) {
+      return;
+    }
+
     api.log('[' + BTTV.name + ' - DEBUG] ' + string, data);
   },
   vars: {
