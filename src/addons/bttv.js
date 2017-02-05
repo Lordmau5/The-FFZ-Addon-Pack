@@ -39,7 +39,8 @@ var BTTV = {
         BTTV.vars.global_emotes = enabled;
 
         BTTV.update_global_emotes();
-      }
+      },
+      no_bttv: true
     };
 
     FrankerFaceZ.settings_info.bttv_gif_emotes = {
@@ -59,7 +60,8 @@ var BTTV = {
 
         BTTV.update_global_emotes();
         api.iterate_rooms();
-      }
+      },
+      no_bttv: true
     };
 
     FrankerFaceZ.settings_info.bttv_override_emotes = {
@@ -72,7 +74,8 @@ var BTTV = {
         BTTV.vars.override_emotes = enabled;
 
         BTTV.update_global_emotes();
-      }
+      },
+      no_bttv: true
     };
 
     FrankerFaceZ.settings_info.bttv_pro_emotes = {
@@ -100,7 +103,8 @@ var BTTV = {
 
           BTTV.vars.socket.disconnect_int();
         }
-      }
+      },
+      no_bttv: true
     };
 
     FrankerFaceZ.settings_info.bttv_channel_emotes = {
@@ -113,7 +117,8 @@ var BTTV = {
         BTTV.vars.channel_emotes = enabled;
 
         api.iterate_rooms();
-      }
+      },
+      no_bttv: true
     };
 
     FrankerFaceZ.settings_info.bttv_show_emotes_in_menu = {
@@ -130,7 +135,8 @@ var BTTV = {
         for(var name in BTTV.vars.channels) {
           api.emote_sets[BTTV.vars.channels[name].set_id].hidden = !enabled;
         }
-      }
+      },
+      no_bttv: true
     };
 
     BTTV.vars.global_emotes = ffz.settings.get('bttv_global_emotes');
@@ -196,6 +202,19 @@ var BTTV = {
   },
   chat_view_destroy: function(dom, ember) {
     // Unused
+  },
+  bttv_initialized: function() {
+    if(BTTV.vars.pro_emotes) {
+      for(var key in BTTV.ProUsers) {
+        BTTV.ProUsers[key].unload();
+      }
+      BTTV.ProUsers = {};
+
+      BTTV.vars.socket.disconnect_int();
+    }
+
+    BTTV.update_global_emotes();
+    api.iterate_rooms();
   },
 
   add_badges: function(attempts) {
@@ -443,8 +462,9 @@ var BTTV = {
 
       var set = {
         emoticons: channelBTTV,
-        icon: 'https://cdn.betterttv.net/tags/developer.png',
-        title: 'Channel Emoticons'
+        title: 'Channel Emoticons',
+        source: 'BetterTTV',
+        icon: 'https://cdn.betterttv.net/tags/developer.png'
       };
 
       if(channelBTTV.length && BTTV.vars.channel_emotes) {
@@ -544,6 +564,7 @@ BTTV.ProUser.prototype.load_emotes = function() {
   var set = {
     emoticons: this.emotes,
     title: 'Personal Emoticons',
+    source: 'BetterTTV',
     icon: 'https://cdn.betterttv.net/tags/developer.png'
   };
 

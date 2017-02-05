@@ -106,6 +106,9 @@ var MaiWaifu = {
   chat_view_destroy: function(dom, ember) {
     // Unused
   },
+  bttv_initialized: function() {
+    // Unused
+  },
 
   mouseMovement: function(event) {
     if(!MaiWaifu.vars.currentWaifu) {

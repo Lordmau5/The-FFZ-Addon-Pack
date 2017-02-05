@@ -163,6 +163,9 @@ var GameWisp = {
   chat_view_destroy: function(dom, ember) {
     // Unused
   },
+  bttv_initialized: function() {
+    // Unused
+  },
 
   update_globals: function() {
     api.unregister_global_set('GameWisp-Global');

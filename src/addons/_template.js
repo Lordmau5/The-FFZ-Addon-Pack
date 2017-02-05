@@ -39,6 +39,9 @@ var _TEMPLATE = {
   },
   chat_view_destroy: function(dom, ember) {
 
+  },
+  bttv_initialized: function() {
+
   }
 };
 
