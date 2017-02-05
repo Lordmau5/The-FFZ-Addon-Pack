@@ -3,7 +3,7 @@
 // @name        The FrankerFaceZ Add-On Pack
 // @namespace   FFZ-AP
 //
-// @version     2.0.1
+// @version     2.0.11
 // @updateURL   https://cdn.lordmau5.com/ffz-ap/injector.user.js
 //
 // @description A combination of add-ons for the Twitch extension "FrankerFaceZ"
@@ -30,7 +30,7 @@ function ffzap_init() {
 
     script.id = 'ffzap_script';
     script.type = 'text/javascript';
-    if(localStorage.ffz_ap_debug_mode) {
+    if(localStorage.ffz_ap_debug_mode === 'true') {
       var xhr = new XMLHttpRequest();
   		xhr.open('GET', '//localhost:3000/', true);
   		xhr.onload = function(e) {

@@ -2,7 +2,7 @@ function inject() {
   var script = document.createElement('script');
   script.type = 'text/javascript';
 
-  if(localStorage.ffz_ap_debug_mode) {
+  if(localStorage.ffz_ap_debug_mode === 'true') {
     var xhr = new XMLHttpRequest();
 		xhr.open('GET', '//localhost:3000/', true);
 		xhr.onload = function(e) {
