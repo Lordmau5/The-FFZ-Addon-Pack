@@ -273,7 +273,7 @@ var GameWisp = {
 
   SocketEvents: {
     initialize_room: function(data) {
-      GameWisp.debug('Initializing room! (Room: ' + data.room + ')');
+      GameWisp.debug('Initializing room! (Room: ' + data.room + ')', data);
 
       if(data.gameWispChannel && data.gameWispChannel.isLaunched) {
         GameWisp.vars.subbed_to[data.room] = {
@@ -306,7 +306,7 @@ var GameWisp = {
       api.update_metadata('gamewisp-subscribe');
     },
     update_room: function(data) {
-      GameWisp.debug('Updating room! (User: ' + data.user.name + ', Room: ' + data.room + ')');
+      GameWisp.debug('Updating room! (User: ' + data.user.name + ', Room: ' + data.room + ')', data);
 
       for(var i=0; i<data.emotes.length; i++) {
         var _emote = data.emotes[i];
@@ -327,7 +327,7 @@ var GameWisp = {
       }
     },
     leave_room: function(data) {
-      GameWisp.log('Leaving room! (User: ' + data.user + ', Room: ' + data.room + ')');
+      GameWisp.log('Leaving room! (User: ' + data.user + ', Room: ' + data.room + ')', data);
 
       // if(!GameWisp.removeUserChannel(data.user, data.room)) {
       //   GameWisp.Subs[data.user].unload();
