@@ -229,12 +229,12 @@ var GameWisp = {
       return GameWisp.vars.emotes[id];
     }
 
-    url = url.replace('_28x28.png', '_');
+    var base_url = url.replace(/(\d*)x(\d*)\.png/, '');
     GameWisp.vars.emotes[id] = {
       urls: {
-        1: url + '28x28.png',
-        2: url + '56x56.png',
-        4: url + '112x112.png'
+        1: url,
+        2: base_url + '56x56.png',
+        4: base_url + '112x112.png'
       },
       name: code,
       width: 28,
