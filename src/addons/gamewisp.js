@@ -126,6 +126,10 @@ var GameWisp = {
           if(id in GameWisp.vars.subbed_to) {
             label = GameWisp.vars.subbed_to[id].subbed ? 'Visit Channel' : 'Subscribe';
           }
+
+          if(ffz.get_user() && ffz.get_user().login == id) {
+            label = 'Visit Channel';
+          }
           return label;
         },
 
