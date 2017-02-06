@@ -7,7 +7,15 @@ Formerly known as BetterTTV Emotes for FrankerFaceZ (BTTV4FFZ), FFZ:AP aims to b
 FFZ:AP is written to be modular, so adding new add-ons is relatively easy.  
 Have a look into the [template add-on file](src/addons/_template.js) to see the structure, or the [BetterTTV add-on file](src/addons/bttv.js) to see a working implementation.
 
-Currently it only supports BetterTTV as an add-on, though MaiWaifu and GameWisp are already heavily being worked on.
+Version 2.0.0 brought in the main add-on you love: **BTTV**.
+
+As of version 2.0.7 it also includes a **GameWisp** add-on, with which you can use:
+- GameWisp global emotes
+- GameWisp sub emotes (on all channels, just like Twitch sub emotes)
+
+In a future version it will also support sub badges.
+
+Another future update will bring in a **MaiWaifu** add-on, which includes a new design that is made from the ground up.
 
 ## Download / Website
 
