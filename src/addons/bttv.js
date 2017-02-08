@@ -618,6 +618,11 @@ BTTV.Socket.prototype.connect = function() {
       }
       _self._connectionBuffer = [];
     }
+
+    if(_self.reconnecting) {
+      _self.reconnecting = false;
+      api.iterate_rooms();
+    }
   };
 
   this.socket.onerror = function() {
@@ -671,6 +676,7 @@ BTTV.Socket.prototype.reconnect = function() {
   BTTV.log('Socket: Trying to reconnect to socket server...');
 
   setTimeout(function() {
+    _self.reconnecting = true;
     _self.connect();
   }, Math.random() * (Math.pow(2, this._connectAttempts) - 1) * 30000);
 };
