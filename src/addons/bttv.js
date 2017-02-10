@@ -246,8 +246,8 @@ var BTTV = {
         var _user = _users[i];
 
         if(types[_user.type]) {
-          BTTV.debug('Adding badge "' + _user.type + '" for user "' + _user.name + '".');
-          api.user_add_badge(_user.name, 21, _user.type);
+          BTTV.debug('Adding badge "' + types[_user.type] + '" for user "' + _user.name + '".');
+          api.user_add_badge(_user.name, 21, types[_user.type].name);
         }
       }
     }).fail(function(data) {
