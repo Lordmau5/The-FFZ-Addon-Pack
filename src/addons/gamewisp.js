@@ -4,7 +4,7 @@ var GameWisp = {
     api.log('[' + GameWisp.name + '] ' + string, data);
   },
   debug: function(string, data) {
-    if(!localStorage.ffz_ap_debug_mode) {
+    if(localStorage.ffz_ap_debug_mode !== 'true') {
       return;
     }
 
