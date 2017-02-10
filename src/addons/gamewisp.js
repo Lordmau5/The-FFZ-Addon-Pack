@@ -334,7 +334,7 @@ var GameWisp = {
       }
     },
     leave_room: function(data) {
-      GameWisp.log('Leaving room! (User: ' + data.user + ', Room: ' + data.room + ')', data);
+      GameWisp.debug('Leaving room! (User: ' + data.user + ', Room: ' + data.room + ')', data);
 
       // if(!GameWisp.removeUserChannel(data.user, data.room)) {
       //   GameWisp.Subs[data.user].unload();
