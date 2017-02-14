@@ -437,6 +437,10 @@ GameWisp.Socket.prototype.connect = function() {
   this.socket.onerror = function() {
     GameWisp.log('Socket: Error from socket server.');
 
+    if(_self._connecting) {
+      _self.reconnecting = false;
+    }
+
     _self._connectAttempts++;
     _self.reconnect();
   };
@@ -471,17 +475,17 @@ GameWisp.Socket.prototype.reconnect = function() {
 
   this.disconnect();
 
-  if(this._connecting === false) {
+  if(this.reconnecting) {
     return;
   }
-  this._connecting = false;
+  this.reconnecting = false;
 
   GameWisp.log('Socket: Trying to reconnect to socket server...');
 
   setTimeout(function() {
     _self.reconnecting = true;
     _self.connect();
-  }, Math.random() * (Math.pow(2, this._connectAttempts) - 1) * 30000);
+  }, Math.random() * (Math.pow(2, this._connectAttempts) - 1) * 10000);
 };
 
 GameWisp.Socket.prototype.disconnect = function() {
