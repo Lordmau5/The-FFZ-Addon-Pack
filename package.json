@@ -1,7 +1,18 @@
 {
   "name": "ffz-ap",
   "fullName": "The FFZ Add-On Pack",
-  "version": "2.2",
-  "devDependencies": {},
+  "version": "2.2.0",
+  "devDependencies": {
+    "dateformat": "^2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.0.0",
+    "gulp-es6-transpiler": "^1.0.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-uglifyjs": "^0.6.2",
+    "gulp-util": "^3.0.8",
+    "gulp-wrapper": "^1.0.0",
+    "jshint": "^2.9.4"
+  },
   "dependencies": {}
 }
