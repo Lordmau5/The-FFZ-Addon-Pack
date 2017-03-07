@@ -344,7 +344,7 @@ class GameWisp extends Addon {
 
     var base_url = url.replace(/(\d*)x(\d*)\.png/, '');
     this.badges[id] = {
-      channel: twitch_channel,
+      twitch_channel: twitch_channel,
       gw_channel: gw_channel,
       name: name,
       tier: tier,
