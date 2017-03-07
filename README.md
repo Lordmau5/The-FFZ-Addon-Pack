@@ -5,15 +5,16 @@ The FrankerFaceZ Add-On Pack, or FFZ Add-On Pack / FFZ:AP for short, is an exten
 Formerly known as BetterTTV Emotes for FrankerFaceZ (BTTV4FFZ), FFZ:AP aims to be exactly that, but better.
 
 FFZ:AP is written to be modular, so adding new add-ons is relatively easy.  
-Have a look into the [template add-on file](src/addons/_template.js) to see the structure, or the [BetterTTV add-on file](src/addons/bttv.js) to see a working implementation.
+As of 2.2 it uses ES6 to allow for extendable classes.  
+So now there is one [base addon](src/addons/_addon.js) which has to be extended.  
+Have a look at the [BetterTTV add-on file](src/addons/bttv.js) to see a working implementation.
 
 Version 2.0.0 brought in the main add-on you love: **BTTV**.
 
 As of version 2.0.7 it also includes a **GameWisp** add-on, with which you can use:
 - GameWisp global emotes
 - GameWisp sub emotes (on all channels, just like Twitch sub emotes)
-
-Sub badge support is being worked on after this rewrite is done.
+- GameWisp sub badges (visible on the channel you are subbed on)
 
 Another future update will bring in a **MaiWaifu** add-on, which includes a new design that is made from the ground up.
 
@@ -34,9 +35,9 @@ You'll need the recommended version of [NodeJS](https://nodejs.org/) installed.
 Afterwards, download the repository to a local folder.
 Once that is done, open a command prompt or terminal in the folder and run:  
 `npm install`  
-~~After NPM finished the installation, just run `grunt dev`, which will start a local server on port 3000 and listen to changes in the add-ons to build a minified version.~~  
-Since this branch is a whole rewrite in ES6, this also means that Grunt won't be used anymore.  
-Instead, [Webpack](https://webpack.js.org/) is being used and I first need to figure out how to setup things in it.  
+After that's been done, there is another command that has to be ran in order for Gulp to function:  
+`npm install gulp -g`  
+Afterwards, just run `gulp dev`, which will start a local server on port 3000 and listen to changes in the add-ons to build a minified version.  
 In your browser, open up the console and set `localStorage.ffz_ap_debug_mode` to `true`, then (re-)load a Twitch website.
 
 If everything worked properly, the console should print:  
