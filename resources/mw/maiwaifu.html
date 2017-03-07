@@ -1,0 +1,350 @@
+<html>
+  <head>
+    <title>MaiWaifu Pane</title>
+    <style>
+      .waifu {
+        left: 500px;
+        top: 50px;
+
+        width: 300px;
+        height: 500px;
+        /*background-color: red;*/
+
+        position: absolute;
+        z-index: 100;
+
+        padding: 10px;
+        box-sizing: padding-box;
+
+        font-family: Segoe UI, Arial;
+        font-size: 14px;
+        color: white;
+
+        background-image: url('footer_lodyas.png');
+        background-color: rgba(255, 0, 0, 0.5);
+
+        /*visibility: hidden;
+        opacity: 0;*/
+      }
+
+      .waifu #header {
+        height: 64px;
+        margin-bottom: 10px;
+        /*background-color: blue;*/
+
+        display: flex;
+      }
+
+      .waifu #avatar_container {
+        width: 64px;
+        height: 100%;
+
+        background-size: cover;
+      }
+
+      .waifu #avatar_container #placeholder {
+        width: 64px;
+        height: 64px;
+
+        background-image: url('bestgirl.png');
+        background-size: cover;
+
+        filter: grayscale(1) blur(2px);
+
+        position: absolute;
+      }
+
+      .waifu #avatar_container #avatar {
+        width: 64px;
+        height: 64px;
+
+        background-size: cover;
+
+        position: relative;
+
+        opacity: 0;
+
+        transition: 0.5s;
+
+        z-index: 100;
+
+      }
+
+      .waifu #avatar_container #avatar:hover {
+        width: 300px;
+        height: 300px;
+      }
+
+      .waifu #username {
+        /*background-color: green;*/
+
+        text-align: center;
+
+        width: calc(100% - 64px);
+        height: 64px;
+      }
+
+      .waifu #username #user {
+        /*background-color: pink;*/
+
+        height: 32px;
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        float: left;
+        clear: left;
+      }
+
+      .waifu #username #waifu {
+        /*background-color: cyan;*/
+
+        height: 32px;
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-weight: bold;
+
+        float: left;
+        clear: left;
+
+        padding: 0px;
+        background-image: none;
+      }
+
+      .waifu #image {
+        height: 190px;
+        width: 100%;
+
+        background-size: contain;
+        /*background-image: url('http://i.imgur.com/rMrhgkt.gif');*/
+        background-image: url('https://i.imgur.com/AldkWeH.gif');
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+
+      .waifu #info {
+        /*background-color: red;*/
+
+        height: calc(100% - 296px);
+        width: 100%;
+      }
+
+      .waifu #info #series_container {
+        /*background-color: pink;*/
+
+        height: auto;
+        width: 100%;
+
+        margin-top: 10px;
+
+        border-top: thin solid #ffffff;
+        border-bottom: thin solid #ffffff;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .waifu #info #series_container #series_template {
+        /*background-color: pink;*/
+
+        height: 100%;
+        width: 100px;
+
+        font-weight: bold;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .waifu #info #series_container #series {
+        /*background-color: green;*/
+
+        height: 100%;
+        width: calc(100% - 100px);
+
+        text-align: center;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .waifu #info #type_container {
+        /*background-color: pink;*/
+
+        height: auto;
+        width: 100%;
+
+        border-bottom: thin solid #ffffff;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .waifu #info #type_container #type_template {
+        /*background-color: green;*/
+
+        height: 100%;
+        width: 100px;
+
+        font-weight: bold;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .waifu #info #type_container #type {
+        /*background-color: pink;*/
+
+        height: 100%;
+        width: calc(100% - 100px);
+
+        text-align: center;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .waifu #info #description {
+        /*background-color: cyan;*/
+
+        text-align: center;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .waifu #report_container {
+        width: 100%;
+        height: 32px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .waifu #report {
+        width: 80px;
+        height: 32px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        color: white;
+        cursor: pointer;
+        border: none;
+        background-color: transparent;
+        box-shadow: inset 0 0 0 1px #cc0000;
+
+        transition-duration: 0.2s;
+      }
+
+      .waifu #report:hover {
+        background-color: #cc0000;
+      }
+
+      .maiwaifu #boundingbox {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: inline;
+      }
+    </style>
+    <link rel='stylesheet' href='jsCustomScrollbar.css'/>
+    <script src='https://code.jquery.com/jquery-3.1.1.min.js'></script>
+    <script src='jsCustomScrollbar.js'></script>
+  </head>
+  <body>
+    <!-- Testing template -->
+    <div class='waifu'>
+      <div id='header'>
+        <div id='avatar_container'>
+          <div id='placeholder'></div>
+          <div id='avatar'></div>
+        </div>
+        <div id='username'>
+          <span id='user'>Lordmau5's Waifu</span>
+          <span id='waifu'>Konata Izumi</span>
+        </div>
+      </div>
+      <div id='image'></div>
+      <div class='info_container default-skin' id='info'>
+        <div id='series_container'>
+          <span id='series_template'>Series:</span><span id='series'>Lucky Star</span>
+        </div>
+        <div id='type_container'>
+          <span id='type_template'>Type:</span><span id='type'>Nerd</span>
+        </div>
+        <span id='description'>Nakoruru (ナコルル) is a character in the Samurai Shodown series of fighting games. Her character is based upon the Ainu people of Hokkaido, Japan. Nakoruru's role in the game is of a defender of Mother Nature; in some material Nakoruru has been referred to as a priestess. Nakoruru (ナコルル) is a character in the Samurai Shodown series of fighting games. Her character is based upon the Ainu people of Hokkaido, Japan. Nakoruru's role in the game is of a defender of Mother Nature; in some material Nakoruru has been referred to as a priestess.</span>
+      </div>
+      <div id='report_container'>
+        <button id='report'>Report</button>
+      </div>
+    </div>
+
+    <!-- <div class='maiwaifu waifu'>
+      <div id='header'>
+        <div id='avatar_container'>
+          <div id='placeholder'></div>
+          <div id='avatar'></div>
+        </div>
+        <div id='username'>
+          <span id='user'>Lordmau5's Waifu</span>
+          <span id='waifu'>Konata Izumi</span>
+        </div>
+      </div>
+      <div id='image'></div>
+      <div class='info_container default-skin' id='info'>
+        <div id='series_container'>
+          <span id='series_template'>Series:</span><span id='series'>Ore wa no twintail or whatever that anime was called again just trying to make it long</span>
+        </div>
+        <div id='type_container'>
+          <span id='type_template'>Type:</span><span id='type'>Christian, buff, stupid, sexy, kind, whatever else there is</span>
+        </div>
+        <span id='description'>Nakoruru (ナコルル) is a character in the Samurai Shodown series of fighting games. Her character is based upon the Ainu people of Hokkaido, Japan. Nakoruru's role in the game is of a defender of Mother Nature; in some material Nakoruru has been referred to as a priestess. Nakoruru (ナコルル) is a character in the Samurai Shodown series of fighting games. Her character is based upon the Ainu people of Hokkaido, Japan. Nakoruru's role in the game is of a defender of Mother Nature; in some material Nakoruru has been referred to as a priestess.</span>
+      </div>
+      <div id='report_container'>
+        <button id='report'>Report</button>
+      </div>
+    </div> -->
+
+    <script>
+      $(document).ready(function() {
+        $('.waifu .info_container').customScrollbar();
+
+        var username = 'axaruz';
+
+        $.ajax({
+          url: 'https://api.twitch.tv/kraken/users/' + username,
+          type: 'GET',
+          dataType: 'json',
+          success: function(data) {
+            console.log(data);
+            $('#avatar').css('background-image', 'url(' + data.logo + ')').fadeTo('1s', 1);
+          },
+          error: function() {
+            console.log('ERROR');
+          },
+          beforeSend: setHeaders
+        });
+
+        function setHeaders(xhr) {
+          xhr.setRequestHeader('Client-ID', 'osnmdi33550lb0qumxv5p4lslx9ef1o');
+        }
+      });
+    </script>
+  </body>
+</html>

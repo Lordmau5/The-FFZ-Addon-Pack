@@ -1,0 +1,266 @@
+.ffzap-waifu {
+  /*right: 450px;*/
+  /*top: 20px;*/
+
+  width: 220px; /* at 340px default chat - 120px difference | */
+  /*background-color: red;*/
+
+  position: absolute;
+  z-index: 100;
+
+  padding: 10px;
+  box-sizing: content-box;
+
+  font-family: Segoe UI, Arial;
+  font-size: 14px;
+  color: white;
+
+  background-image: url('footer_lodyas.png');
+
+  display: none;
+
+  z-index: 9001;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 10px;
+}
+
+.ffzap-waifu #header {
+  height: 64px;
+  max-width: 300px;
+  margin-bottom: 10px;
+  /*background-color: blue;*/
+
+  display: flex;
+}
+
+.ffzap-waifu #avatar_container {
+  width: 64px;
+  height: 100%;
+
+  background-size: cover;
+}
+
+.ffzap-waifu #avatar_container #placeholder {
+  width: 64px;
+  height: 64px;
+
+  background-image: url('bestgirl.png');
+  background-size: cover;
+
+  filter: grayscale(1) blur(2px);
+
+  position: absolute;
+}
+
+.ffzap-waifu #avatar_container #avatar {
+  width: 64px;
+  height: 64px;
+
+  background-size: cover;
+
+  position: relative;
+  z-index: 100;
+
+  opacity: 0;
+
+  transition: 0.5s;
+}
+
+/*.ffzap-waifu #avatar_container #avatar:hover {
+  width: 300px;
+  height: 300px;
+}*/
+
+.ffzap-waifu #username {
+  /*background-color: green;*/
+
+  text-align: center;
+
+  width: calc(100% - 64px);
+  height: 64px;
+}
+
+.ffzap-waifu #username #user {
+  /*background-color: pink;*/
+
+  height: 32px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  float: left;
+  clear: left;
+}
+
+.ffzap-waifu #username #waifu {
+  /*background-color: cyan;*/
+
+  height: 32px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+
+  float: left;
+  clear: left;
+
+  padding: 0px;
+  background-image: none;
+}
+
+.ffzap-waifu #image {
+  height: 190px;
+  width: 100%;
+  max-width: 300px;
+
+  background-size: contain;
+  /*background-image: url('http://i.imgur.com/rMrhgkt.gif');*/
+  /*background-image: url('https://i.imgur.com/AldkWeH.gif');*/
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.ffzap-waifu #info {
+  /*background-color: red;*/
+
+  height: calc(100% - 296px);
+  width: 100%;
+  max-width: 300px;
+}
+
+/*.ffzap-waifu .info_container .scroll-bar .thumb {
+  background-color: white;
+}*/
+
+.ffzap-waifu #info #series_container {
+  /*background-color: pink;*/
+
+  height: auto;
+  width: 100%;
+
+  margin-top: 10px;
+
+  border-top: thin solid #ffffff;
+  border-bottom: thin solid #ffffff;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ffzap-waifu #info #series_container #series_template {
+  /*background-color: pink;*/
+
+  height: 100%;
+  width: 100px;
+
+  font-weight: bold;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ffzap-waifu #info #series_container #series {
+  /*background-color: green;*/
+
+  height: 100%;
+  width: calc(100% - 100px);
+
+  text-align: center;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ffzap-waifu #info #type_container {
+  /*background-color: pink;*/
+
+  height: auto;
+  width: 100%;
+
+  border-bottom: thin solid #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ffzap-waifu #info #type_container #type_template {
+  /*background-color: green;*/
+
+  height: 100%;
+  width: 100px;
+
+  font-weight: bold;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ffzap-waifu #info #type_container #type {
+  /*background-color: pink;*/
+
+  height: 100%;
+  width: calc(100% - 100px);
+
+  text-align: center;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ffzap-waifu #info #description {
+  /*background-color: cyan;*/
+
+  text-align: center;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ffzap-waifu #report_container {
+  width: 100%;
+  height: 32px;
+  max-width: 300px;
+  margin-top: 20px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  display: none;
+}
+
+.ffzap-waifu #report {
+  width: 80px;
+  height: 32px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px #cc0000;
+
+  transition-duration: 0.2s;
+}
+
+.ffzap-waifu #report:hover {
+  background-color: #cc0000;
+}

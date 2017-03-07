@@ -1,0 +1,23 @@
+<div class='maiwaifu' id='header'>
+  <div class='maiwaifu' id='avatar_container'>
+    <div class='maiwaifu' id='placeholder'></div>
+    <div class='maiwaifu' id='avatar'></div>
+  </div>
+  <div class='maiwaifu' id='username'>
+    <span class='maiwaifu' id='user'></span>
+    <span class='maiwaifu' id='waifu'></span>
+  </div>
+</div>
+<div class='maiwaifu' id='image'></div>
+<div class='maiwaifu info_container default-skin' id='info'>
+  <div class='maiwaifu' id='series_container'>
+    <span class='maiwaifu' id='series_template'>Series:</span><span class='maiwaifu' id='series'></span>
+  </div>
+  <div class='maiwaifu' id='type_container'>
+    <span class='maiwaifu' id='type_template'>Type:</span><span class='maiwaifu' id='type'></span>
+  </div>
+  <span class='maiwaifu' id='description'></span>
+</div>
+<div class='maiwaifu' id='report_container'>
+  <button class='maiwaifu' id='report'>Report</button>
+</div>
