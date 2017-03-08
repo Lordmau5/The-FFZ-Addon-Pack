@@ -105,35 +105,33 @@ var apiCall = function(url, options) {
 /** ------------ **/
 
 /** Extension specific methods **/
+var helpers = [],
+    mainBadge = {
+      color: '#FF1493',
+      image: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
+      name: 'developer',
+      title: 'FFZ:AP Developer',
+      click_url: 'http://ffzap.lordmau5.com/',
+      urls: {
+        1: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
+        2: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_36.png',
+        4: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_72.png'
+      }
+    },
+    helperBadge, catBagBadge;
+
 var initHelpers = function() {
   // Developer Badge
-  api.add_badge('developer', {
-    color: '#FF1493',
-    image: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
-    name: 'developer',
-    title: 'FFZ:AP Developer',
-    click_url: 'http://ffzap.lordmau5.com/',
-    urls: {
-      1: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
-      2: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_36.png',
-      4: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_72.png'
-    }
-  });
+  api.add_badge('developer', mainBadge);
   api.user_add_badge('lordmau5', 6, 'developer');
 
   // Helper Badge
-  api.add_badge('helper', {
-    color: '#5383d2',
-    image: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
-    name: 'helper',
-    title: 'FFZ:AP Helper',
-    click_url: 'http://ffzap.lordmau5.com/',
-    urls: {
-      1: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
-      2: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_36.png',
-      4: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_72.png'
-    }
-  });
+  helperBadge = $.extend({}, mainBadge);
+  helperBadge.color = '#5383D2';
+  helperBadge.name = 'helper';
+  helperBadge.title = 'FFZ:AP Helper';
+  api.add_badge('helper', helperBadge);
+
   api.user_add_badge('quantoqt', 6, 'helper');
   api.user_add_badge('mie_dax', 6, 'helper');
   api.user_add_badge('trihex', 6, 'helper');
@@ -141,19 +139,20 @@ var initHelpers = function() {
   api.user_add_badge('jugachi', 6, 'helper');
 
   // CatBag Badge, because Wolsk
-  api.add_badge('catbag', {
-    color: '#5383d2',
-    image: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_18.png',
-    name: 'catbag',
-    title: 'FFZ:AP CatBag',
-    click_url: 'http://ffzap.lordmau5.com/',
-    urls: {
-      1: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_18.png',
-      2: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_36.png',
-      4: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_72.png'
-    }
-  });
+  catBagBadge = $.extend({}, mainBadge);
+  catBagBadge.color = '#5383D2';
+  catBagBadge.name = 'catbag';
+  catBagBadge.title = 'FFZ:AP CatBag';
+  catBagBadge.image = 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_18.png';
+  catBagBadge.urls = {
+    1: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_18.png',
+    2: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_36.png',
+    4: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_72.png'
+  };
+  api.add_badge('catbag', catBagBadge);
   api.user_add_badge('wolsk', 6, 'catbag');
+
+  helpers.push('quantoqt', 'mie_dax', 'trihex', 'getcuckedxddd', 'jugachi');
 };
 
 var initSupporters = function() {
