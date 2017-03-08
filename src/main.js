@@ -3,7 +3,7 @@ var addons = [],
     ffz,
     api,
 
-    version = '2.2.16';
+    version = '2.2.17';
 
 /** ------------ **/
 
