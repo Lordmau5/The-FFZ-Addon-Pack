@@ -467,7 +467,7 @@ class GameWisp extends Addon {
         var user = data.user;
 
         if(user && user.emoteIDs && user.emoteIDs.length > 0) {
-          var _emote_ids = user.badgeIDs;
+          var _emote_ids = user.emoteIDs;
           if(user.name in _self.subs) {
             _self.subs[user.name].emote_ids = _emote_ids;
             _self.subs[user.name].loadEmotes();
