@@ -169,7 +169,15 @@ var initSupporters = function() {
 
       for(i=0; i<json.users.length; i++) {
         var user = json.users[i];
-        api.user_add_badge(user.username, 7, 'supporter');
+        if(helpers.includes(user.username)) {
+          var helperPlus = helperBadge;
+          helperPlus.color = '#F44336';
+          helperPlus.title = 'FFZ:AP Helper+';
+          api.user_add_badge(user.username, 6, helperPlus);
+        }
+        else {
+          api.user_add_badge(user.username, 6, 'supporter');
+        }
       }
     });
   });
