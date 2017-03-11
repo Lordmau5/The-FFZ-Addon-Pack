@@ -31,6 +31,8 @@ class BTTV extends Addon {
       return;
     }
 
+    var _self = this;
+
     FrankerFaceZ.settings_info.bttv_global_emotes = {
       type: 'boolean',
       value: this.global_emotes,
@@ -38,9 +40,9 @@ class BTTV extends Addon {
       name: '[BTTV] Global Emoticons',
       help: 'Enable this to show global emoticons.',
       on_update: function(enabled) {
-        this.global_emotes = enabled;
+        _self.global_emotes = enabled;
 
-        this.updateGlobalEmotes();
+        _self.updateGlobalEmotes();
       },
       no_bttv: true
     };
@@ -58,9 +60,9 @@ class BTTV extends Addon {
       },
       process_value: FrankerFaceZ.utils.process_int(1, 1, 2),
       on_update: function(val) {
-        this.gif_emotes = val;
+        _self.gif_emotes = val;
 
-        this.updateGlobalEmotes();
+        _self.updateGlobalEmotes();
         api.iterate_rooms();
       },
       no_bttv: true
@@ -73,9 +75,9 @@ class BTTV extends Addon {
       name: '[BTTV] Enable Override Emoticons',
       help: 'Enable this to show override emoticons (like D:).',
       on_update: function(enabled) {
-        this.override_emotes_enabled = enabled;
+        _self.override_emotes_enabled = enabled;
 
-        this.updateGlobalEmotes();
+        _self.updateGlobalEmotes();
       },
       no_bttv: true
     };
@@ -87,23 +89,23 @@ class BTTV extends Addon {
       name: '[BTTV] Enable Pro Emoticons',
       help: 'Enable this to show Pro emoticons from yourself or other users.',
       on_update: function(enabled) {
-        this.pro_emotes = enabled;
+        _self.pro_emotes = enabled;
 
         if(enabled) {
-          this.socket.connect();
+          _self.socket.connect();
 
-          for(var i=0; i<this.channels.length; i++) {
-            var channel = this.channels[i];
-            this.roomAdd(channel);
+          for(var i=0; i<_self.channels.length; i++) {
+            var channel = _self.channels[i];
+            _self.roomAdd(channel);
           }
         }
         else {
-          for(var key in this.ProUsers) {
-            this.ProUsers[key].unload();
+          for(var key in _self.ProUsers) {
+            _self.ProUsers[key].unload();
           }
-          this.ProUsers = {};
+          _self.ProUsers = {};
 
-          this.socket.disconnectInternal();
+          _self.socket.disconnectInternal();
         }
       },
       no_bttv: true
@@ -116,7 +118,7 @@ class BTTV extends Addon {
       name: '[BTTV] Enable Channel Emoticons',
       help: 'Enable this to show per-channel emoticons.',
       on_update: function(enabled) {
-        this.channel_emotes = enabled;
+        _self.channel_emotes = enabled;
 
         api.iterate_rooms();
       },
@@ -130,12 +132,12 @@ class BTTV extends Addon {
       name: '[BTTV] Show emoticons in Emoticon Menu',
       help: 'Enable this to show the emoticons in the Emoticon Menu (you can still enter the emoticons manually when this is disabled)',
       on_update: function(enabled) {
-        this.show_emotes_in_menu = enabled;
+        _self.show_emotes_in_menu = enabled;
 
         api.emote_sets['BTTV-Global'].hidden = !enabled;
 
-        for(var name in this.channels) {
-          var channel = this.channels[name];
+        for(var name in _self.channels) {
+          var channel = _self.channels[name];
           api.emote_sets[channel.set_id].hidden = !enabled;
         }
       },
