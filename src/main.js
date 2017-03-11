@@ -111,14 +111,14 @@ var helpers = [],
       image: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
       name: 'developer',
       title: 'FFZ:AP Developer',
-      click_url: 'http://ffzap.lordmau5.com/',
+      click_url: 'http://ffzap.lordmau5.com/donate',
       urls: {
         1: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
         2: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_36.png',
         4: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_72.png'
       }
     },
-    helperBadge, catBagBadge;
+    helperBadge, catBagBadge, helperPlus;
 
 var initHelpers = function() {
   // Developer Badge
@@ -152,6 +152,10 @@ var initHelpers = function() {
   api.add_badge('catbag', catBagBadge);
   api.user_add_badge('wolsk', 6, 'catbag');
 
+  helperPlus = $.extend({}, helperBadge);
+  helperPlus.color = '#FAAF19';
+  helperPlus.title = 'FFZ:AP Helper+';
+
   helpers.push('quantoqt', 'mie_dax', 'trihex', 'getcuckedxddd', 'jugachi');
 };
 
@@ -163,16 +167,12 @@ var initSupporters = function() {
       var i;
       for(i=0; i<json.badges.length; i++) {
         var badge = json.badges[i];
-        badge.click_url = 'http://ffzap.lordmau5.com/';
         api.add_badge(badge.name, badge);
       }
 
       for(i=0; i<json.users.length; i++) {
         var user = json.users[i];
         if(helpers.includes(user.username)) {
-          var helperPlus = helperBadge;
-          helperPlus.color = '#F44336';
-          helperPlus.title = 'FFZ:AP Helper+';
           api.user_add_badge(user.username, 6, helperPlus);
         }
         else {
