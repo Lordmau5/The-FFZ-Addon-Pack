@@ -111,7 +111,7 @@ var helpers = [],
       image: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
       name: 'developer',
       title: 'FFZ:AP Developer',
-      click_url: 'http://ffzap.lordmau5.com/donate',
+      click_url: 'https://ffzap.lordmau5.com',
       urls: {
         1: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
         2: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_36.png',
