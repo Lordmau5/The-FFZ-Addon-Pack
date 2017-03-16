@@ -167,8 +167,6 @@ class BTTV extends Addon {
   init() {
     super.init();
 
-    this.debug('Hmm...', this);
-
     if(!this.isEnabled()) {
       this.log('BTTV was found! Addon disabled!');
       this.notifyUser();

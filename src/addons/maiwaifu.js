@@ -105,7 +105,6 @@ class MaiWaifu extends Addon {
 
     var _self = this;
 
-    this.debug('Hmm...', this);
     this.socket = new MaiWaifu.Socket(this);
     if(this.enabled) {
       this.socket.connect();
