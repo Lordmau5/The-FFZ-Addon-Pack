@@ -3,7 +3,7 @@
 // @name        The FrankerFaceZ Add-On Pack
 // @namespace   FFZ-AP
 //
-// @version     2.2
+// @version     2.2.0
 // @updateURL   https://cdn.lordmau5.com/ffz-ap/injector.user.js
 //
 // @description A combination of add-ons for the Twitch extension "FrankerFaceZ"
