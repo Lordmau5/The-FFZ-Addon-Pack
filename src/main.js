@@ -246,7 +246,7 @@ var checkExistance = function(attempts) {
     return;
   }
 
-  if(window.FrankerFaceZ !== undefined && window.jQuery !== undefined && window.App !== undefined) {
+  if(window.FrankerFaceZ !== undefined && window.jQuery !== undefined && window.$ !== undefined && window.App !== undefined) {
     setupNoty();
 
     // Register with FFZ
