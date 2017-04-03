@@ -166,6 +166,8 @@ var initHelpers = function() {
 var initSupporters = function() {
   var host = 'https://cdn.lordmau5.com/ffz-ap/supporters.json';
 
+  tier2MonthlyEmotes();
+
   fetch(host).then(function(response) {
     response.json().then(function(json) {
       var i;
@@ -176,13 +178,36 @@ var initSupporters = function() {
 
       for(i=0; i<json.users.length; i++) {
         var user = json.users[i];
+
+        var supporter_badge = {
+          id: 'supporter'
+        };
+
         if(helpers.includes(user.username)) {
-          api.user_add_badge(user.username, 6, helperPlus);
+          supporter_badge = helperPlus;
         }
-        else {
-          api.user_add_badge(user.username, 6, 'supporter');
+
+        if(user.level >= 1) {
+          api.user_add_set(user.username, 'tier2_monthly');
         }
+
+        if(user.level >= 2) {
+          supporter_badge.color = user.badge_color;
+        }
+        api.user_add_badge(user.username, 6, supporter_badge);
       }
+    });
+  });
+};
+
+var tier2MonthlyEmotes = function() {
+  fetch('https://api.frankerfacez.com/v1/set/105031').then(function(response) {
+    response.json().then(function(json) {
+      json.set.title = 'Monthly Emote-Vote';
+      json.set.source = 'FFZ:AP';
+      api.load_set('tier2_monthly', json.set);
+
+      api.user_add_set('lordmau5', 'tier2_monthly');
     });
   });
 };
