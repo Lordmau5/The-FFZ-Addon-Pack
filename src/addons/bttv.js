@@ -11,6 +11,7 @@ class BTTV extends Addon {
 
     this.channels = {};
     this.pro_users = {};
+    this.night_subs = {};
 
     this.socket = false;
     this.global_emotes_loaded = false;
@@ -310,6 +311,7 @@ class BTTV extends Addon {
     .done(function(data) {
       var global_bttv = [],
           override_emotes = [],
+          night_sub_emotes = [],
 
           _emotes = data.emotes;
 
@@ -320,10 +322,6 @@ class BTTV extends Addon {
         var _emote = _emotes[i],
             match = /cdn.betterttv.net\/emote\/(\w+)/.exec(_emote.url),
             id = match && match[1];
-
-        if (_emote.channel) {
-          continue;
-        }
 
         var emote = {
           urls: {
@@ -361,8 +359,26 @@ class BTTV extends Addon {
             }
           }
 
-          global_bttv.push(emote);
+          if (_emote.channel && _emote.channel === 'night') {
+            night_sub_emotes.push(emote);
+          }
+          else {
+            global_bttv.push(emote);
+          }
         }
+      }
+
+      var set;
+      if(night_sub_emotes.length > 0) {
+        set = {
+          emoticons: night_sub_emotes,
+          title: 'Night (Legacy)',
+          source: 'BetterTTV',
+          icon: 'https://cdn.betterttv.net/tags/developer.png',
+          sort: 50
+        };
+
+        api.load_set('BTTV-Night-Sub', set);
       }
 
       var emotes = [];
@@ -379,7 +395,7 @@ class BTTV extends Addon {
         return;
       }
 
-      var set = {
+      set = {
         emoticons: emotes,
         title: 'Global Emoticons',
         source: 'BetterTTV',
@@ -515,6 +531,13 @@ class BTTV extends Addon {
           }
           else {
             _self.pro_users[subscription.name] = new BTTV.ProUser(_self, subscription.name, subscription.emotes);
+          }
+        }
+
+        if (subscription.subscribed) { // Night's subs
+          if (!(subscription.name in _self.night_subs)) {
+            _self.night_subs[subscription.name] = true;
+            api.user_add_set(subscription.name, 'BTTV-Night-Sub');
           }
         }
       }
