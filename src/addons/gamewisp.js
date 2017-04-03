@@ -429,15 +429,13 @@ class GameWisp extends Addon {
         if(users) {
           for(username in users) {
             if(users.hasOwnProperty(username)) {
-              var _badge_ids = users[username];
-              if(_badge_ids.length > 0) {
-                if(username in _self.subs) {
-                  _self.subs[username].badge_ids = _badge_ids;
-                  _self.subs[username].reloadBadges();
-                }
-                else {
-                  _self.subs[username] = new GameWisp.Sub(_self, username, null, _badge_ids);
-                }
+              var badge = users[username];
+              if(username in _self.subs) {
+                _self.subs[username].addUserBadge(badge);
+                _self.subs[username].reloadBadges();
+              }
+              else {
+                _self.subs[username] = new GameWisp.Sub(_self, username, null, badge);
               }
             }
           }
@@ -458,15 +456,6 @@ class GameWisp extends Addon {
           }
         }
 
-        if(data.badges) {
-          for(i=0; i<data.badges.length; i++) {
-            var _badge = data.badges[i];
-
-            // ID, Channel, Tier data, URL
-            _self.addBadge(_badge.id, _badge.twitch_channel, _badge.channel, _badge.name || _badge.code, _badge.tier, _badge.url);
-          }
-        }
-
         var user = data.user;
 
         if(user && user.emoteIDs && user.emoteIDs.length > 0) {
@@ -479,17 +468,6 @@ class GameWisp extends Addon {
             _self.subs[user.name] = new GameWisp.Sub(_self, user.name, _emote_ids, null);
           }
         }
-
-        if(user && user.badgeIDs && user.badgeIDs.length > 0) {
-          var _badge_ids = user.badgeIDs;
-          if(user.name in _self.subs) {
-            _self.subs[user.name].badge_ids = _badge_ids;
-            _self.subs[user.name].reloadBadges();
-          }
-          else {
-            _self.subs[user.name] = new GameWisp.Sub(_self, user.name, null, _badge_ids);
-          }
-        }
       },
       leave_room: function(data) {
         _self.debug('Leaving room! (User: ' + data.user + ', Room: ' + data.room + ')', data);
@@ -499,12 +477,15 @@ class GameWisp extends Addon {
 }
 
 GameWisp.Sub = class {
-  constructor(_gw, username, emote_ids, badge_ids) {
+  constructor(_gw, username, emote_ids, badge) {
     this._gw = _gw;
 
     this.username = username;
     this.emote_ids = emote_ids;
-    this.badge_ids = badge_ids;
+    this.badges = [];
+    if(badge) {
+      this.addUserBadge(badge);
+    }
 
     this.initialize();
   }
@@ -514,6 +495,10 @@ GameWisp.Sub = class {
 
     this.loadEmotes();
     this.reloadBadges();
+  }
+
+  addUserBadge(badge_id) {
+    this.badges.push(badge_id);
   }
 
   loadEmotes() {
@@ -567,26 +552,25 @@ GameWisp.Sub = class {
   }
 
   reloadBadges() {
-    if(!this.badge_ids) {
+    if(!this.badges || this.badges.length === 0) {
       return;
     }
 
-    this._gw.debug('Badges for ' + this.username, this.badge_ids);
-    for(var id in this.badge_ids) {
-      if(this.badge_ids.hasOwnProperty(id)) {
-        var badge = this._gw.getBadge(this.badge_ids[id]);
-        if(this._gw.enable_badges) {
-          api.room_remove_user_badge(badge.twitch_channel, this.username, this._gw.badges_override_twitch ? 11 : 10);
-          api.room_add_user_badge(badge.twitch_channel, this.username, this._gw.badges_override_twitch ? 10 : 11, badge.ffz_data);
+    this._gw.debug('Badges for ' + this.username, this.badges);
+    for(var i=0; i<this.badges.length; i++) {
+      var id = this.badges[i];
+      var badge = this._gw.getBadge(id);
+      if(this._gw.enable_badges) {
+        api.room_remove_user_badge(badge.twitch_channel, this.username, this._gw.badges_override_twitch ? 11 : 10);
+        api.room_add_user_badge(badge.twitch_channel, this.username, this._gw.badges_override_twitch ? 10 : 11, badge.ffz_data);
 
-          if(this._emote_sets && this._emote_sets[badge.gw_channel]) {
-            this._emote_sets[badge.gw_channel].icon = badge.ffz_data.image;
-            api.load_set(this._emote_sets[badge.gw_channel]._set_name, this._emote_sets[badge.gw_channel]);
-          }
+        if(this._emote_sets && this._emote_sets[badge.gw_channel]) {
+          this._emote_sets[badge.gw_channel].icon = badge.ffz_data.image;
+          api.load_set(this._emote_sets[badge.gw_channel]._set_name, this._emote_sets[badge.gw_channel]);
         }
-        else {
-          api.room_remove_user_badge(badge.twitch_channel, this.username, this._gw.badges_override_twitch ? 10 : 11);
-        }
+      }
+      else {
+        api.room_remove_user_badge(badge.twitch_channel, this.username, this._gw.badges_override_twitch ? 10 : 11);
       }
     }
   }
@@ -767,7 +751,7 @@ GameWisp.Socket = class {
     this.emit('join_room', {
       user: ffz.get_user().login,
       room: channel,
-      mode: ['emotes', 'badges'],
+      mode: ['emotes', 'badges_all'],
       sub_data: true
     });
     this._joined_channels[channel] = true;
