@@ -8,7 +8,7 @@ var addons = [],
 /** ------------ **/
 
 /** Addon specific methods **/
-var invalidHosts = ['api.', 'tmi.', 'spade.', 'chatdepot.', 'im.'];
+var invalidHosts = ['api.', 'tmi.', 'spade.', 'chatdepot.', 'im.', 'api-akamai.'];
 var isInvalidHost = function() {
   for(var i=0; i<invalidHosts.length; i++) {
     if(window.location.host.indexOf(invalidHosts[i]) != -1) {
@@ -29,8 +29,13 @@ var registerAddon = function(addon) {
   else {
     addons.push(addon);
     console.log('[FFZ:AP] Registered addon: ' + addon.name);
-    addon.preInit();
   }
+};
+
+var preInit = function() {
+  addons.forEach(function(addon) {
+    addon.preInit();
+  });
 };
 
 var doSettings = function() {
@@ -149,8 +154,7 @@ var initHelpers = function() {
     2: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_36.png',
     4: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_72.png'
   };
-  api.add_badge('catbag', catBagBadge);
-  api.user_add_badge('wolsk', 6, 'catbag');
+  api.user_add_badge('wolsk', 6, catBagBadge);
 
   helperPlus = $.extend({}, helperBadge);
   helperPlus.color = '#FAAF19';
@@ -248,6 +252,7 @@ var checkExistance = function(attempts) {
 
   if(window.FrankerFaceZ !== undefined && window.jQuery !== undefined && window.$ !== undefined && window.App !== undefined) {
     setupNoty();
+    preInit();
 
     // Register with FFZ
     ffz = FrankerFaceZ.get();
