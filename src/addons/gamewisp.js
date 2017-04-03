@@ -159,7 +159,10 @@ class GameWisp extends Addon {
   preInit() {
     super.preInit();
 
-    $('head').append('<script src="https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js"></script>');
+    var msgpack = document.createElement('script');
+    msgpack.type = 'text/javascript';
+    msgpack.src = 'https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js';
+    document.head.appendChild(msgpack);
   }
 
   init() {
