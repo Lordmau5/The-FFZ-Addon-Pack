@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>Lordmau5</string>
+	<key>Builder Version</key>
+	<string>12603.1.30.0.34</string>
+	<key>CFBundleDisplayName</key>
+	<string>FFZ Add-on Pack</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.rennsport.ffzadd-onpack</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>Content</key>
+	<dict>
+		<key>Blacklist</key>
+		<array>
+			<string>https://api.twitch.tv/*</string>
+			<string>http://api.twitch.tv/*</string>
+		</array>
+		<key>Scripts</key>
+		<dict>
+			<key>End</key>
+			<array>
+				<string>script.js</string>
+			</array>
+		</dict>
+		<key>Whitelist</key>
+		<array>
+			<string>https://www.twitch.tv/*</string>
+			<string>http://www.twitch.tv/*</string>
+		</array>
+	</dict>
+	<key>Description</key>
+	<string>The FrankerFaceZ Add-On Pack. Enhance your Twitch and FFZ experience now!</string>
+	<key>DeveloperIdentifier</key>
+	<string>0000000000</string>
+	<key>ExtensionInfoDictionaryVersion</key>
+	<string>1.0</string>
+	<key>Permissions</key>
+	<dict>
+		<key>Website Access</key>
+		<dict>
+			<key>Allowed Domains</key>
+			<array>
+				<string>www.twitch.tv</string>
+			</array>
+			<key>Include Secure Pages</key>
+			<true/>
+			<key>Level</key>
+			<string>Some</string>
+		</dict>
+	</dict>
+	<key>Website</key>
+	<string>http://ffzap.lordmau5.com/</string>
+</dict>
+</plist>
