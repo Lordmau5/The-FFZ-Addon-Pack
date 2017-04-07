@@ -5,7 +5,7 @@ var addons = [];
 var ffz;
 var api;
 
-var version = '2.2.23';
+var version = '2.2.24';
 /** ------------ **/
 
 /** Addon specific methods **/
