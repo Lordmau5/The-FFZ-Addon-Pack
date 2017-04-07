@@ -1,67 +1,69 @@
-class Addon {
-  constructor(name) {
+/* global registerAddon, api */
+
+class Addon { // eslint-disable-line
+  constructor (name) {
     this.name = name;
   }
 
-  registerSelf() {
+  registerSelf () {
     registerAddon(this);
   }
 
-  log(string, data) {
+  log (string, data) {
     (api || console).log('[' + this.name + '] ' + string, data);
   }
 
-  debug(string, data) {
-    if(localStorage.ffz_ap_debug_mode === 'true') {
+  debug (string, data) {
+    if (localStorage.ffz_ap_debug_mode === 'true') {
       (api || console).log('[' + this.name + ' - DEBUG] ' + string, data);
     }
   }
 
-  extDebug(string, data) {
-    if(localStorage.ffz_ap_debug_ext === 'true') {
+  extDebug (string, data) {
+    if (localStorage.ffz_ap_debug_ext === 'true') {
       (api || console).log('[' + this.name + ' - EXTENDED] ' + string, data);
     }
   }
 
-  isEnabled() {
+  isEnabled () {
     this.extDebug('isEnabled');
     return true;
   }
 
-  preInit() {
+  preInit () {
     this.log('Pre-initialized!');
     this.extDebug('preInit');
   }
 
-  doSettings() {
+  doSettings () {
     this.extDebug('doSettings');
   }
 
-  init() {
+  init () {
     this.extDebug('init');
   }
 
-  roomAdd(roomId) {
+  roomAdd (roomId) {
     this.extDebug('roomAdd', roomId);
   }
 
-  roomRemove(roomId) {
+  roomRemove (roomId) {
     this.extDebug('roomRemove', roomId);
   }
 
-  roomMessage(msg) {
+  roomMessage (msg) {
     this.extDebug('roomMessage', msg);
   }
 
-  bttvInitialized() {
+  bttvInitialized () {
     this.extDebug('bttvInitialized');
   }
 
-  chatViewInit(dom, ember) {
+  chatViewInit (dom, ember) {
     this.extDebug('chatViewInit', [dom, ember]);
   }
 
-  chatViewDestroy(dom, ember) {
+  chatViewDestroy (dom, ember) {
     this.extDebug('chatViewDestroy', [dom, ember]);
   }
 }
