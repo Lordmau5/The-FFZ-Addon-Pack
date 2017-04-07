@@ -1,0 +1,20 @@
+{
+  "title": "The FFZ Add-On Pack",
+  "name": "ffz-ap",
+  "version": "2.2.0",
+  "description": "A combination of add-ons for the Twitch extension \"FrankerFaceZ\"",
+  "main": "index.js",
+  "author": "Lordmau5",
+  "icon": "icon.png",
+  "engines": {
+    "firefox": ">=38.0a1",
+    "fennec": ">=38.0a1"
+  },
+  "license": "MIT",
+  "keywords": [
+    "jetpack"
+  ],
+  "permissions": {
+    "private-browsing": true
+  }
+}
