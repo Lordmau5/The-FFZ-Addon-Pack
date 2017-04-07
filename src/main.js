@@ -161,7 +161,7 @@ var initHelpers = function() {
   helperPlus.color = '#FAAF19';
   helperPlus.title = 'FFZ:AP Helper+';
 
-  helpers.push('quantoqt', 'mie_dax', 'trihex', 'getcuckedxddd', 'jugachi');
+  helpers.push('quantoqt', 'mie_dax', 'trihex', 'getcuckedxddd', 'jugachi', 'techno');
 };
 
 var initSupporters = function() {

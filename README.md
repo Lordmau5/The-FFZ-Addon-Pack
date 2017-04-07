@@ -54,3 +54,4 @@ Make sure to follow the [official FFZ:AP Twitter account](https://www.twitter.co
 **mieDax**: _For the kick-ass logo we got!_  
 **Wolsk**: _For the developer / supporter badge!_  
 **Jugachi**: _For reporting a ton of bugs during the lifespan of BTTV4FFZ, being an early FFZ:AP tester and being an early GameWisp sub emote tester!_
+**Techno**: _For making a kick-ass website redesign and handling all the backend!_
