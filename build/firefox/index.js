@@ -1,6 +1,6 @@
-var pageMod = require("sdk/page-mod");
+var pageMod = require('sdk/page-mod');
 
 pageMod.PageMod({
-	include: "*.twitch.tv",
-	contentScriptFile: './loader.js'
+  include: '*.twitch.tv',
+  contentScriptFile: './loader.js'
 });
