@@ -63,7 +63,7 @@ class FFZ extends Addon {
             ffz.room_message(room, 'There was an error processing this command!');
           }
         } else {
-          ffz.room_message(room, 'You have been following ' + room.display_name + ' since ' + new Date(data.created_at).toLocaleString() + '!');
+          ffz.room_message(room, 'You have been following ' + room.room.channel.display_name + ' since ' + new Date(data.created_at).toLocaleString() + '!');
         }
       });
     };
