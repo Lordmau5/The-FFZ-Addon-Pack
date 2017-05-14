@@ -267,12 +267,12 @@ var showMessage = function (message) {
 };
 
 var notifyUserOfUserScript = function () {
-  var shown = localStorage.ffz_ap_warning_uscript;
-  if (shown !== 'true') {
-    localStorage.ffz_ap_warning_uscript = 'true';
-    showMessage('FFZ:AP has been pulled from the Chrome Webstore and will <strong>NOT</strong> make a comeback. I highly recommend you to switch over to the userscript! -' +
-      'Check the <a target="_blank" href="https://ffzap.lordmau5.com/">website</a> to see a video tutorial on how to install it! :)');
-  }
+  // var shown = localStorage.ffz_ap_warning_uscript;
+  // if (shown !== 'true') {
+  //   localStorage.ffz_ap_warning_uscript = 'true';
+  //   showMessage('FFZ:AP has been pulled from the Chrome Webstore and will <strong>NOT</strong> make a comeback. I highly recommend you to switch over to the userscript! -' +
+  //     'Check the <a target="_blank" href="https://ffzap.lordmau5.com/">website</a> to see a video tutorial on how to install it! :)');
+  // }
 };
 
 var checkExistance = function (attempts) {
