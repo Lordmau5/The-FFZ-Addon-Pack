@@ -10,18 +10,30 @@ class Addon { // eslint-disable-line
   }
 
   log (string, data) {
-    (api || console).log('[' + this.name + '] ' + string, data);
+    string = '[' + this.name + '] ' + string;
+
+    (api || console).log(string, data);
+  }
+
+  error (string, data) {
+    string = '[' + this.name + '] ' + string;
+
+    (api || console).error(string, data);
   }
 
   debug (string, data) {
     if (localStorage.ffz_ap_debug_mode === 'true') {
-      (api || console).log('[' + this.name + ' - DEBUG] ' + string, data);
+      string = '[' + this.name + '] ' + string;
+
+      (api || console).log(string, data);
     }
   }
 
   extDebug (string, data) {
     if (localStorage.ffz_ap_debug_ext === 'true') {
-      (api || console).log('[' + this.name + ' - EXTENDED] ' + string, data);
+      string = '[' + this.name + '] ' + string;
+
+      (api || console).log(string, data);
     }
   }
 
