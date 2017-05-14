@@ -345,6 +345,11 @@ class GameWisp extends Addon {
       return this.badges[id];
     }
 
+    if (twitchChannel == null) {
+      this.error('Tried to add a badge with a undefined twitch channel!', [id, twitchChannel, gwChannel, tier, url]);
+      return;
+    }
+
     var baseUrl = url.replace(/(\d*)x(\d*)\.png/, '');
     this.badges[id] = {
       twitch_channel: twitchChannel,
