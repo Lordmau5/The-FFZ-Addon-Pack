@@ -191,7 +191,7 @@ class GameWisp extends Addon {
 
           var label = '';
           var id = channel.get('id');
-          if (id in _self.subbed_to) {
+          if (_self.subbed_to[id]) {
             label = _self.subbed_to[id].subbed ? 'Visit Channel' : 'Subscribe';
 
             if (ffz.get_user() && ffz.get_user().login === id) {
@@ -220,7 +220,7 @@ class GameWisp extends Addon {
           }
 
           var id = channel.get('id');
-          if (id in _self.subbed_to) {
+          if (_self.subbed_to[id]) {
             window.open(_self.subbed_to[id].gwData.url, '_blank');
           }
         }
@@ -254,8 +254,8 @@ class GameWisp extends Addon {
       this.channels.splice(index);
     }
 
-    if (roomId in this.subbed_to) {
-      delete this.subbed_to[roomId];
+    if (this.subbed_to[roomId]) {
+      this.subbed_to[roomId] = null;
     }
 
     this.socket.leaveRoom(roomId);
@@ -418,7 +418,7 @@ class GameWisp extends Addon {
             if (users.hasOwnProperty(username)) {
               var _emoteIds = users[username];
               if (_emoteIds.length > 0) {
-                if (username in _self.subs) {
+                if (_self.subs[username]) {
                   _self.subs[username].emote_ids = _emoteIds;
                   _self.subs[username].loadEmotes();
                 } else {
@@ -434,7 +434,7 @@ class GameWisp extends Addon {
           for (username in users) {
             if (users.hasOwnProperty(username)) {
               var badge = users[username];
-              if (username in _self.subs) {
+              if (_self.subs[username]) {
                 _self.subs[username].addUserBadge(badge);
                 _self.subs[username].reloadBadges();
               } else {
@@ -463,7 +463,7 @@ class GameWisp extends Addon {
 
         if (user && user.emoteIDs && user.emoteIDs.length > 0) {
           var _emoteIds = user.emoteIDs;
-          if (user.name in _self.subs) {
+          if (_self.subs[user.name]) {
             _self.subs[user.name].emote_ids = _emoteIds;
             _self.subs[user.name].loadEmotes();
           } else {
@@ -663,7 +663,7 @@ GameWisp.Socket = class {
       message = msgpack.decode(new Uint8Array(message.data));
       var evt = message.name;
 
-      if (!evt || !(evt in _self._events)) {
+      if (!evt || !(_self._events[evt])) {
         return;
       }
 

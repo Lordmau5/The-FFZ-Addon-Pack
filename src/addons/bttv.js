@@ -203,8 +203,10 @@ class BTTV extends Addon {
       return;
     }
 
-    api.unload_set(this.channels[roomId].set_id);
-    this.channels[roomId] = null;
+    if (this.channels[roomId]) {
+      api.unload_set(this.channels[roomId].set_id);
+      this.channels[roomId] = null;
+    }
 
     if (this.pro_emotes) {
       this.socket.partChannel(roomId);
@@ -430,7 +432,7 @@ class BTTV extends Addon {
       this.socket.joinChannel(roomId);
     }
 
-    if (roomId in this.channels) {
+    if (this.channels[roomId]) {
       api.unregister_room_set(roomId, this.channels[roomId].set_id);
     }
 
@@ -526,7 +528,7 @@ class BTTV extends Addon {
         }
 
         if (subscription.pro && subscription.emotes) {
-          if (subscription.name in _self.pro_users) {
+          if (_self.pro_users[subscription.name]) {
             _self.pro_users[subscription.name].emotes_array = subscription.emotes;
             _self.pro_users[subscription.name].loadEmotes();
           } else {
@@ -535,7 +537,7 @@ class BTTV extends Addon {
         }
 
         if (subscription.subscribed) { // Night's subs
-          if (!(subscription.name in _self.night_subs)) {
+          if (!(_self.night_subs[subscription.name])) {
             _self.night_subs[subscription.name] = true;
             api.user_add_set(subscription.name, 'BTTV-Night-Sub');
           }
@@ -695,7 +697,7 @@ BTTV.Socket = class {
         _self._bttv.debug('Socket: Error parsing message', e);
       }
 
-      if (!evt || !(evt.name in _self._events)) {
+      if (!evt || !(_self._events[evt.name])) {
         return;
       }
 
