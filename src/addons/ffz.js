@@ -44,7 +44,7 @@ class FFZ extends Addon {
 
     FrankerFaceZ.settings_info.ffz_enable_highlight_sound = {
       type: 'boolean',
-      value: this.highlight_sound_volume,
+      value: this.enable_highlight_sound,
       category: 'FFZ Add-On Pack',
       name: '[FFZ:AP] Highlight / Mention Sound',
       help: 'Plays a sound when you\'re being mentioned.',
