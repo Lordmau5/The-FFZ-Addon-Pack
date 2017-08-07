@@ -119,14 +119,14 @@ var apiCall = function (url, options) { // eslint-disable-line
 var helpers = [];
 var mainBadge = {
   color: '#FF1493',
-  image: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
+  image: 'https://cdn.ffzap.download/badges/badge_18.png',
   name: 'developer',
   title: 'FFZ:AP Developer',
-  click_url: 'https://ffzap.lordmau5.com',
+  click_url: 'https://ffzap.download',
   urls: {
-    1: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png',
-    2: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_36.png',
-    4: 'https://cdn.lordmau5.com/ffz-ap/badges/badge_72.png'
+    1: 'https://cdn.ffzap.download/badges/badge_18.png',
+    2: 'https://cdn.ffzap.download/badges/badge_36.png',
+    4: 'https://cdn.ffzap.download/badges/badge_72.png'
   }
 };
 var helperBadge;
@@ -155,11 +155,11 @@ var initHelpers = function () {
   // CatBag Badge, because Wolsk
   catBagBadge = $.extend({}, helperBadge);
   catBagBadge.title = 'FFZ:AP CatBag';
-  catBagBadge.image = 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_18.png';
+  catBagBadge.image = 'https://cdn.ffzap.download/badges/catbag_18.png';
   catBagBadge.urls = {
-    1: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_18.png',
-    2: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_36.png',
-    4: 'https://cdn.lordmau5.com/ffz-ap/badges/catbag_72.png'
+    1: 'https://cdn.ffzap.download/badges/catbag_18.png',
+    2: 'https://cdn.ffzap.download/badges/catbag_36.png',
+    4: 'https://cdn.ffzap.download/badges/catbag_72.png'
   };
   api.user_add_badge('wolsk', 6, catBagBadge);
 
@@ -171,7 +171,7 @@ var initHelpers = function () {
 };
 
 var initSupporters = function () {
-  var host = 'https://cdn.lordmau5.com/ffz-ap/supporters.json';
+  var host = 'https://cdn.ffzap.download/supporters.json';
 
   tier2MonthlyEmotes();
 
@@ -237,7 +237,7 @@ var setupAPIEvents = function () {
 var setupNoty = function () {
   $('head').append('<style>.ffzap-noty .noty_message {' +
 
-    'background-image: url("//cdn.lordmau5.com/ffz-ap/icon32.png") !important;' +
+    'background-image: url("//cdn.ffzap.download/icon32.png") !important;' +
     'background-repeat: no-repeat !important;' +
     'background-position: 5px 10px !important;' +
     'padding-left: 42px !important;' +
@@ -278,7 +278,7 @@ var notifyUserOfUserScript = function () {
   // if (shown !== 'true') {
   //   localStorage.ffz_ap_warning_uscript = 'true';
   //   showMessage('FFZ:AP has been pulled from the Chrome Webstore and will <strong>NOT</strong> make a comeback. I highly recommend you to switch over to the userscript! -' +
-  //     'Check the <a target="_blank" href="https://ffzap.lordmau5.com/">website</a> to see a video tutorial on how to install it! :)');
+  //     'Check the <a target="_blank" href="https://ffzap.download/">website</a> to see a video tutorial on how to install it! :)');
   // }
 };
 
@@ -296,7 +296,7 @@ var checkExistance = function (attempts) {
     ffz = FrankerFaceZ.get();
 
     // Initialize the API
-    api = ffz.api('FFZ Add-On Pack', 'https://cdn.lordmau5.com/ffz-ap/badges/badge_18.png', version, 'ffzap');
+    api = ffz.api('FFZ Add-On Pack', 'https://cdn.ffzap.download/badges/badge_18.png', version, 'ffzap');
 
     // Check for BTTV
     if (ffz.has_bttv) {
