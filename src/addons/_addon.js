@@ -67,6 +67,10 @@ class Addon { // eslint-disable-line
     this.extDebug('roomMessage', msg);
   }
 
+  roomHighlightMessage (msg) {
+    this.extDebug('roomHighlightMessage', msg);
+  }
+
   bttvInitialized () {
     this.extDebug('bttvInitialized');
   }

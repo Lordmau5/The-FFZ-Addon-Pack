@@ -68,6 +68,12 @@ var roomMessage = function (msg) {
   });
 };
 
+var roomHighlightMessage = function (msg) {
+  addons.forEach(function (addon) {
+    addon.roomHighlightMessage(msg);
+  });
+};
+
 var chatViewInit = function (dom, ember) {
   addons.forEach(function (addon) {
     addon.chatViewInit(dom, ember);
@@ -222,6 +228,7 @@ var setupAPIEvents = function () {
   api.on('room-add', roomAdd);
   api.on('room-remove', roomRemove);
   api.on('room-message', roomMessage);
+  api.on('room-recent-highlights', roomHighlightMessage);
   api.on('chat-view-init', chatViewInit);
   api.on('chat-view-destroy', chatViewDestroy);
   api.on('bttv-initialized', bttvInitialized);
