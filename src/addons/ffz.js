@@ -9,7 +9,7 @@ class FFZ extends Addon {
 
     this.enable_highlight_sound = false;
     this.highlight_sound_volume = 50;
-    this.highlight_sound_file = 'coin.mp3';
+    this.highlight_sound_file = 'default_wet.mp3';
     this.highlight_sound;
 
     this.registerSelf();
@@ -80,30 +80,35 @@ class FFZ extends Addon {
     FrankerFaceZ.settings_info.ffz_highlight_sound_file = {
       type: 'select',
       options: {
-        'coin.mp3': ['Mario - Coin Sound', 0],
-        'icq.mp3': ['ICQ - Notification', 1],
-        'aol.mp3': ['AOL - You\'ve got mail!', 2],
-        'mailmf.mp3': ['Euro Trip - Mail Motherf**ker!', 3],
-        'zelda_secret.mp3': ['Zelda - Secret Sound', 4],
-        'brainpower.mp3': ['O-oooooooooo AAAAE-A-A-I-A-U', 5],
-        'the_best.mp3': ['THE BEST THE BEST', 6],
-        'wow.mp3': ['WOW!', 7],
-        'vsauce.mp3': ['Hey Vsauce, Michael here.', 8],
-        'number_1.mp3': ['We are number one, HEY!', 9],
-        'hello.mp3': ['Hello.webm', 10],
-        'tuturu.mp3': ['Tuturu~~', 11],
-        'omae_wa_mou_shindeiru.mp3': ['Omae wa mou shindeiru', 12],
-        'never_asked_for_this.mp3': ['I never asked for this.', 13],
-        'nani.mp3': ['N-NANI?!', 14],
-        'oh_no.mp3': ['Oh no', 15]
+        // Default block start
+        'default_wet.mp3': ['Default - Wet', 0],
+        'default_graceful.mp3': ['Default - Graceful', 1],
+        'default_blocker.mp3': ['Default - Blocker', 2],
+        // Default block end
+        'coin.mp3': ['Mario - Coin Sound', 3],
+        'icq.mp3': ['ICQ - Notification', 4],
+        'aol.mp3': ['AOL - You\'ve got mail!', 5],
+        'mailmf.mp3': ['Euro Trip - Mail Motherf**ker!', 6],
+        'zelda_secret.mp3': ['Zelda - Secret Sound', 7],
+        'brainpower.mp3': ['O-oooooooooo AAAAE-A-A-I-A-U', 8],
+        'the_best.mp3': ['THE BEST THE BEST', 9],
+        'wow.mp3': ['WOW!', 10],
+        'vsauce.mp3': ['Hey Vsauce, Michael here.', 11],
+        'number_1.mp3': ['We are number one, HEY!', 12],
+        'hello.mp3': ['Hello.webm', 13],
+        'tuturu.mp3': ['Tuturu~~', 14],
+        'omae_wa_mou_shindeiru.mp3': ['Omae wa mou shindeiru', 15],
+        'never_asked_for_this.mp3': ['I never asked for this.', 16],
+        'nani.mp3': ['N-NANI?!', 17],
+        'oh_no.mp3': ['Oh no', 18]
       },
       value: this.highlight_sound_file,
       category: 'FFZ Add-On Pack',
       name: '[FFZ:AP] Highlight / Mention Sound File',
       help: 'Changes the highlight / mention sound file.',
       on_update: function (file) {
-        _self.highlight_sound_file = 'https://cdn.ffzap.download/sounds/' + file;
-        _self.highlight_sound.src = _self.highlight_sound_file;
+        _self.highlight_sound_file = file;
+        _self.highlight_sound.src = 'https://cdn.ffzap.download/sounds/' + file;
       }
     };
 
@@ -117,7 +122,7 @@ class FFZ extends Addon {
   init () {
     super.init();
 
-    this.highlight_sound = new Audio(this.highlight_sound_file);
+    this.highlight_sound = new Audio('https://cdn.ffzap.download/sounds/' + this.highlight_sound_file);
     this.highlight_sound.volume = this.highlight_sound_volume / 100;
 
     FrankerFaceZ.chat_commands.viewers = function (room, args) {
