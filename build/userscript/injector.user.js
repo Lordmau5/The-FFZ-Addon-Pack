@@ -3,15 +3,15 @@
 // @name        The FrankerFaceZ Add-On Pack
 // @namespace   FFZ-AP
 //
-// @version     2.2.0
-// @updateURL   https://cdn.lordmau5.com/ffz-ap/injector.user.js
+// @version     3.0.1
+// @updateURL   https://cdn.ffzap.download/injector.user.js
 //
 // @description A combination of add-ons for the Twitch extension "FrankerFaceZ"
 // @author      Lordmau5
-// @homepage    https://lordmau5.com/ffz-ap/
-// @icon        https://cdn.lordmau5.com/ffz-ap/icon32.png
-// @icon64      https://cdn.lordmau5.com/ffz-ap/icon64.png
-// @icon128     https://cdn.lordmau5.com/ffz-ap/icon128.png
+// @homepage    https://ffzap.download/
+// @icon        https://cdn.ffzap.download/icon32.png
+// @icon64      https://cdn.ffzap.download/icon64.png
+// @icon128     https://cdn.ffzap.download/icon128.png
 //
 // @include     http://twitch.tv/*
 // @include     https://twitch.tv/*
@@ -41,12 +41,12 @@ function ffzapInit () {
     };
     xhr.onerror = function (e) {
       console.log('FFZ:AP: Development Server is not present. Using CDN.');
-      script.src = 'https://lordmau5.com/nocache/ffz-ap/ffz-ap.min.js?_=' + Date.now();
+      script.src = 'https://direct.lordmau5.com/ffz-ap/ffz-ap.js?_=' + Date.now();
       document.head.appendChild(script);
     };
     return xhr.send(null);
   } else {
-    script.src = 'https://cdn.lordmau5.com/ffz-ap/ffz-ap.min.js';
+    script.src = 'https://cdn.ffzap.download/ffz-ap.min.js';
     document.head.appendChild(script);
   }
 }
