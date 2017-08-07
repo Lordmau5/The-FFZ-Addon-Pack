@@ -1,14 +1,124 @@
-/* global Addon, ffz, FrankerFaceZ, apiCall */
+/* global Addon, ffz, FrankerFaceZ, apiCall, Audio */
 
 class FFZ extends Addon {
   constructor () {
     super('FFZ');
 
+    this.enable_local_sub = false;
+    this.enable_local_mod = false;
+
+    this.enable_highlight_sound = false;
+    this.highlight_sound_volume = 50;
+    this.highlight_sound_file = 'coin.mp3';
+    this.highlight_sound;
+
     this.registerSelf();
+  }
+
+  doSettings () {
+    super.doSettings();
+
+    var _self = this;
+
+    FrankerFaceZ.settings_info.ffz_enable_local_sub = {
+      type: 'boolean',
+      value: this.enable_local_sub,
+      category: 'FFZ Add-On Pack',
+      name: '[FFZ:AP] Enable Local Sub-Only Mode',
+      help: 'Only shows messages of subscribers to you.',
+      on_update: function (enabled) {
+        _self.enable_local_sub = enabled;
+      }
+    };
+
+    FrankerFaceZ.settings_info.ffz_enable_local_mod = {
+      type: 'boolean',
+      value: this.enable_local_mod,
+      category: 'FFZ Add-On Pack',
+      name: '[FFZ:AP] Enable Local Mod-Only Mode',
+      help: 'Only shows messages of moderators to you.',
+      on_update: function (enabled) {
+        _self.enable_local_mod = enabled;
+      }
+    };
+
+    FrankerFaceZ.settings_info.ffz_enable_highlight_sound = {
+      type: 'boolean',
+      value: this.highlight_sound_volume,
+      category: 'FFZ Add-On Pack',
+      name: '[FFZ:AP] Highlight / Mention Sound',
+      help: 'Plays a sound when you\'re being mentioned.',
+      on_update: function (enabled) {
+        _self.enable_highlight_sound = enabled;
+      }
+    };
+
+    FrankerFaceZ.settings_info.ffz_highlight_sound_volume = {
+      type: 'select',
+      options: {
+        10: '10%',
+        20: '20%',
+        30: '30%',
+        40: '40%',
+        50: '50%',
+        60: '60%',
+        70: '70%',
+        80: '80%',
+        90: '90%',
+        100: '100%'
+      },
+      value: this.enable_highlight_sound,
+      category: 'FFZ Add-On Pack',
+      name: '[FFZ:AP] Highlight / Mention Sound Volume',
+      help: 'Changes the highlight / mention sound volume.',
+      on_update: function (volume) {
+        _self.highlight_sound_volume = volume;
+        _self.highlight_sound.volume = volume / 100;
+      }
+    };
+
+    FrankerFaceZ.settings_info.ffz_highlight_sound_file = {
+      type: 'select',
+      options: {
+        'coin.mp3': ['Mario - Coin Sound', 0],
+        'icq.mp3': ['ICQ - Notification', 1],
+        'aol.mp3': ['AOL - You\'ve got mail!', 2],
+        'mailmf.mp3': ['Euro Trip - Mail Motherf**ker!', 3],
+        'zelda_secret.mp3': ['Zelda - Secret Sound', 4],
+        'brainpower.mp3': ['O-oooooooooo AAAAE-A-A-I-A-U', 5],
+        'the_best.mp3': ['THE BEST THE BEST', 6],
+        'wow.mp3': ['WOW!', 7],
+        'vsauce.mp3': ['Hey Vsauce, Michael here.', 8],
+        'number_1.mp3': ['We are number one, HEY!', 9],
+        'hello.mp3': ['Hello.webm', 10],
+        'tuturu.mp3': ['Tuturu~~', 11],
+        'omae_wa_mou_shindeiru.mp3': ['Omae wa mou shindeiru', 12],
+        'never_asked_for_this.mp3': ['I never asked for this.', 13],
+        'nani.mp3': ['N-NANI?!', 14],
+        'oh_no.mp3': ['Oh no', 15]
+      },
+      value: this.highlight_sound_file,
+      category: 'FFZ Add-On Pack',
+      name: '[FFZ:AP] Highlight / Mention Sound File',
+      help: 'Changes the highlight / mention sound file.',
+      on_update: function (file) {
+        _self.highlight_sound_file = 'https://cdn.ffzap.download/sounds/' + file;
+        _self.highlight_sound.src = _self.highlight_sound_file;
+      }
+    };
+
+    this.enable_local_sub = ffz.settings.get('ffz_enable_local_sub');
+    this.enable_local_mod = ffz.settings.get('ffz_enable_local_mod');
+    this.enable_highlight_sound = ffz.settings.get('ffz_enable_highlight_sound');
+    this.highlight_sound_volume = ffz.settings.get('ffz_highlight_sound_volume');
+    this.highlight_sound_file = ffz.settings.get('ffz_highlight_sound_file');
   }
 
   init () {
     super.init();
+
+    this.highlight_sound = new Audio(this.highlight_sound_file);
+    this.highlight_sound.volume = this.highlight_sound_volume / 100;
 
     FrankerFaceZ.chat_commands.viewers = function (room, args) {
       if (room.room.get('isGroupRoom')) {
@@ -103,6 +213,41 @@ class FFZ extends Addon {
     };
     FrankerFaceZ.chat_commands.uptime.info = 'Shows the uptime of the stream';
     FrankerFaceZ.chat_commands.uptime.no_bttv = true;
+  }
+
+  isModeratorOrHigher (badges) {
+    return 'broadcaster' in badges || 'staff' in badges || 'admin' in badges || 'global_mod' in badges || 'moderator' in badges;
+  }
+
+  roomMessage (msg) {
+    super.roomMessage(msg);
+
+    if (msg && msg.tags) {
+      if (ffz.get_user() && msg.from === ffz.get_user().login) { // Don't delete messages from the local user
+        return;
+      }
+
+      if (this.enable_local_sub) { // Local Sub-Only mode
+        if (!('subscriber' in msg.tags.badges) && !this.isModeratorOrHigher(msg.tags.badges)) { // Only drop the message if the user isn't a mod
+          msg.ffz_removed = true;
+        }
+      }
+      if (this.enable_local_mod) { // Local Mod-Only mode
+        if (!this.isModeratorOrHigher(msg.tags.badges)) {
+          msg.ffz_removed = true;
+        }
+      }
+    }
+  }
+
+  roomHighlightMessage (msg) {
+    super.roomHighlightMessage(msg);
+
+    if (!this.enable_highlight_sound) {
+      return;
+    }
+
+    this.highlight_sound.play();
   }
 }
 
