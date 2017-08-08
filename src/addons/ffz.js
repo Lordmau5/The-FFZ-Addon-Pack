@@ -1,4 +1,4 @@
-/* global Addon, ffz, FrankerFaceZ, apiCall, Audio */
+/* global Addon, ffz, FrankerFaceZ, apiCall, Audio, _ */
 
 class FFZ extends Addon {
   constructor () {
@@ -10,6 +10,7 @@ class FFZ extends Addon {
     this.enable_highlight_sound = false;
     this.highlight_sound_volume = 50;
     this.highlight_sound_file = 'default_wet.mp3';
+    this.highlight_sound_blacklist = [];
     this.highlight_sound;
 
     this.registerSelf();
@@ -75,6 +76,9 @@ class FFZ extends Addon {
       on_update: function (volume) {
         _self.highlight_sound_volume = volume;
         _self.highlight_sound.volume = volume / 100;
+        if (_self.highlight_sound.paused) {
+          _self.highlight_sound.play();
+        }
       }
     };
 
@@ -110,6 +114,35 @@ class FFZ extends Addon {
       on_update: function (file) {
         _self.highlight_sound_file = file;
         _self.highlight_sound.src = 'https://cdn.ffzap.download/sounds/' + file;
+        if (_self.highlight_sound.paused) {
+          _self.highlight_sound.play();
+        }
+      }
+    };
+
+    FrankerFaceZ.settings_info.ffz_highlight_sound_blacklist = {
+      type: 'button',
+      value: [],
+
+      category: 'FFZ Add-On Pack',
+      name: '[FFZ:AP] Highlight / Mention Sound Blacklist',
+      help: 'Any channels added to this list will not be playing the highlight / mention sound.',
+
+      method: function () {
+        var oldVal = ffz.settings.get('ffz_highlight_sound_blacklist').join(', ');
+
+        FrankerFaceZ.utils.prompt(
+          'Highlight / Mention Sound Blacklist',
+          'Please enter a comma-separated list of channels that you would like to have blacklisted for the highlight / mention sound.',
+          oldVal,
+          function (newVal) {
+            if (newVal === null || newVal === undefined) {
+              return;
+            }
+
+            ffz.settings.set('ffz_highlight_sound_blacklist', _self.highlight_sound_blacklist = _.unique(newVal.trim().toLowerCase().split(/\s*,\s*/)).without(''));
+          }, 600
+        );
       }
     };
 
@@ -117,6 +150,7 @@ class FFZ extends Addon {
     this.enable_local_mod = ffz.settings.get('ffz_enable_local_mod');
     this.enable_highlight_sound = ffz.settings.get('ffz_enable_highlight_sound');
     this.highlight_sound_volume = ffz.settings.get('ffz_highlight_sound_volume');
+    this.highlight_sound_blacklist = ffz.settings.get('ffz_highlight_sound_blacklist');
     this.highlight_sound_file = ffz.settings.get('ffz_highlight_sound_file');
   }
 
@@ -271,7 +305,16 @@ class FFZ extends Addon {
       return;
     }
 
-    this.highlight_sound.play();
+    for (var i = 0; i < msg.length; i++) {
+      var _msg = msg[i];
+      if (this.highlight_sound_blacklist.contains(_msg.room)) {
+        return;
+      }
+
+      if (this.highlight_sound.paused) {
+        this.highlight_sound.play();
+      }
+    }
   }
 }
 
