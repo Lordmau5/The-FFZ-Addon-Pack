@@ -56,17 +56,17 @@ class FFZ extends Addon {
     FrankerFaceZ.settings_info.ffz_highlight_sound_volume = {
       type: 'select',
       options: {
-        5: '5%',
-        10: '10%',
-        20: '20%',
-        30: '30%',
-        40: '40%',
-        50: '50%',
-        60: '60%',
-        70: '70%',
-        80: '80%',
-        90: '90%',
-        100: '100%'
+        5: ['5%', 0],
+        10: ['10%', 1],
+        20: ['20%', 2],
+        30: ['30%', 3],
+        40: ['40%', 4],
+        50: ['50%', 5],
+        60: ['60%', 6],
+        70: ['70%', 7],
+        80: ['80%', 8],
+        90: ['90%', 9],
+        100: ['100%', 10]
       },
       value: this.enable_highlight_sound,
       category: 'FFZ Add-On Pack',
