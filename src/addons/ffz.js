@@ -85,6 +85,9 @@ class FFZ extends Addon {
     FrankerFaceZ.settings_info.ffz_highlight_sound_file = {
       type: 'select',
       options: {
+        // Custom sound block start
+        'custom': ['Custom', -1],
+        // Custom sound block end
         // Default block start
         'default_wet.mp3': ['Default - Wet', 0],
         'default_graceful.mp3': ['Default - Graceful', 1],
@@ -114,6 +117,26 @@ class FFZ extends Addon {
       name: '[FFZ:AP] Highlight / Mention Sound File',
       help: 'Changes the highlight / mention sound file.',
       on_update: function (file) {
+        if (file === 'custom') {
+          FrankerFaceZ.utils.prompt(
+            'Custom Highlight / Mention Sound',
+            'Please enter the URL to a custom sound file.<p></p>Tested formats: .MP3, .M4A, .WAV, .OGG',
+            localStorage.ffz_ap_custom_highlight_sound,
+            function (newVal) {
+              if (newVal === null || newVal === undefined) {
+                return;
+              }
+
+              localStorage.ffz_ap_custom_highlight_sound = newVal;
+              _self.highlight_sound.src = newVal;
+              if (_self.highlight_sound.paused) {
+                _self.highlight_sound.play();
+              }
+            }, 600
+          );
+          return;
+        }
+
         _self.highlight_sound_file = file;
         _self.highlight_sound.src = 'https://cdn.ffzap.download/sounds/' + file;
         if (_self.highlight_sound.paused) {
@@ -131,12 +154,10 @@ class FFZ extends Addon {
       help: 'Any channels added to this list will not be playing the highlight / mention sound.',
 
       method: function () {
-        var oldVal = ffz.settings.get('ffz_highlight_sound_blacklist').join(', ');
-
         FrankerFaceZ.utils.prompt(
           'Highlight / Mention Sound Blacklist',
           'Please enter a comma-separated list of channels that you would like to have blacklisted for the highlight / mention sound.',
-          oldVal,
+          ffz.settings.get('ffz_highlight_sound_blacklist').join(', '),
           function (newVal) {
             if (newVal === null || newVal === undefined) {
               return;
@@ -159,7 +180,7 @@ class FFZ extends Addon {
   init () {
     super.init();
 
-    this.highlight_sound = new Audio('https://cdn.ffzap.download/sounds/' + this.highlight_sound_file);
+    this.highlight_sound = new Audio(this.highlight_sound_file === 'custom' ? (localStorage.ffz_ap_custom_highlight_sound) : ('https://cdn.ffzap.download/sounds/' + this.highlight_sound_file));
     this.highlight_sound.volume = this.highlight_sound_volume / 100;
 
     FrankerFaceZ.chat_commands.viewers = function (room, args) {
