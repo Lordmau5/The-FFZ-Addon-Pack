@@ -1,4 +1,4 @@
-/* global Addon, ffz, FrankerFaceZ, apiCall, Audio, _ */
+/* global Addon, ffz, FrankerFaceZ, apiCall, Audio, _, jQuery */
 
 class FFZ extends Addon {
   constructor () {
@@ -12,6 +12,11 @@ class FFZ extends Addon {
     this.highlight_sound_file = 'default_wet.mp3';
     this.highlight_sound_blacklist = [];
     this.highlight_sound;
+
+    this.enable_anon_chat = false;
+    this.anon_initialized = false;
+    this.ignore_dc_message = {};
+    this.cloak_level = Math.floor(Math.random() * 99) + 1;
 
     this.registerSelf();
   }
@@ -169,16 +174,70 @@ class FFZ extends Addon {
       }
     };
 
+    FrankerFaceZ.settings_info.ffz_enable_anon_chat = {
+      type: 'boolean',
+      value: this.enable_anon_chat,
+      category: 'FFZ Add-On Pack',
+      name: '[FFZ:AP] Invisibility Cloak',
+      help: 'Put on the Cloak of Invisibility (+' + this.cloak_level + ' Stealth) so you don\'t show up in the viewer list.',
+      on_update: function (enabled) {
+        _self.enable_anon_chat = enabled;
+
+        _self.updateAnonChat();
+      }
+    };
+
     this.enable_local_sub = ffz.settings.get('ffz_enable_local_sub');
     this.enable_local_mod = ffz.settings.get('ffz_enable_local_mod');
     this.enable_highlight_sound = ffz.settings.get('ffz_enable_highlight_sound');
     this.highlight_sound_volume = ffz.settings.get('ffz_highlight_sound_volume');
     this.highlight_sound_blacklist = ffz.settings.get('ffz_highlight_sound_blacklist');
     this.highlight_sound_file = ffz.settings.get('ffz_highlight_sound_file');
+    this.enable_anon_chat = ffz.settings.get('ffz_enable_anon_chat');
+  }
+
+  changeAnonChatUser (_controller, username) {
+    var session = _controller.get('tmiSession');
+    if (!session) {
+      return;
+    }
+
+    var connection = session._connections.main;
+    if (!connection || connection._opts.nickname === username) {
+      return;
+    }
+
+    connection._opts.nickname = username;
+    this.ignore_dc_message = jQuery.extend({}, ffz.rooms);
+    connection._send('QUIT');
+  }
+
+  updateAnonChat () {
+    var controller = FrankerFaceZ.utils.ember_lookup('controller:chat');
+    var currentRoom = ffz.rooms[controller.get('currentRoom').id];
+
+    if (this.enable_anon_chat) {
+      jQuery('.js-chat_input.chat_text_input.form__input').attr('disabled', true);
+      jQuery('.chat-interface__submit.js-chat-buttons__submit').attr('disabled', true);
+      jQuery('.js-bits-toggle').attr('disabled', true);
+
+      this.changeAnonChatUser(controller, 'justinfan73823');
+      ffz.room_message(currentRoom, 'You equipped a Cloak of Invisibility (+' + this.cloak_level + ' Stealth). Nobody notices a thing...');
+    } else if (this.anon_initialized) {
+      jQuery('.js-chat_input.chat_text_input.form__input').attr('disabled', false);
+      jQuery('.chat-interface__submit.js-chat-buttons__submit').attr('disabled', false);
+      jQuery('.js-bits-toggle').attr('disabled', false);
+
+      var user = ffz.get_user() && ffz.get_user().login || 'justinfan73823';
+      this.changeAnonChatUser(controller, user);
+      ffz.room_message(currentRoom, 'You unequipped the Cloak of Invisibility (+' + this.cloak_level + ' Stealth). Suddenly, everyone can see you again...');
+    }
   }
 
   init () {
     super.init();
+
+    jQuery('head').append('<style type="text/css">a[disabled="disabled"] { pointer-events: none; }</style>');
 
     this.highlight_sound = new Audio(this.highlight_sound_file === 'custom' ? (localStorage.ffz_ap_custom_highlight_sound) : ('https://cdn.ffzap.download/sounds/' + this.highlight_sound_file));
     this.highlight_sound.volume = this.highlight_sound_volume / 100;
@@ -296,6 +355,19 @@ class FFZ extends Addon {
     FrankerFaceZ.chat_commands.localmod.no_bttv = true;
   }
 
+  chatViewInit (dom, ember) {
+    super.chatViewInit(dom, ember);
+
+    if (!this.anon_initialized) {
+      this.updateAnonChat();
+      this.anon_initialized = true;
+    }
+
+    if (this.enable_anon_chat) {
+      jQuery('.loading-mask').remove();
+    }
+  }
+
   isModeratorOrHigher (badges) {
     return 'broadcaster' in badges || 'staff' in badges || 'admin' in badges || 'global_mod' in badges || 'moderator' in badges;
   }
@@ -303,19 +375,26 @@ class FFZ extends Addon {
   roomMessage (msg) {
     super.roomMessage(msg);
 
-    if (msg && msg.tags) {
-      if (ffz.get_user() && msg.from === ffz.get_user().login) { // Don't delete messages from the local user
-        return;
+    if (msg) {
+      if (this.ignore_dc_message[msg.room] && msg.message.indexOf('unable to connect to chat') !== -1) {
+        delete this.ignore_dc_message[msg.room];
+        msg.ffz_removed = true;
       }
 
-      if (this.enable_local_sub) { // Local Sub-Only mode
-        if (!('subscriber' in msg.tags.badges) && !this.isModeratorOrHigher(msg.tags.badges)) { // Only drop the message if the user isn't a mod
-          msg.ffz_removed = true;
+      if (msg.tags) {
+        if (ffz.get_user() && msg.from === ffz.get_user().login) { // Don't delete messages from the local user
+          return;
         }
-      }
-      if (this.enable_local_mod) { // Local Mod-Only mode
-        if (!this.isModeratorOrHigher(msg.tags.badges)) {
-          msg.ffz_removed = true;
+
+        if (this.enable_local_sub) { // Local Sub-Only mode
+          if (!('subscriber' in msg.tags.badges) && !this.isModeratorOrHigher(msg.tags.badges)) { // Only drop the message if the user isn't a mod
+            msg.ffz_removed = true;
+          }
+        }
+        if (this.enable_local_mod) { // Local Mod-Only mode
+          if (!this.isModeratorOrHigher(msg.tags.badges)) {
+            msg.ffz_removed = true;
+          }
         }
       }
     }
