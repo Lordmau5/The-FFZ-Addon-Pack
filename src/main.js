@@ -194,9 +194,18 @@ var initSupporters = function () {
           supporterBadge = $.extend({}, helperPlus);
         }
 
-        if (user.level >= 2) {
+        if (user.level >= 2) { // Supporter Badge Color
           api.user_add_set(user.username, 'tier2_monthly');
           supporterBadge.color = user.badge_color;
+        }
+
+        if (user.level >= 3) { // Custom Supporter BdagBadge Support
+          supporterBadge.image = 'https://cdn.ffzap.download/badges/t3/' + user.username + '_18.png';
+          supporterBadge.urls = {
+            1: 'https://cdn.ffzap.download/badges/t3/' + user.username + '_18.png',
+            2: 'https://cdn.ffzap.download/badges/t3/' + user.username + '_36.png',
+            4: 'https://cdn.ffzap.download/badges/t3/' + user.username + '_72.png'
+          };
         }
         api.user_add_badge(user.username, 6, supporterBadge);
       }
