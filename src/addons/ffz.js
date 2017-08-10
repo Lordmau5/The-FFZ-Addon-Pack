@@ -337,19 +337,19 @@ class FFZ extends Addon {
     FrankerFaceZ.chat_commands.uptime.no_bttv = true;
 
     FrankerFaceZ.chat_commands.localsub = function (room, args) {
-      this.local_sub = !this.local_sub;
-      ffz.settings.set('ffz_enable_local_sub', this.local_sub);
+      this.enable_local_sub = !this.enable_local_sub;
+      ffz.settings.set('ffz_enable_local_sub', this.enable_local_sub);
 
-      ffz.room_message(room, 'Local sub-only mode has been ' + (this.local_sub ? 'enabled' : 'disabled') + '.');
+      ffz.room_message(room, 'Local sub-only mode has been ' + (this.enable_local_sub ? 'enabled' : 'disabled') + '.');
     };
     FrankerFaceZ.chat_commands.localsub.info = 'Toggles local sub-only mode.';
     FrankerFaceZ.chat_commands.localsub.no_bttv = true;
 
     FrankerFaceZ.chat_commands.localmod = function (room, args) {
-      this.local_mod = !this.local_mod;
-      ffz.settings.set('ffz_enable_local_mod', this.local_mod);
+      this.enable_local_mod = !this.enable_local_mod;
+      ffz.settings.set('ffz_enable_local_mod', this.enable_local_mod);
 
-      ffz.room_message(room, 'Local mod-only mode has been ' + (this.local_mod ? 'enabled' : 'disabled') + '.');
+      ffz.room_message(room, 'Local mod-only mode has been ' + (this.enable_local_mod ? 'enabled' : 'disabled') + '.');
     };
     FrankerFaceZ.chat_commands.localmod.info = 'Toggles local sub-only mode.';
     FrankerFaceZ.chat_commands.localmod.no_bttv = true;
