@@ -23,19 +23,17 @@ class GameWisp extends Addon {
   doSettings () {
     super.doSettings();
 
-    var _self = this;
-
     FrankerFaceZ.settings_info.gamewisp_enable_global_emoticons = {
       type: 'boolean',
       value: this.enable_global_emoticons,
       category: 'FFZ Add-On Pack',
       name: '[GameWisp] Enable Global Emoticons',
       help: 'Enable this to show GameWisp global emoticons.',
-      on_update: function (enabled) {
-        _self.enable_global_emoticons = enabled;
+      on_update: (enabled) => {
+        this.enable_global_emoticons = enabled;
         api.update_metadata('gamewisp-subscribe');
 
-        _self.updateGlobals();
+        this.updateGlobals();
       }
     };
 
@@ -45,28 +43,28 @@ class GameWisp extends Addon {
       category: 'FFZ Add-On Pack',
       name: '[GameWisp] Enable Emoticons',
       help: 'Enable this to show GameWisp sub emoticons.',
-      on_update: function (enabled) {
-        _self.enable_emoticons = enabled;
+      on_update: (enabled) => {
+        this.enable_emoticons = enabled;
         api.update_metadata('gamewisp-subscribe');
 
         if (enabled) {
-          if (!_self.enable_badges) {
-            _self.socket.connect();
+          if (!this.enable_badges) {
+            this.socket.connect();
 
-            for (var i = 0; i < _self.channels.length; i++) {
-              var channel = _self.channels[i];
-              _self.socket.joinRoom(channel);
+            for (let i = 0; i < this.channels.length; i++) {
+              let channel = this.channels[i];
+              this.socket.joinRoom(channel);
             }
           }
         } else {
-          for (var username in _self.subs) {
-            _self.subs[username].unload();
+          for (let username in this.subs) {
+            this.subs[username].unload();
           }
 
-          if (!_self.enable_badges) {
-            _self.subs = {};
+          if (!this.enable_badges) {
+            this.subs = {};
 
-            _self.socket.disconnectInternal();
+            this.socket.disconnectInternal();
           }
         }
       }
@@ -78,8 +76,8 @@ class GameWisp extends Addon {
       category: 'FFZ Add-On Pack',
       name: '[GameWisp] Enable Subscribe Button',
       help: 'Enable this to show the GameWisp subscribe / visit channel button.',
-      on_update: function (enabled) {
-        _self.enable_sub_button = enabled;
+      on_update: (enabled) => {
+        this.enable_sub_button = enabled;
         api.update_metadata('gamewisp-subscribe');
       }
     };
@@ -90,33 +88,31 @@ class GameWisp extends Addon {
       category: 'FFZ Add-On Pack',
       name: '[GameWisp] Enable Badges',
       help: 'Enable this to show GameWisp subscriber badges.',
-      on_update: function (enabled) {
-        _self.enable_badges = enabled;
-
-        var username;
+      on_update: (enabled) => {
+        this.enable_badges = enabled;
 
         if (enabled) {
-          if (!_self.enable_emoticons) {
-            _self.socket.connect();
+          if (!this.enable_emoticons) {
+            this.socket.connect();
 
-            for (var i = 0; i < _self.channels.length; i++) {
-              var channel = _self.channels[i];
-              _self.socket.joinRoom(channel);
+            for (let i = 0; i < this.channels.length; i++) {
+              let channel = this.channels[i];
+              this.socket.joinRoom(channel);
             }
           } else {
-            for (username in _self.subs) {
-              _self.subs[username].reloadBadges();
+            for (let username in this.subs) {
+              this.subs[username].reloadBadges();
             }
           }
         } else {
-          for (username in _self.subs) {
-            _self.subs[username].reloadBadges();
+          for (let username in this.subs) {
+            this.subs[username].reloadBadges();
           }
 
-          if (!_self.enable_emoticons) {
-            _self.subs = {};
+          if (!this.enable_emoticons) {
+            this.subs = {};
 
-            _self.socket.disconnectInternal();
+            this.socket.disconnectInternal();
           }
         }
       }
@@ -128,17 +124,17 @@ class GameWisp extends Addon {
       category: 'FFZ Add-On Pack',
       name: '[GameWisp] Override Twitch Sub Badges',
       help: 'When enabled, GameWisp subscriber badges override the Twitch subscriber badges.',
-      on_update: function (enabled) {
-        _self.badges_override_twitch = enabled;
+      on_update: (enabled) => {
+        this.badges_override_twitch = enabled;
 
-        if (_self.enable_badges) {
-          for (var badge in _self.badges) {
-            _self.badges[badge].ffz_data.replaces = enabled ? 'subscriber' : undefined;
+        if (this.enable_badges) {
+          for (let badge in this.badges) {
+            this.badges[badge].ffz_data.replaces = enabled ? 'subscriber' : undefined;
           }
 
-          for (var username in _self.subs) {
-            _self.debug(username);
-            _self.subs[username].reloadBadges();
+          for (let username in this.subs) {
+            this.debug(username);
+            this.subs[username].reloadBadges();
           }
         }
       }
@@ -158,7 +154,7 @@ class GameWisp extends Addon {
   preInit () {
     super.preInit();
 
-    var msgpack = document.createElement('script');
+    let msgpack = document.createElement('script');
     msgpack.type = 'text/javascript';
     msgpack.src = 'https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js';
     document.head.appendChild(msgpack);
@@ -169,14 +165,12 @@ class GameWisp extends Addon {
 
     this.updateGlobals();
 
-    var _self = this;
-
     this.socket = new GameWisp.Socket(this, this.getSocketEvents());
     if (this.enable_emoticons || this.enable_badges) {
       this.socket.connect();
     }
 
-    var metadata = {
+    let metadata = {
       subscribe: {
         refresh: false,
         order: 97,
@@ -184,15 +178,15 @@ class GameWisp extends Addon {
         button: true,
 
         static_label: '<img src="https://cdn.lordmau5.com/ffz-ap/gamewisp/icon_16x.png"/>',
-        label: function (view, channel, isHosting) {
-          if (!_self.isEnabled() || !_self.enable_sub_button) {
+        label: (view, channel, isHosting) => {
+          if (!this.isEnabled() || !this.enable_sub_button) {
             return '';
           }
 
-          var label = '';
-          var id = channel.get('id');
-          if (_self.subbed_to[id]) {
-            label = _self.subbed_to[id].subbed ? 'Visit Channel' : 'Subscribe';
+          let label = '';
+          let id = channel.get('id');
+          if (this.subbed_to[id]) {
+            label = this.subbed_to[id].subbed ? 'Visit Channel' : 'Subscribe';
 
             if (ffz.get_user() && ffz.get_user().login === id) {
               label = 'Visit Channel';
@@ -202,8 +196,8 @@ class GameWisp extends Addon {
           return label;
         },
 
-        disabled: function (view, channel, isHosting) {
-          if (!_self.isEnabled() || !_self.enable_sub_button) {
+        disabled: (view, channel, isHosting) => {
+          if (!this.isEnabled() || !this.enable_sub_button) {
             return true;
           }
 
@@ -211,17 +205,17 @@ class GameWisp extends Addon {
 
           // var id = channel.get('id');
           // return GameWisp.vars.subbed_to[id];
-          return !_self.isEnabled() || !_self.enable_sub_button;
+          return !this.isEnabled() || !this.enable_sub_button;
         },
 
-        click: function (event, button, view, channel, isHosting) {
-          if (!_self.isEnabled()) {
+        click: (event, button, view, channel, isHosting) => {
+          if (!this.isEnabled()) {
             return;
           }
 
-          var id = channel.get('id');
-          if (_self.subbed_to[id]) {
-            window.open(_self.subbed_to[id].gwData.url, '_blank');
+          let id = channel.get('id');
+          if (this.subbed_to[id]) {
+            window.open(this.subbed_to[id].gwData.url, '_blank');
           }
         }
       }
@@ -249,7 +243,7 @@ class GameWisp extends Addon {
   roomRemove (roomId) {
     super.roomRemove(roomId);
 
-    var index = this.channels.indexOf(roomId);
+    let index = this.channels.indexOf(roomId);
     if (index !== -1) {
       this.channels.splice(index);
     }
@@ -270,17 +264,14 @@ class GameWisp extends Addon {
       return;
     }
 
-    var params = {
-      limit: 50
-    };
-    $.getJSON('https://api.gamewisp.com/pub/v1/emote/global', params, function (json) {
-      var emotes = [];
+    $.getJSON('https://api.gamewisp.com/pub/v1/emote/global', { limit: 50 }, (json) => {
+      let emotes = [];
 
-      var _emotes = json.data;
-      for (var i = 0; i < _emotes.length; i++) {
-        var _emote = _emotes[i];
+      let _emotes = json.data;
+      for (let i = 0; i < _emotes.length; i++) {
+        let _emote = _emotes[i];
 
-        var emote = {
+        let emote = {
           urls: {
             1: _emote.image_asset.data.content.small,
             2: _emote.image_asset.data.content.medium,
@@ -296,7 +287,7 @@ class GameWisp extends Addon {
         emotes.push(emote);
       }
 
-      var set = {
+      let set = {
         emoticons: emotes,
         title: 'Global Emoticons',
         source: 'GameWisp',
@@ -314,7 +305,7 @@ class GameWisp extends Addon {
       return this.emotes[id];
     }
 
-    var baseUrl = url.replace(/(\d*)x(\d*)\.png/, '');
+    let baseUrl = url.replace(/(\d*)x(\d*)\.png/, '');
     this.emotes[id] = {
       urls: {
         1: url,
@@ -350,7 +341,7 @@ class GameWisp extends Addon {
       return;
     }
 
-    var baseUrl = url.replace(/(\d*)x(\d*)\.png/, '');
+    let baseUrl = url.replace(/(\d*)x(\d*)\.png/, '');
     this.badges[id] = {
       twitch_channel: twitchChannel,
       gw_channel: gwChannel,
@@ -378,51 +369,47 @@ class GameWisp extends Addon {
   getSocketEvents () {
     this.extDebug('getSocketEvents');
 
-    var _self = this;
-
     return {
-      initialize_room: function (data) {
-        _self.debug('Initializing room! (Room: ' + data.room + ')', data);
+      initialize_room: (data) => {
+        this.debug('Initializing room! (Room: ' + data.room + ')', data);
 
         if (data.gameWispChannel && data.gameWispChannel.isLaunched) {
-          _self.subbed_to[data.room] = {
+          this.subbed_to[data.room] = {
             subbed: data.isGameWispSub,
             gwData: data.gameWispChannel
           };
         }
 
-        var i;
         if (data.emotes) {
-          for (i = 0; i < data.emotes.length; i++) {
-            var _emote = data.emotes[i];
+          for (let i = 0; i < data.emotes.length; i++) {
+            let _emote = data.emotes[i];
             if (!_emote.name) {
-              _self.addEmote(_emote.id, _emote.code, _emote.twitch_channel, _emote.channel, _emote.url);
+              this.addEmote(_emote.id, _emote.code, _emote.twitch_channel, _emote.channel, _emote.url);
             }
           }
         }
 
         if (data.badges) {
-          for (i = 0; i < data.badges.length; i++) {
-            var _badge = data.badges[i];
+          for (let i = 0; i < data.badges.length; i++) {
+            let _badge = data.badges[i];
 
             // ID, Channel, Tier data, URL
-            _self.addBadge(_badge.id, _badge.twitch_channel, _badge.channel, _badge.name || _badge.code, _badge.tier, _badge.url);
+            this.addBadge(_badge.id, _badge.twitch_channel, _badge.channel, _badge.name || _badge.code, _badge.tier, _badge.url);
           }
         }
 
-        var users = data.userStore;
-        var username;
+        let users = data.userStore;
 
         if (users) {
-          for (username in users) {
+          for (let username in users) {
             if (users.hasOwnProperty(username)) {
-              var _emoteIds = users[username];
+              let _emoteIds = users[username];
               if (_emoteIds.length > 0) {
-                if (_self.subs[username]) {
-                  _self.subs[username].emote_ids = _emoteIds;
-                  _self.subs[username].loadEmotes();
+                if (this.subs[username]) {
+                  this.subs[username].emote_ids = _emoteIds;
+                  this.subs[username].loadEmotes();
                 } else {
-                  _self.subs[username] = new GameWisp.Sub(_self, username, _emoteIds, null);
+                  this.subs[username] = new GameWisp.Sub(this, username, _emoteIds, null);
                 }
               }
             }
@@ -431,14 +418,14 @@ class GameWisp extends Addon {
 
         users = data.userStoreBadges;
         if (users) {
-          for (username in users) {
+          for (let username in users) {
             if (users.hasOwnProperty(username)) {
-              var badge = users[username];
-              if (_self.subs[username]) {
-                _self.subs[username].addUserBadge(badge);
-                _self.subs[username].reloadBadges();
+              let badge = users[username];
+              if (this.subs[username]) {
+                this.subs[username].addUserBadge(badge);
+                this.subs[username].reloadBadges();
               } else {
-                _self.subs[username] = new GameWisp.Sub(_self, username, null, badge);
+                this.subs[username] = new GameWisp.Sub(this, username, null, badge);
               }
             }
           }
@@ -446,33 +433,32 @@ class GameWisp extends Addon {
 
         api.update_metadata('gamewisp-subscribe');
       },
-      update_room: function (data) {
-        _self.debug('Updating room! (User: ' + data.user.name + ', Room: ' + data.room + ')', data);
+      update_room: (data) => {
+        this.debug('Updating room! (User: ' + data.user.name + ', Room: ' + data.room + ')', data);
 
-        var i;
         if (data.emotes) {
-          for (i = 0; i < data.emotes.length; i++) {
+          for (let i = 0; i < data.emotes.length; i++) {
             var _emote = data.emotes[i];
             if (!_emote.name) {
-              _self.addEmote(_emote.id, _emote.code, _emote.twitch_channel, _emote.channel, _emote.url);
+              this.addEmote(_emote.id, _emote.code, _emote.twitch_channel, _emote.channel, _emote.url);
             }
           }
         }
 
-        var user = data.user;
+        let user = data.user;
 
         if (user && user.emoteIDs && user.emoteIDs.length > 0) {
-          var _emoteIds = user.emoteIDs;
-          if (_self.subs[user.name]) {
-            _self.subs[user.name].emote_ids = _emoteIds;
-            _self.subs[user.name].loadEmotes();
+          let _emoteIds = user.emoteIDs;
+          if (this.subs[user.name]) {
+            this.subs[user.name].emote_ids = _emoteIds;
+            this.subs[user.name].loadEmotes();
           } else {
-            _self.subs[user.name] = new GameWisp.Sub(_self, user.name, _emoteIds, null);
+            this.subs[user.name] = new GameWisp.Sub(this, user.name, _emoteIds, null);
           }
         }
       },
-      leave_room: function (data) {
-        _self.debug('Leaving room! (User: ' + data.user + ', Room: ' + data.room + ')', data);
+      leave_room: (data) => {
+        this.debug('Leaving room! (User: ' + data.user + ', Room: ' + data.room + ')', data);
       }
     };
   }
@@ -511,8 +497,8 @@ GameWisp.Sub = class {
       return;
     }
 
-    for (var i = 0; i < this.emote_ids.length; i++) {
-      var emote = this._gw.getEmote(this.emote_ids[i]);
+    for (let i = 0; i < this.emote_ids.length; i++) {
+      let emote = this._gw.getEmote(this.emote_ids[i]);
       if (emote) {
         if (!this.emotes[emote.gw_channel]) {
           this.emotes[emote.gw_channel] = [];
@@ -525,29 +511,29 @@ GameWisp.Sub = class {
       return;
     }
 
-    for (var k in this.emotes) {
-      if (this.emotes.hasOwnProperty(k)) {
-        var emotes = this.emotes[k];
+    for (let i in this.emotes) {
+      if (this.emotes.hasOwnProperty(i)) {
+        let emotes = this.emotes[i];
 
         if (!this._emote_sets) {
           this._emote_sets = [];
         }
 
-        this._emote_sets[k] = {
+        this._emote_sets[i] = {
           emoticons: emotes,
-          title: k,
+          title: i,
           source: 'GameWisp',
           icon: 'https://cdn.lordmau5.com/ffz-ap/gamewisp/icon_16x.png',
           sort: 50,
           has_prefix: 2,
-          _set_name: this._id_emotes + '-' + k
+          _set_name: this._id_emotes + '-' + i
         };
 
         if (emotes.length) {
-          api.load_set(this._emote_sets[k]._set_name, this._emote_sets[k]);
-          api.user_add_set(this.username, this._emote_sets[k]._set_name);
+          api.load_set(this._emote_sets[i]._set_name, this._emote_sets[i]);
+          api.user_add_set(this.username, this._emote_sets[i]._set_name);
         } else {
-          api.unload_set(this._emote_sets[k]._set_name);
+          api.unload_set(this._emote_sets[i]._set_name);
         }
       }
     }
@@ -558,9 +544,9 @@ GameWisp.Sub = class {
       return;
     }
 
-    for (var i = 0; i < this.badges.length; i++) {
-      var id = this.badges[i];
-      var badge = this._gw.getBadge(id);
+    for (let i = 0; i < this.badges.length; i++) {
+      let id = this.badges[i];
+      let badge = this._gw.getBadge(id);
       if (this._gw.enable_badges) {
         api.room_remove_user_badge(badge.twitch_channel, this.username, this._gw.badges_override_twitch ? 11 : 10);
         api.room_add_user_badge(badge.twitch_channel, this.username, this._gw.badges_override_twitch ? 10 : 11, badge.ffz_data);
@@ -578,7 +564,7 @@ GameWisp.Sub = class {
   unload () {
     this._gw.debug('Unloading user! (User: ' + this.username + ')');
 
-    for (var i = 0; i < this.channels.length; i++) {
+    for (let i = 0; i < this.channels.length; i++) {
       api.unload_set(this._id_emotes + '-' + this.channels[i]);
       api.room_remove_user_badge(this.channels[i], this.username, this._gw.badges_override_twitch ? 10 : 11);
     }
@@ -610,72 +596,69 @@ GameWisp.Socket = class {
 
     this._gw.log('Socket: Connecting to socket server...');
 
-    var _self = this;
     this.socket = new WebSocket('wss://emotes.gamewisp.com/');
     this.socket.binaryType = 'arraybuffer';
 
     this._joined_channels = [];
 
-    this.socket.onopen = function () {
-      _self._gw.log('Socket: Connected to socket server.');
+    this.socket.onopen = () => {
+      this._gw.log('Socket: Connected to socket server.');
 
-      _self._connected = true;
-      _self._connect_attempts = 1;
+      this._connected = true;
+      this._connect_attempts = 1;
 
-      if (_self._connection_buffer.length > 0) {
-        var i = _self._connection_buffer.length;
+      if (this._connection_buffer.length > 0) {
+        let i = this._connection_buffer.length;
         while (i--) {
-          var channel = _self._connection_buffer[i];
-          _self.joinRoom(channel);
+          let channel = this._connection_buffer[i];
+          this.joinRoom(channel);
         }
-        _self._connection_buffer = [];
+        this._connection_buffer = [];
       }
 
-      if (_self.reconnecting) {
-        _self.reconnecting = false;
+      if (this.reconnecting) {
+        this.reconnecting = false;
         api.iterate_rooms();
       }
     };
 
-    this.socket.onerror = function () {
-      _self._gw.log('Socket: Error from socket server.');
+    this.socket.onerror = () => {
+      this._gw.log('Socket: Error from socket server.');
 
-      if (_self._connecting) {
-        _self.reconnecting = false;
+      if (this._connecting) {
+        this.reconnecting = false;
       }
 
-      _self._connect_attempts++;
-      _self.reconnect();
+      this._connect_attempts++;
+      this.reconnect();
     };
 
-    this.socket.onclose = function () {
-      if (!_self._connected || !_self.socket) {
+    this.socket.onclose = () => {
+      if (!this._connected || !this.socket) {
         return;
       }
 
-      _self._gw.log('Socket: Lost connection to socket server...');
+      this._gw.log('Socket: Lost connection to socket server...');
 
-      _self._connect_attempts++;
-      _self.reconnect();
+      this._connect_attempts++;
+      this.reconnect();
     };
 
-    this.socket.onmessage = function (message) {
+    this.socket.onmessage = (message) => {
       message = msgpack.decode(new Uint8Array(message.data));
       var evt = message.name;
 
-      if (!evt || !(_self._events[evt])) {
+      if (!evt || !(this._events[evt])) {
         return;
       }
 
-      _self._gw.debug('Socket: Received event', evt);
+      this._gw.debug('Socket: Received event', evt);
 
-      _self._events[evt](message.data);
+      this._events[evt](message.data);
     };
   }
 
   reconnect () {
-    var _self = this;
-
     this.disconnect();
 
     if (this.reconnecting) {
@@ -685,9 +668,9 @@ GameWisp.Socket = class {
 
     this._gw.log('Socket: Trying to reconnect to socket server...');
 
-    setTimeout(function () {
-      _self.reconnecting = true;
-      _self.connect();
+    setTimeout(() => {
+      this.reconnecting = true;
+      this.connect();
     }, Math.random() * (Math.pow(2, this._connect_attempts) - 1) * 10000);
   }
 
@@ -772,4 +755,4 @@ GameWisp.Socket = class {
   }
 };
 
-new GameWisp(); // eslint-disable-line
+// new GameWisp(); // eslint-disable-line

@@ -34,18 +34,16 @@ class BTTV extends Addon {
       return;
     }
 
-    var _self = this;
-
     FrankerFaceZ.settings_info.bttv_global_emotes = {
       type: 'boolean',
       value: this.global_emotes,
       category: 'FFZ Add-On Pack',
       name: '[BTTV] Global Emoticons',
       help: 'Enable this to show global emoticons.',
-      on_update: function (enabled) {
-        _self.global_emotes = enabled;
+      on_update: (enabled) => {
+        this.global_emotes = enabled;
 
-        _self.updateGlobalEmotes();
+        this.updateGlobalEmotes();
       },
       no_bttv: true
     };
@@ -62,10 +60,10 @@ class BTTV extends Addon {
         2: 'Animated Images'
       },
       process_value: FrankerFaceZ.utils.process_int(1, 1, 2),
-      on_update: function (val) {
-        _self.gif_emotes = val;
+      on_update: (val) => {
+        this.gif_emotes = val;
 
-        _self.updateGlobalEmotes();
+        this.updateGlobalEmotes();
         api.iterate_rooms();
       },
       no_bttv: true
@@ -77,10 +75,10 @@ class BTTV extends Addon {
       category: 'FFZ Add-On Pack',
       name: '[BTTV] Enable Override Emoticons',
       help: 'Enable this to show override emoticons (like D:).',
-      on_update: function (enabled) {
-        _self.override_emotes_enabled = enabled;
+      on_update: (enabled) => {
+        this.override_emotes_enabled = enabled;
 
-        _self.updateGlobalEmotes();
+        this.updateGlobalEmotes();
       },
       no_bttv: true
     };
@@ -91,23 +89,23 @@ class BTTV extends Addon {
       category: 'FFZ Add-On Pack',
       name: '[BTTV] Enable Pro Emoticons',
       help: 'Enable this to show Pro emoticons from yourself or other users.',
-      on_update: function (enabled) {
-        _self.pro_emotes = enabled;
+      on_update: (enabled) => {
+        this.pro_emotes = enabled;
 
         if (enabled) {
-          _self.socket.connect();
+          this.socket.connect();
 
-          for (var i = 0; i < _self.channels.length; i++) {
-            var channel = _self.channels[i];
-            _self.roomAdd(channel);
+          for (let i = 0; i < this.channels.length; i++) {
+            let channel = this.channels[i];
+            this.roomAdd(channel);
           }
         } else {
-          for (var key in _self.ProUsers) {
-            _self.ProUsers[key].unload();
+          for (let key in this.ProUsers) {
+            this.ProUsers[key].unload();
           }
-          _self.ProUsers = {};
+          this.ProUsers = {};
 
-          _self.socket.disconnectInternal();
+          this.socket.disconnectInternal();
         }
       },
       no_bttv: true
@@ -119,8 +117,8 @@ class BTTV extends Addon {
       category: 'FFZ Add-On Pack',
       name: '[BTTV] Enable Channel Emoticons',
       help: 'Enable this to show per-channel emoticons.',
-      on_update: function (enabled) {
-        _self.channel_emotes = enabled;
+      on_update: (enabled) => {
+        this.channel_emotes = enabled;
 
         api.iterate_rooms();
       },
@@ -133,13 +131,13 @@ class BTTV extends Addon {
       category: 'FFZ Add-On Pack',
       name: '[BTTV] Show emoticons in Emoticon Menu',
       help: 'Enable this to show the emoticons in the Emoticon Menu (you can still enter the emoticons manually when this is disabled)',
-      on_update: function (enabled) {
-        _self.show_emotes_in_menu = enabled;
+      on_update: (enabled) => {
+        this.show_emotes_in_menu = enabled;
 
         api.emote_sets['BTTV-Global'].hidden = !enabled;
 
-        for (var name in _self.channels) {
-          var channel = _self.channels[name];
+        for (let name in this.channels) {
+          let channel = this.channels[name];
           api.emote_sets[channel.set_id].hidden = !enabled;
         }
       },
@@ -159,7 +157,7 @@ class BTTV extends Addon {
   }
 
   notifyUser () {
-    var shown = localStorage.ffz_ap_warning_bttv;
+    let shown = localStorage.ffz_ap_warning_bttv;
     if (shown !== 'true') {
       localStorage.ffz_ap_warning_bttv = 'true';
       showMessage('You appear to have BTTV installed. FFZ:AP has a BTTV module that handles emotes as well, so BTTV is not necessary. To ensure best compatibility, consider removing BTTV.');
@@ -231,7 +229,7 @@ class BTTV extends Addon {
     this.notifyUser();
 
     if (this.pro_emotes) {
-      for (var key in this.ProUsers) {
+      for (let key in this.ProUsers) {
         this.ProUsers[key].unload();
       }
       this.ProUsers = {};
@@ -252,15 +250,13 @@ class BTTV extends Addon {
   addBadges (attempts) {
     this.extDebug('addBadges', attempts);
 
-    var _self = this;
-
     $.getJSON('https://api.betterttv.net/2/badges')
-    .done(function (data) {
-      var types = [];
-      var _types = data.types;
-      var _users = data.badges;
+    .done((data) => {
+      let types = [];
+      let _types = data.types;
+      let _users = data.badges;
 
-      var badgeBase = {
+      let badgeBase = {
         id: 'bttv',
         image: 'https://cdn.betterttv.net/assets/icons/badge-dev.svg',
         title: 'BetterTTV',
@@ -268,11 +264,11 @@ class BTTV extends Addon {
       };
       api.add_badge('bttv', badgeBase);
 
-      var i = _types.length;
+      let i = _types.length;
       while (i--) {
-        var _type = _types[i];
+        let _type = _types[i];
 
-        var type = $.extend({}, badgeBase);
+        let type = $.extend({}, badgeBase);
         type.name = 'bttv-' + _type.name;
         type.title = _type.description;
         type.image = _type.svg;
@@ -282,30 +278,28 @@ class BTTV extends Addon {
 
       i = _users.length;
       while (i--) {
-        var _user = _users[i];
+        let _user = _users[i];
 
         if (types[_user.type]) {
-          _self.debug('Adding badge "' + types[_user.type].name + '" for user "' + _user.name + '".');
+          this.debug('Adding badge "' + types[_user.type].name + '" for user "' + _user.name + '".');
           api.user_add_badge(_user.name, 21, types[_user.type]);
         }
       }
-    }).fail(function (data) {
+    }).fail((data) => {
       if (data.status === 404) {
         return;
       }
 
       attempts = (attempts || 0) + 1;
       if (attempts < 12) {
-        _self.log('Failed to fetch badges. Trying again in 5 seconds.');
-        return setTimeout(_self.addBadges.bind(_self, attempts), 5000);
+        this.log('Failed to fetch badges. Trying again in 5 seconds.');
+        return setTimeout(this.addBadges.bind(this, attempts), 5000);
       }
     });
   }
 
   updateGlobalEmotes (attempts) {
     this.extDebug('updateGlobalEmotes', attempts);
-
-    var _self = this;
 
     this.global_emotes_loaded = false;
     api.unregister_global_set('BTTV-Global');
@@ -315,22 +309,22 @@ class BTTV extends Addon {
     }
 
     $.getJSON('https://api.betterttv.net/emotes')
-    .done(function (data) {
-      var globalBttv = [];
-      var overrideEmotes = [];
-      var nightSubEmotes = [];
+    .done((data) => {
+      let globalBttv = [];
+      let overrideEmotes = [];
+      let nightSubEmotes = [];
 
-      var _emotes = data.emotes;
+      let _emotes = data.emotes;
 
-      var i = _emotes.length;
+      let i = _emotes.length;
       while (i--) {
-        var requireSpaces = /[^A-Za-z0-9]/.test(_emotes[i].regex);
+        let requireSpaces = /[^A-Za-z0-9]/.test(_emotes[i].regex);
 
-        var _emote = _emotes[i];
-        var match = /cdn.betterttv.net\/emote\/(\w+)/.exec(_emote.url);
-        var id = match && match[1];
+        let _emote = _emotes[i];
+        let match = /cdn.betterttv.net\/emote\/(\w+)/.exec(_emote.url);
+        let id = match && match[1];
 
-        var emote = {
+        let emote = {
           urls: {
             1: _emote.url
           },
@@ -349,13 +343,13 @@ class BTTV extends Addon {
           };
         }
 
-        if (_self.isOverrideEmote(_emote.regex)) {
+        if (this.isOverrideEmote(_emote.regex)) {
           overrideEmotes.push(emote);
         } else {
           if (_emote.imageType === 'gif') { // If the emote is a GIF
-            if (_self.gif_emotes === 0) { // If the GIF setting is set to "Disabled", ignore it.
+            if (this.gif_emotes === 0) { // If the GIF setting is set to "Disabled", ignore it.
               continue;
-            } else if (_self.gif_emotes === 1) { // If the GIF setting is set to "Static", route them through the cache.
+            } else if (this.gif_emotes === 1) { // If the GIF setting is set to "Static", route them through the cache.
               emote.urls[1] = 'https://cache.ffzap.download/' + emote.urls[1];
               if (id) {
                 emote.urls[2] = 'https://cache.ffzap.download/' + emote.urls[2];
@@ -372,7 +366,7 @@ class BTTV extends Addon {
         }
       }
 
-      var set;
+      let set;
       if (nightSubEmotes.length > 0) {
         set = {
           emoticons: nightSubEmotes,
@@ -385,13 +379,13 @@ class BTTV extends Addon {
         api.load_set('BTTV-Night-Sub', set);
       }
 
-      var emotes = [];
+      let emotes = [];
 
-      if (_self.global_emotes) {
+      if (this.global_emotes) {
         emotes = emotes.concat(globalBttv);
       }
 
-      if (_self.override_emotes_enabled) {
+      if (this.override_emotes_enabled) {
         emotes = emotes.concat(overrideEmotes);
       }
 
@@ -407,26 +401,24 @@ class BTTV extends Addon {
         sort: 101
       };
       api.register_global_set('BTTV-Global', set);
-      api.emote_sets['BTTV-Global'].hidden = !_self.show_emotes_in_menu;
+      api.emote_sets['BTTV-Global'].hidden = !this.show_emotes_in_menu;
 
-      _self.global_emotes_loaded = true;
-    }).fail(function (data) {
+      this.global_emotes_loaded = true;
+    }).fail((data) => {
       if (data.status === 404) {
         return;
       }
 
       attempts = (attempts || 0) + 1;
       if (attempts < 12) {
-        _self.log('Failed to fetch global emotes. Trying again in 5 seconds.');
-        return setTimeout(_self.updateGlobalEmotes.bind(_self, attempts), 5000);
+        this.log('Failed to fetch global emotes. Trying again in 5 seconds.');
+        return setTimeout(this.updateGlobalEmotes.bind(this, attempts), 5000);
       }
     });
   }
 
   updateChannel (roomId, attempts) {
     this.extDebug('updateChannel', [roomId, attempts]);
-
-    var _self = this;
 
     if (this.pro_emotes) {
       this.socket.joinChannel(roomId);
@@ -437,18 +429,18 @@ class BTTV extends Addon {
     }
 
     $.getJSON('https://api.betterttv.net/2/channels/' + roomId)
-    .done(function (data) {
-      var channelBttv = [];
-      var emotes = data.emotes;
+    .done((data) => {
+      let channelBttv = [];
+      let emotes = data.emotes;
 
-      var i = emotes.length;
+      let i = emotes.length;
       while (i--) {
-        var requireSpaces = /[^A-Za-z0-9]/.test(emotes[i].code);
+        let requireSpaces = /[^A-Za-z0-9]/.test(emotes[i].code);
 
-        var _emote = emotes[i];
-        var id = _emote.id;
+        let _emote = emotes[i];
+        let id = _emote.id;
 
-        var emote = {
+        let emote = {
           urls: {
             1: 'https://cdn.betterttv.net/emote/' + id + '/1x',
             2: 'https://cdn.betterttv.net/emote/' + id + '/2x',
@@ -466,7 +458,7 @@ class BTTV extends Addon {
         };
 
         if (_emote.imageType === 'gif') {
-          switch (_self.gif_emotes) {
+          switch (this.gif_emotes) {
             case 0:
               continue;
             case 1:
@@ -488,30 +480,30 @@ class BTTV extends Addon {
         return;
       }
 
-      _self.channels[roomId] = {
+      this.channels[roomId] = {
         set_id: 'BTTV-Channel-' + roomId
       };
 
-      var set = {
+      let set = {
         emoticons: channelBttv,
         title: 'Channel Emoticons',
         source: 'BetterTTV',
         icon: 'https://cdn.betterttv.net/tags/developer.png'
       };
 
-      if (channelBttv.length && _self.channel_emotes) {
-        api.register_room_set(roomId, _self.channels[roomId].set_id, set); // Load normal emotes
-        api.emote_sets[_self.channels[roomId].set_id].hidden = !_self.show_emotes_in_menu;
+      if (channelBttv.length && this.channel_emotes) {
+        api.register_room_set(roomId, this.channels[roomId].set_id, set); // Load normal emotes
+        api.emote_sets[this.channels[roomId].set_id].hidden = !this.show_emotes_in_menu;
       }
-    }).fail(function (data) {
+    }).fail((data) => {
       if (data.status === 404) {
         return;
       }
 
       attempts = (attempts || 0) + 1;
       if (attempts < 12) {
-        _self.log('Failed to fetch channel emotes. Trying again in 5 seconds.');
-        return setTimeout(_self.updateChannel.bind(_self, roomId, attempts), 5000);
+        this.log('Failed to fetch channel emotes. Trying again in 5 seconds.');
+        return setTimeout(this.updateChannel.bind(this, roomId, attempts), 5000);
       }
     });
   }
@@ -519,26 +511,24 @@ class BTTV extends Addon {
   getSocketEvents () {
     this.extDebug('getSocketEvents');
 
-    var _self = this;
-
     return {
       lookup_user: function (subscription) {
-        if (!subscription.pro || !_self.pro_emotes) {
+        if (!subscription.pro || !this.pro_emotes) {
           return;
         }
 
         if (subscription.pro && subscription.emotes) {
-          if (_self.pro_users[subscription.name]) {
-            _self.pro_users[subscription.name].emotes_array = subscription.emotes;
-            _self.pro_users[subscription.name].loadEmotes();
+          if (this.pro_users[subscription.name]) {
+            this.pro_users[subscription.name].emotes_array = subscription.emotes;
+            this.pro_users[subscription.name].loadEmotes();
           } else {
-            _self.pro_users[subscription.name] = new BTTV.ProUser(_self, subscription.name, subscription.emotes);
+            this.pro_users[subscription.name] = new BTTV.ProUser(this, subscription.name, subscription.emotes);
           }
         }
 
         if (subscription.subscribed) { // Night's subs
-          if (!(_self.night_subs[subscription.name])) {
-            _self.night_subs[subscription.name] = true;
+          if (!(this.night_subs[subscription.name])) {
+            this.night_subs[subscription.name] = true;
             api.user_add_set(subscription.name, 'BTTV-Night-Sub');
           }
         }
@@ -566,9 +556,9 @@ BTTV.ProUser = class {
   loadEmotes () {
     this.emotes = [];
 
-    for (var i = 0; i < this.emotesArray.length; i++) {
-      var _emote = this.emotesArray[i];
-      var emote = {
+    for (let i = 0; i < this.emotesArray.length; i++) {
+      let _emote = this.emotesArray[i];
+      let emote = {
         urls: {
           1: 'https://cdn.betterttv.net/emote/' + _emote.id + '/1x',
           2: 'https://cdn.betterttv.net/emote/' + _emote.id + '/2x',
@@ -597,7 +587,7 @@ BTTV.ProUser = class {
       this.emotes.push(emote);
     }
 
-    var set = {
+    let set = {
       emoticons: this.emotes,
       title: 'Personal Emoticons',
       source: 'BetterTTV',
@@ -645,71 +635,68 @@ BTTV.Socket = class {
 
     this._bttv.log('Socket: Connecting to socket server...');
 
-    var _self = this;
     this.socket = new WebSocket('wss://sockets.betterttv.net/ws');
 
-    this.socket.onopen = function () {
-      _self._bttv.log('Socket: Connected to socket server.');
+    this.socket.onopen = () => {
+      this._bttv.log('Socket: Connected to socket server.');
 
-      _self._connected = true;
-      _self._connect_attempts = 1;
+      this._connected = true;
+      this._connect_attempts = 1;
 
-      if (_self._connection_buffer.length > 0) {
-        var i = _self._connection_buffer.length;
+      if (this._connection_buffer.length > 0) {
+        let i = this._connection_buffer.length;
         while (i--) {
-          var channel = _self._connection_buffer[i];
-          _self.joinChannel(channel);
-          _self.broadcastMe(channel);
+          let channel = this._connection_buffer[i];
+          this.joinChannel(channel);
+          this.broadcastMe(channel);
         }
-        _self._connection_buffer = [];
+        this._connection_buffer = [];
       }
 
-      if (_self.reconnecting) {
-        _self.reconnecting = false;
+      if (this.reconnecting) {
+        this.reconnecting = false;
         api.iterate_rooms();
       }
     };
 
-    this.socket.onerror = function () {
-      _self._bttv.log('Socket: Error from socket server.');
+    this.socket.onerror = () => {
+      this._bttv.log('Socket: Error from socket server.');
 
-      _self._connect_attempts++;
-      _self.reconnect();
+      this._connect_attempts++;
+      this.reconnect();
     };
 
-    this.socket.onclose = function () {
-      if (!_self._connected || !_self.socket) {
+    this.socket.onclose = () => {
+      if (!this._connected || !this.socket) {
         return;
       }
 
-      _self._bttv.log('Socket: Lost connection to socket server...');
+      this._bttv.log('Socket: Lost connection to socket server...');
 
-      _self._connect_attempts++;
-      _self.reconnect();
+      this._connect_attempts++;
+      this.reconnect();
     };
 
-    this.socket.onmessage = function (message) {
-      var evt;
+    this.socket.onmessage = (message) => {
+      let evt;
 
       try {
         evt = JSON.parse(message.data);
       } catch (e) {
-        _self._bttv.debug('Socket: Error parsing message', e);
+        this._bttv.debug('Socket: Error parsing message', e);
       }
 
-      if (!evt || !(_self._events[evt.name])) {
+      if (!evt || !(this._events[evt.name])) {
         return;
       }
 
-      _self._bttv.debug('Socket: Received event', evt);
+      this._bttv.debug('Socket: Received event', evt);
 
-      _self._events[evt.name](evt.data);
+      this._events[evt.name](evt.data);
     };
   }
 
   reconnect () {
-    var _self = this;
-
     this.disconnect();
 
     if (this._connecting === false) {
@@ -719,9 +706,9 @@ BTTV.Socket = class {
 
     this._bttv.log('Socket: Trying to reconnect to socket server...');
 
-    setTimeout(function () {
-      _self.reconnecting = true;
-      _self.connect();
+    setTimeout(() => {
+      this.reconnecting = true;
+      this.connect();
     }, Math.random() * (Math.pow(2, this._connect_attempts) - 1) * 10000);
   }
 

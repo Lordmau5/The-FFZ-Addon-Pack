@@ -1,17 +1,17 @@
 /* global fetch, $, FrankerFaceZ */
 
 /** Variable initialization **/
-var addons = [];
-var ffz;
-var api;
+let addons = [];
+let ffz;
+let api;
 
 var version = '3.0.35';
 /** ------------ **/
 
 /** Addon specific methods **/
-var invalidHosts = ['api.', 'tmi.', 'spade.', 'chatdepot.', 'im.', 'api-akamai.'];
-var isInvalidHost = function () {
-  for (var i = 0; i < invalidHosts.length; i++) {
+let invalidHosts = ['api.', 'tmi.', 'spade.', 'chatdepot.', 'im.', 'api-akamai.', 'dev.'];
+let isInvalidHost = () => {
+  for (let i = 0; i < invalidHosts.length; i++) {
     if (window.location.host.indexOf(invalidHosts[i]) !== -1) {
       return true;
     }
@@ -19,7 +19,7 @@ var isInvalidHost = function () {
   return false;
 };
 
-var registerAddon = function (addon) { // eslint-disable-line
+let registerAddon = (addon) => { // eslint-disable-line
   if (isInvalidHost()) {
     return;
   }
@@ -32,62 +32,62 @@ var registerAddon = function (addon) { // eslint-disable-line
   }
 };
 
-var preInit = function () {
-  addons.forEach(function (addon) {
+let preInit = () => {
+  addons.forEach((addon) => {
     addon.preInit();
   });
 };
 
-var doSettings = function () {
-  addons.forEach(function (addon) {
+let doSettings = () => {
+  addons.forEach((addon) => {
     addon.doSettings();
   });
 };
 
-var init = function () {
-  addons.forEach(function (addon) {
+let init = () => {
+  addons.forEach((addon) => {
     addon.init();
   });
 };
 
-var roomAdd = function (roomId) {
-  addons.forEach(function (addon) {
+let roomAdd = (roomId) => {
+  addons.forEach((addon) => {
     addon.roomAdd(roomId);
   });
 };
 
-var roomRemove = function (roomId) {
-  addons.forEach(function (addon) {
+let roomRemove = (roomId) => {
+  addons.forEach((addon) => {
     addon.roomRemove(roomId);
   });
 };
 
-var roomMessage = function (msg) {
-  addons.forEach(function (addon) {
+let roomMessage = (msg) => {
+  addons.forEach((addon) => {
     addon.roomMessage(msg);
   });
 };
 
-var roomHighlightMessage = function (msg) {
-  addons.forEach(function (addon) {
+let roomHighlightMessage = (msg) => {
+  addons.forEach((addon) => {
     addon.roomHighlightMessage(msg);
   });
 };
 
-var chatViewInit = function (dom, ember) {
-  addons.forEach(function (addon) {
+let chatViewInit = (dom, ember) => {
+  addons.forEach((addon) => {
     addon.chatViewInit(dom, ember);
   });
 };
 
-var chatViewDestroy = function (dom, ember) {
-  addons.forEach(function (addon) {
+let chatViewDestroy = (dom, ember) => {
+  addons.forEach((addon) => {
     addon.chatViewDestroy(dom, ember);
   });
 };
 
-var bttvInitialized = function () {
-  addons.forEach(function (addon) {
+let bttvInitialized = () => {
+  addons.forEach((addon) => {
     addon.bttvInitialized();
   });
 };
@@ -96,9 +96,9 @@ var bttvInitialized = function () {
 
 /** API call method **/
 
-var CLIENT_ID = 'osnmdi33550lb0qumxv5p4lslx9ef1o';
+let CLIENT_ID = 'osnmdi33550lb0qumxv5p4lslx9ef1o';
 
-var apiCall = function (url, options) { // eslint-disable-line
+let apiCall = (url, options) => { // eslint-disable-line
   if (url.indexOf('//') === -1) {
     url = 'https://api.twitch.tv' + (url.charAt(0) === '/' ? '' : '/kraken/') + url;
   }
@@ -108,7 +108,7 @@ var apiCall = function (url, options) { // eslint-disable-line
   options.headers.Accept = 'application/vnd.twitchtv.v' + (options.version || 5) + '+json';
   options.headers['Client-ID'] = CLIENT_ID;
 
-  return fetch(url, options).then(function (response) {
+  return fetch(url, options).then((response) => {
     return response.json();
   });
 };
@@ -116,8 +116,8 @@ var apiCall = function (url, options) { // eslint-disable-line
 /** ------------ **/
 
 /** Extension specific methods **/
-var helpers = [];
-var mainBadge = {
+let helpers = [];
+let mainBadge = {
   color: '#FF1493',
   image: 'https://cdn.ffzap.download/badges/badge_18.png',
   name: 'developer',
@@ -129,11 +129,11 @@ var mainBadge = {
     4: 'https://cdn.ffzap.download/badges/badge_72.png'
   }
 };
-var helperBadge;
-var catBagBadge;
-var helperPlus;
+let helperBadge;
+let catBagBadge;
+let helperPlus;
 
-var initHelpers = function () {
+let initHelpers = () => {
   // Developer Badge
   api.add_badge('developer', mainBadge);
   api.user_add_badge('lordmau5', 6, 'developer');
@@ -170,23 +170,22 @@ var initHelpers = function () {
   helpers.push('quantoqt', 'mie_dax', 'trihex', 'getcuckedxddd', 'jugachi', 'techno');
 };
 
-var initSupporters = function () {
-  var host = 'https://cdn.ffzap.download/supporters.json';
+let initSupporters = () => {
+  let host = 'https://cdn.ffzap.download/supporters.json';
 
   tier2MonthlyEmotes();
 
-  fetch(host).then(function (response) {
-    response.json().then(function (json) {
-      var i;
-      for (i = 0; i < json.badges.length; i++) {
-        var badge = json.badges[i];
+  fetch(host).then((response) => {
+    response.json().then((json) => {
+      for (let i = 0; i < json.badges.length; i++) {
+        let badge = json.badges[i];
         api.add_badge(badge.name, badge);
       }
 
-      for (i = 0; i < json.users.length; i++) {
-        var user = json.users[i];
+      for (let i = 0; i < json.users.length; i++) {
+        let user = json.users[i];
 
-        var supporterBadge = {
+        let supporterBadge = {
           id: 'supporter'
         };
 
@@ -213,9 +212,9 @@ var initSupporters = function () {
   });
 };
 
-var tier2MonthlyEmotes = function () {
-  fetch('https://api.frankerfacez.com/v1/set/105031').then(function (response) {
-    response.json().then(function (json) {
+let tier2MonthlyEmotes = () => {
+  fetch('https://api.frankerfacez.com/v1/set/105031').then((response) => {
+    response.json().then((json) => {
       json.set.title = 'Monthly Emote-Vote';
       json.set.source = 'FFZ:AP';
       api.load_set('tier2_monthly', json.set);
@@ -225,7 +224,7 @@ var tier2MonthlyEmotes = function () {
   });
 };
 
-var handleEmoteClicking = function (setId, emoteId) {
+let handleEmoteClicking = (setId, emoteId) => {
   if (setId.startsWith('BTTV')) {
     return 'https://manage.betterttv.net/emotes/' + emoteId;
   } else if (setId.startsWith('GW-Sub')) {
@@ -233,7 +232,7 @@ var handleEmoteClicking = function (setId, emoteId) {
   }
 };
 
-var setupAPIEvents = function () {
+let setupAPIEvents = () => {
   api.on('room-add', roomAdd);
   api.on('room-remove', roomRemove);
   api.on('room-message', roomMessage);
@@ -243,7 +242,7 @@ var setupAPIEvents = function () {
   api.on('bttv-initialized', bttvInitialized);
 };
 
-var setupNoty = function () {
+let setupNoty = () => {
   $('head').append('<style>.ffzap-noty .noty_message {' +
 
     'background-image: url("//cdn.ffzap.download/icon32.png") !important;' +
@@ -257,17 +256,17 @@ var setupNoty = function () {
 
   $.noty.themes.ffzapTheme = {
     name: 'ffzapTheme',
-    style: function () {
+    style: () => {
       this.$bar.removeClass().addClass('noty_bar').addClass('ffzap-noty');
     },
     callback: {
-      onShow: function () {},
-      onClose: function () {}
+      onShow: () => {},
+      onClose: () => {}
     }
   };
 };
 
-var showMessage = function (message) {
+let showMessage = (message) => {
   if (!$.noty || !$.noty.themes.ffzTheme) {
     setTimeout(showMessage.bind(this, message), 50);
     return;
@@ -282,7 +281,7 @@ var showMessage = function (message) {
   }).show();
 };
 
-var notifyUserOfUserScript = function () {
+let notifyUserOfUserScript = () => {
   // var shown = localStorage.ffz_ap_warning_uscript;
   // if (shown !== 'true') {
   //   localStorage.ffz_ap_warning_uscript = 'true';
@@ -291,7 +290,7 @@ var notifyUserOfUserScript = function () {
   // }
 };
 
-var checkExistance = function (attempts) {
+var checkExistance = (attempts) => {
   // Check for invalid host - if it is, don't run the script
   if (isInvalidHost()) {
     return;

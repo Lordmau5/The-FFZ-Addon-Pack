@@ -1,22 +1,22 @@
 // Require Gulp and package.json
-var gulp = require('gulp');
-var pkg = require('./package.json');
+let gulp = require('gulp');
+let pkg = require('./package.json');
 
 // Require plugins
-var concat = require('gulp-concat');
-var wrapper = require('gulp-wrapper');
-var babel = require('gulp-babel');
-var uglify = require('gulp-uglifyjs');
-var connect = require('gulp-connect');
-var gutil = require('gulp-util');
-var dateformat = require('dateformat');
+let concat = require('gulp-concat');
+let wrapper = require('gulp-wrapper');
+let rename = require('gulp-rename');
+let uglify = require('gulp-uglify-es').default;
+let connect = require('gulp-connect');
+let gutil = require('gulp-util');
+let dateformat = require('dateformat');
 
-var devOnError = function (err) {
+let devOnError = (err) => {
   gutil.log(gutil.colors.red('ERROR', 'watch'), err);
   this.emit('end', new gutil.PluginError('watch', err, { showStack: true }));
 };
 
-gulp.task('concat', function () {
+gulp.task('concat', () => {
   return gulp.src(['./src/main.js', './src/addons/_addon.js', './src/**/*.js'])
     .pipe(concat('ffz-ap.js'))
     .pipe(wrapper({
@@ -26,43 +26,37 @@ gulp.task('concat', function () {
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('uglify', ['concat'], function () {
+gulp.task('uglify', ['concat'], () => {
   return gulp.src('./dist/ffz-ap.js')
-    // .pipe(es6transpile({
-    .pipe(babel({
-      presets: ['es2015']
-    }).on('error', devOnError))
-    .pipe(uglify('ffz-ap.min.js', {
-      compress: true,
-      mangle: {
-        toplevel: true,
-        screw_ie8: true
-      }
-    }).on('error', devOnError))
+    .pipe(uglify({
+      toplevel: true,
+      ie8: false
+    }))
+    .pipe(rename('ffz-ap.min.js'))
     .pipe(wrapper({
       header: '/*! ' + pkg.fullName + ' - Built at: ' + dateformat(new Date(), 'mm/dd/yyyy HH:MM:ss') + ' */\n'
     }))
     .pipe(gulp.dest('./dist/'));
 });
 
-var cors = function (req, res, next) {
+let cors = (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', '*');
   next();
 };
 
-gulp.task('server', function () {
+gulp.task('server', () => {
   return connect.server({
     root: 'dist',
     port: 3000,
     https: true,
-    middleware: function () {
+    middleware: () => {
       return [cors];
     }
   });
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', () => {
   return gulp.watch(['./src/main.js', './src/**/*.js'], ['build']);
 });
 
