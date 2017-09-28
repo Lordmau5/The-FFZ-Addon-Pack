@@ -17,6 +17,8 @@ class FFZ extends Addon {
     this.ignore_dc_message = {};
     this.cloak_level = Math.floor(Math.random() * 99) + 1;
 
+    this.remove_spaces_between_emotes = false;
+
     this.registerSelf();
   }
 
@@ -184,6 +186,14 @@ class FFZ extends Addon {
       }
     };
 
+    FrankerFaceZ.settings_info.ffz_remove_spaces_between_emotes = {
+      type: 'boolean',
+      value: this.remove_spaces_between_emotes,
+      category: 'FFZ Add-On Pack',
+      name: '[FFZ:AP] Remove Spaces Between Emotes',
+      help: 'This will remove spaces inbetween emotes when they are right after one another. (e.g. combo emotes)',
+      on_update: (enabled) => {
+        this.remove_spaces_between_emotes = enabled;
       }
     };
 
@@ -194,6 +204,7 @@ class FFZ extends Addon {
     this.highlight_sound_blacklist = ffz.settings.get('ffz_highlight_sound_blacklist');
     this.highlight_sound_file = ffz.settings.get('ffz_highlight_sound_file');
     this.enable_anon_chat = ffz.settings.get('ffz_enable_anon_chat');
+    this.remove_spaces_between_emotes = ffz.settings.get('ffz_remove_spaces_between_emotes');
   }
 
   changeAnonChatUser (_controller, username) {
@@ -372,8 +383,25 @@ class FFZ extends Addon {
     return 'broadcaster' in badges || 'staff' in badges || 'admin' in badges || 'global_mod' in badges || 'moderator' in badges;
   }
 
+  removeSpacesBetweenEmotes (tokens) {
+    let output = [];
+    let lastType;
+
+    for (let i = 0, l = tokens.length; i < l; i++) {
+      let token = tokens[i];
+      // We don't worry about setting last_type because we know the next type is emoticon so it doesn't matter.
+      if (token.type === 'text' && token.text === ' ' && lastType === 'emoticon' && i + 1 < l && tokens[i + 1].type === 'emoticon') continue;
+
+      lastType = token.type;
+      output.push(token);
+    }
+    return output;
+  }
+
   roomMessage (msg) {
     super.roomMessage(msg);
+
+    if (this.remove_spaces_between_emotes) msg.cachedTokens = this.removeSpacesBetweenEmotes(msg.cachedTokens);
 
     if (msg) {
       if (this.ignore_dc_message[msg.room] && msg.message.indexOf('unable to connect to chat') !== -1) {
@@ -413,9 +441,31 @@ class FFZ extends Addon {
         return;
       }
 
-      if (this.highlight_sound.paused) {
-        this.highlight_sound.play();
-      }
+      setTimeout(() => {
+        let notifications = [];
+        try {
+          notifications = JSON.parse(localStorage.getItem('notifications'));
+        } catch (e) {}
+
+        if (!notifications) notifications = [];
+
+        if (notifications.includes(_msg.tags.id)) {
+          return;
+        }
+
+        if (this.highlight_sound.paused) {
+          this.highlight_sound.play();
+          // notifications.push(_msg.tags.id);
+          // localStorage.setItem('notifications', JSON.stringify(notifications));
+          //
+          // setTimeout(() => {
+          //   notifications = jQuery.grep(JSON.parse(localStorage.getItem('notifications')), function (a) {
+          //     return a !== _msg.tags.id;
+          //   });
+          //   localStorage.setItem('notifications', JSON.stringify(notifications));
+          // }, 1000);
+        }
+      }, Math.random() * 50);
     }
   }
 }
