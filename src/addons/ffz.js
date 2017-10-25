@@ -390,7 +390,10 @@ class FFZ extends Addon {
     for (let i = 0, l = tokens.length; i < l; i++) {
       let token = tokens[i];
       // We don't worry about setting last_type because we know the next type is emoticon so it doesn't matter.
-      if (token.type === 'text' && token.text === ' ' && lastType === 'emoticon' && i + 1 < l && tokens[i + 1].type === 'emoticon') continue;
+      if (token.type === 'text' && token.text === ' ' && lastType === 'emoticon' && i + 1 < l && tokens[i + 1].type === 'emoticon') {
+        if (i - 1 >= 0) tokens[i - 1].altText += ' ';
+        continue;
+      }
 
       lastType = token.type;
       output.push(token);

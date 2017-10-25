@@ -30,7 +30,10 @@ gulp.task('uglify', ['concat'], () => {
   return gulp.src('./dist/ffz-ap.js')
     .pipe(uglify({
       toplevel: true,
-      ie8: false
+      ie8: false,
+      mangle: {
+        safari10: true
+      }
     }))
     .pipe(rename('ffz-ap.min.js'))
     .pipe(wrapper({

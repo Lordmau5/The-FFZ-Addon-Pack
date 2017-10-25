@@ -512,7 +512,7 @@ class BTTV extends Addon {
     this.extDebug('getSocketEvents');
 
     return {
-      lookup_user: function (subscription) {
+      lookup_user: (subscription) => {
         if (!subscription.pro || !this.pro_emotes) {
           return;
         }

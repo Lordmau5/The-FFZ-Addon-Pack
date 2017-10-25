@@ -755,4 +755,4 @@ GameWisp.Socket = class {
   }
 };
 
-// new GameWisp(); // eslint-disable-line
+new GameWisp(); // eslint-disable-line
