@@ -5,7 +5,7 @@ let addons = [];
 let ffz;
 let api;
 
-let version = '3.0.38';
+let version = '3.0.39';
 /** ------------ **/
 
 /** Addon specific methods **/
