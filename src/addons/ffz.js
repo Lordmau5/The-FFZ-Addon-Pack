@@ -142,7 +142,7 @@ class FFZ extends Addon {
         }
 
         this.highlight_sound_file = file;
-        this.highlight_sound.src = 'https://cdn.ffzap.download/sounds/' + file;
+        this.highlight_sound.src = 'https://cdn.ffzap.com/sounds/' + file;
         if (this.highlight_sound.paused) {
           this.highlight_sound.play();
         }
@@ -250,7 +250,7 @@ class FFZ extends Addon {
 
     jQuery('head').append('<style type="text/css">a[disabled="disabled"] { pointer-events: none; }</style>');
 
-    this.highlight_sound = new Audio(this.highlight_sound_file === 'custom' ? (localStorage.ffz_ap_custom_highlight_sound) : ('https://cdn.ffzap.download/sounds/' + this.highlight_sound_file));
+    this.highlight_sound = new Audio(this.highlight_sound_file === 'custom' ? (localStorage.ffz_ap_custom_highlight_sound) : ('https://cdn.ffzap.com/sounds/' + this.highlight_sound_file));
     this.highlight_sound.volume = this.highlight_sound_volume / 100;
 
     FrankerFaceZ.chat_commands.viewers = (room, args) => {

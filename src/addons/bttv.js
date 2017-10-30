@@ -350,10 +350,10 @@ class BTTV extends Addon {
             if (this.gif_emotes === 0) { // If the GIF setting is set to "Disabled", ignore it.
               continue;
             } else if (this.gif_emotes === 1) { // If the GIF setting is set to "Static", route them through the cache.
-              emote.urls[1] = 'https://cache.ffzap.download/' + emote.urls[1];
+              emote.urls[1] = 'https://cache.ffzap.com/' + emote.urls[1];
               if (id) {
-                emote.urls[2] = 'https://cache.ffzap.download/' + emote.urls[2];
-                emote.urls[4] = 'https://cache.ffzap.download/' + emote.urls[4];
+                emote.urls[2] = 'https://cache.ffzap.com/' + emote.urls[2];
+                emote.urls[4] = 'https://cache.ffzap.com/' + emote.urls[4];
               }
             }
           }
@@ -462,9 +462,9 @@ class BTTV extends Addon {
             case 0:
               continue;
             case 1:
-              emote.urls[1] = 'https://cache.ffzap.download/' + emote.urls[1];
-              emote.urls[2] = 'https://cache.ffzap.download/' + emote.urls[2];
-              emote.urls[4] = 'https://cache.ffzap.download/' + emote.urls[4];
+              emote.urls[1] = 'https://cache.ffzap.com/' + emote.urls[1];
+              emote.urls[2] = 'https://cache.ffzap.com/' + emote.urls[2];
+              emote.urls[4] = 'https://cache.ffzap.com/' + emote.urls[4];
 
               channelBttv.push(emote);
               break;
@@ -579,9 +579,9 @@ BTTV.ProUser = class {
         if (this._bttv.gif_emotes === 0) { // If the GIF setting is set to "Disabled", ignore it.
           continue;
         } else if (this._bttv.gif_emotes === 1) { // If the GIF setting is set to "Static", route them through the cache.
-          emote.urls[1] = 'https://cache.ffzap.download/' + emote.urls[1];
-          emote.urls[2] = 'https://cache.ffzap.download/' + emote.urls[2];
-          emote.urls[4] = 'https://cache.ffzap.download/' + emote.urls[4];
+          emote.urls[1] = 'https://cache.ffzap.com/' + emote.urls[1];
+          emote.urls[2] = 'https://cache.ffzap.com/' + emote.urls[2];
+          emote.urls[4] = 'https://cache.ffzap.com/' + emote.urls[4];
         }
       }
       this.emotes.push(emote);

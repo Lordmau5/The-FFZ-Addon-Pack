@@ -119,14 +119,14 @@ let apiCall = (url, options) => { // eslint-disable-line
 let helpers = [];
 let mainBadge = {
   color: '#FF1493',
-  image: 'https://cdn.ffzap.download/badges/badge_18.png',
+  image: 'https://cdn.ffzap.com/badges/badge_18.png',
   name: 'developer',
   title: 'FFZ:AP Developer',
-  click_url: 'https://ffzap.download',
+  click_url: 'https://ffzap.com',
   urls: {
-    1: 'https://cdn.ffzap.download/badges/badge_18.png',
-    2: 'https://cdn.ffzap.download/badges/badge_36.png',
-    4: 'https://cdn.ffzap.download/badges/badge_72.png'
+    1: 'https://cdn.ffzap.com/badges/badge_18.png',
+    2: 'https://cdn.ffzap.com/badges/badge_36.png',
+    4: 'https://cdn.ffzap.com/badges/badge_72.png'
   }
 };
 let helperBadge;
@@ -155,11 +155,11 @@ let initHelpers = () => {
   // CatBag Badge, because Wolsk
   catBagBadge = $.extend({}, helperBadge);
   catBagBadge.title = 'FFZ:AP CatBag';
-  catBagBadge.image = 'https://cdn.ffzap.download/badges/catbag_18.png';
+  catBagBadge.image = 'https://cdn.ffzap.com/badges/catbag_18.png';
   catBagBadge.urls = {
-    1: 'https://cdn.ffzap.download/badges/catbag_18.png',
-    2: 'https://cdn.ffzap.download/badges/catbag_36.png',
-    4: 'https://cdn.ffzap.download/badges/catbag_72.png'
+    1: 'https://cdn.ffzap.com/badges/catbag_18.png',
+    2: 'https://cdn.ffzap.com/badges/catbag_36.png',
+    4: 'https://cdn.ffzap.com/badges/catbag_72.png'
   };
   api.user_add_badge('wolsk', 6, catBagBadge);
 
@@ -171,7 +171,7 @@ let initHelpers = () => {
 };
 
 let initSupporters = () => {
-  let host = 'https://cdn.ffzap.download/supporters.json';
+  let host = 'https://cdn.ffzap.com/supporters.json';
 
   tier2MonthlyEmotes();
 
@@ -199,11 +199,11 @@ let initSupporters = () => {
         }
 
         if (user.level >= 3) { // Custom Supporter BdagBadge Support
-          supporterBadge.image = 'https://cdn.ffzap.download/badges/t3/' + user.username + '_18.png';
+          supporterBadge.image = 'https://cdn.ffzap.com/badges/t3/' + user.username + '_18.png';
           supporterBadge.urls = {
-            1: 'https://cdn.ffzap.download/badges/t3/' + user.username + '_18.png',
-            2: 'https://cdn.ffzap.download/badges/t3/' + user.username + '_36.png',
-            4: 'https://cdn.ffzap.download/badges/t3/' + user.username + '_72.png'
+            1: 'https://cdn.ffzap.com/badges/t3/' + user.username + '_18.png',
+            2: 'https://cdn.ffzap.com/badges/t3/' + user.username + '_36.png',
+            4: 'https://cdn.ffzap.com/badges/t3/' + user.username + '_72.png'
           };
         }
         api.user_add_badge(user.username, 6, supporterBadge);
@@ -244,8 +244,7 @@ let setupAPIEvents = () => {
 
 let setupNoty = () => {
   $('head').append('<style>.ffzap-noty .noty_message {' +
-
-    'background-image: url("//cdn.ffzap.download/icon32.png") !important;' +
+    'background-image: url("//cdn.ffzap.com/icon32.png") !important;' +
     'background-repeat: no-repeat !important;' +
     'background-position: 5px 10px !important;' +
     'padding-left: 42px !important;' +
@@ -286,7 +285,7 @@ let notifyUserOfUserScript = () => {
   // if (shown !== 'true') {
   //   localStorage.ffz_ap_warning_uscript = 'true';
   //   showMessage('FFZ:AP has been pulled from the Chrome Webstore and will <strong>NOT</strong> make a comeback. I highly recommend you to switch over to the userscript! -' +
-  //     'Check the <a target="_blank" href="https://ffzap.download/">website</a> to see a video tutorial on how to install it! :)');
+  //     'Check the <a target="_blank" href="https://ffzap.com/">website</a> to see a video tutorial on how to install it! :)');
   // }
 };
 
@@ -304,7 +303,7 @@ var checkExistance = (attempts) => {
     ffz = FrankerFaceZ.get();
 
     // Initialize the API
-    api = ffz.api('FFZ Add-On Pack', 'https://cdn.ffzap.download/badges/badge_18.png', version, 'ffzap');
+    api = ffz.api('FFZ Add-On Pack', 'https://cdn.ffzap.com/badges/badge_18.png', version, 'ffzap');
 
     // Check for BTTV
     if (ffz.has_bttv) {
