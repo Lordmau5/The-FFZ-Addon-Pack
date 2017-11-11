@@ -248,11 +248,6 @@ class FFZ extends Addon {
   init () {
     super.init();
 
-    // Fix Transparent Colored badges for FF
-    if (navigator.userAgent.indexOf('Firefox') > -1) {
-      window.FrankerFaceZ.settings_info.transparent_badges.options[6] = 'Transparent (Colored) (Firefox 53+)';
-    }
-
     jQuery('head').append('<style type="text/css">a[disabled="disabled"] { pointer-events: none; }</style>');
 
     this.highlight_sound = new Audio(this.highlight_sound_file === 'custom' ? (localStorage.ffz_ap_custom_highlight_sound) : ('https://cdn.ffzap.com/sounds/' + this.highlight_sound_file));
