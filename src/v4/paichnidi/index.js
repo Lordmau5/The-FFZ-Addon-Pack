@@ -1,5 +1,7 @@
 /* global $, Addon, api, ffz, FrankerFaceZ, WebSocket, msgpack */
 
+const Addon = require('./_addon');
+
 class GameWisp extends Addon {
   constructor () {
     super('GameWisp');

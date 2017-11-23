@@ -1,3 +1,6 @@
+<details>
+  <summary>Old Readme</summary>  
+
 # The FFZ Add-On Pack
 
 The FrankerFaceZ Add-On Pack, or FFZ Add-On Pack / FFZ:AP for short, is an extension for the already existing popular Twitch extension [FrankerFaceZ](https://www.frankerfacez.com/).
@@ -54,3 +57,29 @@ Make sure to follow the [official FFZ:AP Twitter account](https://www.twitter.co
 **mieDax**: _For the kick-ass logo we got!_  
 **Wolsk**: _For the developer / supporter badge!_  
 **Jugachi**: _For reporting a ton of bugs during the lifespan of BTTV4FFZ, being an early FFZ:AP tester and being an early GameWisp sub emote tester!_
+</details>
+
+# The FFZ Add-On Pack
+
+The FrankerFaceZ Add-On Pack, or FFZ Add-On Pack / FFZ:AP for short, is an extension for the already existing popular Twitch extension [FrankerFaceZ](https://www.frankerfacez.com/).
+
+_This README is currently incomplete due to a whole revamp of the extension in it's core._
+
+## Development
+
+The recommended version of [NodeJS](https://nodejs.org/) is required.  
+`npm install` in the directory will install all necessary modules.  
+`npm run build` will build the specific modules into separate files (`demeter.js` containing all, `demeter-???.js` containing only the specific module)  
+`npm start` will run a development server locally and will re-build the files if changes are detected.  
+Additionally, `localStorage.ffz_ap_debug_mode = true;` needs to be run in the console on a Twitch page for FFZ:AP to try and load the script from the local development server.
+
+## Stay up to date!
+
+Do you want to stay up to date with the newest things happening?  
+Make sure to follow the [official FFZ:AP Twitter account](https://www.twitter.com/FFZ_Addon_Pack) or join the [official Discord server](https://discord.me/ffz-ap).
+
+## Credits
+**mieDax**: _For the kick-ass logo we got!_  
+**Wolsk**: _For the developer / supporter badge!_  
+**Jugachi**: _For reporting a ton of bugs during the lifespan of BTTV4FFZ, being an early FFZ:AP tester and being an early GameWisp sub emote tester!_
+</details>
