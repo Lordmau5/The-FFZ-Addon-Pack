@@ -10,11 +10,11 @@ const config = {
     entry: {
     // FFZ v4
         demeter: './src/v4/index.js',
-        'demeter-kyrios': './src/v4/kyrios/index.js',
-        'demeter-kalytera': './src/v4/kalytera/index.js',
+        'demeter-kyrios': './src/v4/core/index.js',
+        'demeter-kalytera': './src/v4/betterttv/index.js',
 
         // 'demeter-paichnidi': './src/v4/gamewisp/index.js',
-        // 'demeter-syzygos': './src/v4/syzygos/index.js',
+        // 'demeter-syzygos': './src/v4/maiwaifu/index.js',
     },
     output: {
         path: path.resolve(__dirname, 'dist'),

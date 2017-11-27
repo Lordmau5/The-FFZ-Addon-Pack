@@ -1,4 +1,4 @@
-require('./kyrios/index');
-require('./kalytera/index');
-// require('./kyrios/index');
-// require('./kyrios/index');
+require('./core/index');
+require('./betterttv/index');
+// require('./gamewisp/index');
+// require('./maiwafu/index');
