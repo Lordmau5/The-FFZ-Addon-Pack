@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "The FFZ Add-On Pack",
   "short_name": "ffz-ap",
-  "version": "3.1",
+  "version": "3.1.1",
   "description": "A combination of add-ons for the Twitch extension \"FrankerFaceZ\"",
 
   "icons": {
