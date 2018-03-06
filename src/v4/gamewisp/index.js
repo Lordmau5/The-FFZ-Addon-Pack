@@ -23,7 +23,7 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 				component: 'setting-check-box',
 			},
 
-			changed: () => this.updateEmoticons(),
+			changed: () => this.updateGlobalEmotes(),
 		});
 
 		this.settings.add('ffzap.gamewisp.sub_emoticons', {
@@ -39,10 +39,11 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 			changed: () => {
 				if (this.chat.context.get('ffzap.gamewisp.sub_emoticons')) {
 					this.socket.connect();
-
-					for (let i = 0; i < this.channels.length; i++) {
-						const channel = this.channels[i];
-						this.roomAdd(channel);
+					
+					const rooms = Object.keys(this.chat.rooms);
+					for (let i = 0; i < rooms.length; i++) {
+						const room = this.chat.rooms[rooms[i]];
+						if (room) this.roomAdd(room);
 					}
 				} else {
 					for (const username in this.subs) {
@@ -143,7 +144,7 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 		this.on('chat:room-remove', this.roomRemove);
 
 		this.socket = new Socket(this, this.getSocketEvents());
-		// this.updateGlobalEmotes();
+		this.updateGlobalEmotes();
 
 		if (this.chat.context.get('ffzap.gamewisp.sub_emoticons') || this.chat.context.get('ffzap.gamewisp.sub_badges')) {
 			this.socket.connect();
@@ -229,10 +230,6 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 	}
 
 	roomAdd(room) {
-		if (!this.channels.includes(room.login)) {
-			this.channels.push(room.login);
-		}
-
 		this.socket.joinRoom(room.login);
 	}
 
@@ -260,11 +257,11 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 
 		const response = await fetch('https://api.gamewisp.com/pub/v1/emote/global');
 		if (response.ok) {
-			const data = await response.json();
-
+			const json = await response.json();
+			
 			const globalEmotes = [];
 
-			const emotes = data;
+			const emotes = json.data;
 			for (let i = 0; i < emotes.length; i++) {
 				const _emote = emotes[i];
 		

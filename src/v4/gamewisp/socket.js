@@ -133,7 +133,7 @@ export default class Socket {
 	}
 
 	joinRoom(channel) {
-		if (!this.parent.chat.context.get('ffzap.gamewisp.sub_emoticons') || !this.parent.chat.context.get('ffzap.gamewisp.sub_badges')) {
+		if (!this.parent.chat.context.get('ffzap.gamewisp.sub_emoticons') && !this.parent.chat.context.get('ffzap.gamewisp.sub_badges')) {
 			return;
 		}
 
