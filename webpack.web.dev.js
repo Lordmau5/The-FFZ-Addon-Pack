@@ -39,7 +39,7 @@ module.exports = merge(common, {
 	},
 
 	output: {
-		publicPath: '/dist/',
+		publicPath: '//localhost:8000/',
 		filename: '[name].js',
 		jsonpFunction: 'ffzapWebpackJsonp'
 	}

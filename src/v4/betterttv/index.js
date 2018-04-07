@@ -27,9 +27,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 				title: 'Global Emoticons',
 				description: 'Enable to show global BetterTTV emoticons.',
 				component: 'setting-check-box',
-			},
-
-			changed: () => this.updateEmoticons(),
+			}
 		});
 
 		this.settings.add('ffzap.betterttv.override_emoticons', {
@@ -40,9 +38,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 				title: 'Override Emoticons',
 				description: 'Enable to show override emoticons (like D:).',
 				component: 'setting-check-box',
-			},
-
-			changed: () => this.updateEmoticons(),
+			}
 		});
 
 		this.settings.add('ffzap.betterttv.channel_emoticons', {
@@ -53,9 +49,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 				title: 'Channel Emoticons',
 				description: 'Enable to show per-channel BetterTTV emoticons.',
 				component: 'setting-check-box',
-			},
-
-			changed: () => this.updateEmoticons(),
+			}
 		});
 
 		this.settings.add('ffzap.betterttv.gif_emoticons_mode', {
@@ -71,9 +65,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 					{ value: 1, title: 'Enabled (Static GIF Emoticons)' },
 					{ value: 2, title: 'Enabled (Animated GIF Emoticons)' },
 				],
-			},
-
-			changed: () => this.updateEmoticons(),
+			}
 		});
 
 		this.settings.add('ffzap.betterttv.pro_emoticons', {
@@ -84,28 +76,32 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 				title: 'Pro Emoticons',
 				description: 'Enable to show BetterTTV Pro emoticons.',
 				component: 'setting-check-box',
-			},
-
-			changed: () => {
-				if (this.chat.context.get('ffzap.betterttv.pro_emoticons')) {
-					this.socket.connect();
-
-					for (let i = 0; i < this.channels.length; i++) {
-						const channel = this.channels[i];
-						this.roomAdd(channel);
-					}
-				} else {
-					for (const key in this.ProUsers) {
-						if ({}.hasOwnProperty.call(this.ProUsers, key)) {
-							this.ProUsers[key].unload();
-						}
-					}
-					this.ProUsers = {};
-
-					this.socket.disconnectInternal();
-				}	
-			},
+			}
 		});
+
+		this.chat.context.on('changed:ffzap.betterttv.global_emoticons', this.updateEmoticons, this);
+		this.chat.context.on('changed:ffzap.betterttv.override_emoticons', this.updateEmoticons, this);
+		this.chat.context.on('changed:ffzap.betterttv.channel_emoticons', this.updateEmoticons, this);
+		this.chat.context.on('changed:ffzap.betterttv.gif_emoticons_mode', this.updateEmoticons, this);
+		this.chat.context.on('changed:ffzap.betterttv.gif_emoticons_mode', () => {
+			if (this.chat.context.get('ffzap.betterttv.pro_emoticons')) {
+				this.socket.connect();
+
+				for (let i = 0; i < this.channels.length; i++) {
+					const channel = this.channels[i];
+					this.roomAdd(channel);
+				}
+			} else {
+				for (const key in this.ProUsers) {
+					if ({}.hasOwnProperty.call(this.ProUsers, key)) {
+						this.ProUsers[key].unload();
+					}
+				}
+				this.ProUsers = {};
+
+				this.socket.disconnectInternal();
+			}	
+		}, this);
 
 		this.pro_users = {};
 		this.night_subs = {};
@@ -132,9 +128,8 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 			this.socket.connect();
 		}
 
-		const rooms = Object.keys(this.chat.rooms);
-		for (let i = 0; i < rooms.length; i++) {
-			const room = this.chat.rooms[rooms[i]];
+		const chat = this.parent.resolve('chat');
+		for (const room of chat.iterateRooms()) {
 			if (room) this.updateChannel(room);
 		}
 	}
@@ -144,9 +139,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 	}
 
 	roomRemove(room) {
-		const realID = `addon--ffzap.betterttv--emotes-channel-${room.id}`;
-		room.removeSet('addon--ffzap.betterttv', realID);
-		this.emotes.unloadSet(realID);
+		this.updateChannel(room);
 
 		if (this.chat.context.get('ffzap.betterttv.pro_emoticons')) {
 			this.socket.partChannel(room.id);
@@ -230,6 +223,10 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 		const realID = 'addon--ffzap.betterttv--emotes-global';
 		this.emotes.removeDefaultSet('addon--ffzap.betterttv', realID);
 		this.emotes.unloadSet(realID);
+
+		if (!this.chat.context.get('ffzap.betterttv.global_emoticons')) {
+			return;
+		}
 
 		const response = await fetch('https://api.betterttv.net/emotes');
 		if (response.ok) {
@@ -326,9 +323,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 				_type: 1,
 			};
 
-			if (this.chat.context.get('ffzap.betterttv.global_emoticons')) {
-				this.emotes.addDefaultSet('addon--ffzap.betterttv', realID, set);
-			}
+			this.emotes.addDefaultSet('addon--ffzap.betterttv', realID, set);
 		} else {
 			if (response.status === 404) return;
 
@@ -341,6 +336,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 	}
 
 	async updateChannel(room, attempts = 0) {
+		this.log.info('Updating room', room);
 		const realID = `addon--ffzap.betterttv--channel-${room.id}`;
 		room.removeSet('addon--ffzap.betterttv', realID);
 		this.emotes.unloadSet(realID);
@@ -349,6 +345,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 			this.socket.joinChannel(room.login);
 		}
 
+		this.log.info('Channel Setting', this.chat.context.get('ffzap.betterttv.channel_emoticons'));
 		if (!this.chat.context.get('ffzap.betterttv.channel_emoticons')) {
 			return;
 		}
@@ -438,10 +435,8 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 		this.updateGlobalEmotes();
 
 		const chat = this.parent.resolve('chat');
-		const rooms = Object.keys(chat.rooms);
-		for (let i = 0; i < rooms.length; i++) {
-			const roomID = rooms[i];
-			this.updateChannel(chat.rooms[roomID]);
+		for (const room of chat.iterateRooms()) {
+			if (room) this.updateChannel(room);
 		}
 	}
 }

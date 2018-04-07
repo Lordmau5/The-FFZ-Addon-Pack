@@ -7,17 +7,26 @@
     "build": "webpack --config webpack.config.js"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.2",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.2.1",
+    "css-loader": "^0.28.11",
     "dateformat": "^3.0.2",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
+    "extract-loader": "^2.0.1",
+    "file-loader": "^1.1.11",
+    "graphql-tag": "^2.8.0",
+    "sass-loader": "^6.0.7",
     "uglifyjs-webpack-plugin": "^1.1.0",
+    "vue-loader": "^14.2.2",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4",
     "webpack-merge": "^4.1.1"
   },
   "dependencies": {
-    "eslint": "^4.11.0"
+    "eslint": "^4.11.0",
+    "vue": "^2.5.16",
+    "vue-template-compiler": "^2.5.16"
   }
 }

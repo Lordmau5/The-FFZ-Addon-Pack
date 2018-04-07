@@ -21,9 +21,7 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 				title: 'Global Emoticons',
 				description: 'Enable to show global GameWisp emoticons.',
 				component: 'setting-check-box',
-			},
-
-			changed: () => this.updateGlobalEmotes(),
+			}
 		});
 
 		this.settings.add('ffzap.gamewisp.sub_emoticons', {
@@ -34,26 +32,7 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 				title: 'Subscriber Emoticons',
 				description: 'Enable to show GameWisp subscriber emoticons.',
 				component: 'setting-check-box',
-			},
-
-			changed: () => {
-				if (this.chat.context.get('ffzap.gamewisp.sub_emoticons')) {
-					this.socket.connect();
-					
-					const rooms = Object.keys(this.chat.rooms);
-					for (let i = 0; i < rooms.length; i++) {
-						const room = this.chat.rooms[rooms[i]];
-						if (room) this.roomAdd(room);
-					}
-				} else {
-					for (const username in this.subs) {
-						if ({}.hasOwnProperty.call(this.subs, username)) {
-							this.subs[username].unload();
-						}
-					}
-					this.subs = {};
-				}
-			},
+			}
 		});
 
 		this.settings.add('ffzap.gamewisp.sub_badges', {
@@ -64,19 +43,7 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 				title: 'Subscriber Badges',
 				description: 'Enable to show GameWisp subscriber badges.',
 				component: 'setting-check-box',
-			},
-
-			changed: () => {
-				if (this.chat.context.get('ffzap.gamewisp.sub_badges')) {
-					this.socket.connect();
-
-					for (const username in this.subs) {
-						if ({}.hasOwnProperty.call(this.subs, username)) {
-							this.subs[username].reloadBadges();
-						}
-					}
-				}
-			},
+			}
 		});
 
 		this.settings.add('ffzap.gamewisp.badges_override_twitch', {
@@ -107,6 +74,53 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 				}	
 			},
 		});
+
+		this.chat.context.on('changed:ffzap.gamewisp.global_emoticons', this.updateGlobalEmotes, this);
+		this.chat.context.on('changed:ffzap.gamewisp.sub_emoticons', enabled => {
+			if (enabled) {
+				this.socket.connect();
+				
+				const chat = this.parent.resolve('chat');
+				for (const room of chat.iterateRooms()) {
+					if (room) this.roomAdd(room);
+				}
+			} else {
+				for (const username in this.subs) {
+					if ({}.hasOwnProperty.call(this.subs, username)) {
+						this.subs[username].unload();
+					}
+				}
+				this.subs = {};
+			}
+		}, this);
+		this.chat.context.on('changed:ffzap.gamewisp.sub_badges', enabled => {
+			if (enabled) {
+				this.socket.connect();
+
+				for (const username in this.subs) {
+					if ({}.hasOwnProperty.call(this.subs, username)) {
+						this.subs[username].reloadBadges();
+					}
+				}
+			}
+		}, this);
+		this.chat.context.on('changed:ffzap.gamewisp.badges_override_twitch', enabled => {
+			if (this.chat.context.get('ffzap.gamewisp.sub_badges')) {
+				for (const badge in this.sub_badges) {
+					if ({}.hasOwnProperty.call(this.sub_badges, badge)) {
+						const _badge = this.sub_badges[badge];
+						_badge.ffz_data.replaces = enabled ? 'subscriber' : undefined;
+						_badge.ffz_data.slot = enabled ? 25 : 26;
+					}
+				}
+
+				for (const username in this.subs) {
+					if ({}.hasOwnProperty.call(this.subs, username)) {
+						this.subs[username].reloadBadges();
+					}
+				}
+			}	
+		}, this);
 
 		// this.settings.add('ffzap.gamewisp.sub_button', {
 		// 	default: true,
@@ -157,9 +171,8 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 			no_invert: true
 		});
 
-		const rooms = Object.keys(this.chat.rooms);
-		for (let i = 0; i < rooms.length; i++) {
-			const room = this.chat.rooms[rooms[i]];
+		const chat = this.parent.resolve('chat');
+		for (const room of chat.iterateRooms()) {
 			if (room) this.roomAdd(room);
 		}
 
@@ -285,7 +298,7 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 				emoticons: globalEmotes,
 				title: 'Global Emoticons',
 				source: 'GameWisp',
-				icon: 'https://cdn.ffzap.com/ffz-ap/gamewisp/icon_16x.png',
+				icon: 'https://cdn.ffzap.com/gamewisp/icon_16x.png',
 				sort: 101,
 				_type: 1,
 			};
