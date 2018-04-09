@@ -17,8 +17,8 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 			default: true,
 
 			ui: {
-				path: 'Add-Ons > FFZ:AP > GameWisp >> Emoticons',
-				title: 'Global Emoticons',
+				path: 'Add-Ons > FFZ:AP > GameWisp >> Emotes',
+				title: 'Global Emotes',
 				description: 'Enable to show global GameWisp emoticons.',
 				component: 'setting-check-box',
 			}
@@ -28,8 +28,8 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 			default: true,
 
 			ui: {
-				path: 'Add-Ons > FFZ:AP > GameWisp >> Emoticons',
-				title: 'Subscriber Emoticons',
+				path: 'Add-Ons > FFZ:AP > GameWisp >> Emotes',
+				title: 'Subscriber Emotes',
 				description: 'Enable to show GameWisp subscriber emoticons.',
 				component: 'setting-check-box',
 			}
@@ -296,7 +296,7 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 		
 			const set = {
 				emoticons: globalEmotes,
-				title: 'Global Emoticons',
+				title: 'Global Emotes',
 				source: 'GameWisp',
 				icon: 'https://cdn.ffzap.com/gamewisp/icon_16x.png',
 				sort: 101,

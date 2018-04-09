@@ -3,7 +3,7 @@
 import Socket from './socket';
 import ProUser from './pro_user';
 
-const GIF_EMOTICONS_MODE = {
+const GIF_EMOTES_MODE = {
 	DISABLED: 0,
 	STATIC: 1,
 	ANIMATED: 2,
@@ -23,8 +23,8 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 			default: true,
 
 			ui: {
-				path: 'Add-Ons > FFZ:AP > BetterTTV >> Emoticons',
-				title: 'Global Emoticons',
+				path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
+				title: 'Global Emotes',
 				description: 'Enable to show global BetterTTV emoticons.',
 				component: 'setting-check-box',
 			}
@@ -34,8 +34,8 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 			default: false,
 
 			ui: {
-				path: 'Add-Ons > FFZ:AP > BetterTTV >> Emoticons',
-				title: 'Override Emoticons',
+				path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
+				title: 'Override Emotes',
 				description: 'Enable to show override emoticons (like D:).',
 				component: 'setting-check-box',
 			}
@@ -45,8 +45,8 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 			default: true,
 
 			ui: {
-				path: 'Add-Ons > FFZ:AP > BetterTTV >> Emoticons',
-				title: 'Channel Emoticons',
+				path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
+				title: 'Channel Emotes',
 				description: 'Enable to show per-channel BetterTTV emoticons.',
 				component: 'setting-check-box',
 			}
@@ -56,14 +56,14 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 			default: 1,
 
 			ui: {
-				path: 'Add-Ons > FFZ:AP > BetterTTV >> Emoticons',
-				title: 'GIF Emoticons',
+				path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
+				title: 'GIF Emotes',
 				description: 'Change the mode of how GIF emoticons are showing up.',
 				component: 'setting-select-box',
 				data: [
 					{ value: 0, title: 'Disabled' },
-					{ value: 1, title: 'Enabled (Static GIF Emoticons)' },
-					{ value: 2, title: 'Enabled (Animated GIF Emoticons)' },
+					{ value: 1, title: 'Enabled (Static GIF Emotes)' },
+					{ value: 2, title: 'Enabled (Animated GIF Emotes)' },
 				],
 			}
 		});
@@ -72,17 +72,17 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 			default: true,
 
 			ui: {
-				path: 'Add-Ons > FFZ:AP > BetterTTV >> Emoticons',
-				title: 'Pro Emoticons',
+				path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
+				title: 'Pro Emotes',
 				description: 'Enable to show BetterTTV Pro emoticons.',
 				component: 'setting-check-box',
 			}
 		});
 
-		this.chat.context.on('changed:ffzap.betterttv.global_emoticons', this.updateEmoticons, this);
-		this.chat.context.on('changed:ffzap.betterttv.override_emoticons', this.updateEmoticons, this);
-		this.chat.context.on('changed:ffzap.betterttv.channel_emoticons', this.updateEmoticons, this);
-		this.chat.context.on('changed:ffzap.betterttv.gif_emoticons_mode', this.updateEmoticons, this);
+		this.chat.context.on('changed:ffzap.betterttv.global_emoticons', this.updateEmotes, this);
+		this.chat.context.on('changed:ffzap.betterttv.override_emoticons', this.updateEmotes, this);
+		this.chat.context.on('changed:ffzap.betterttv.channel_emoticons', this.updateEmotes, this);
+		this.chat.context.on('changed:ffzap.betterttv.gif_emoticons_mode', this.updateEmotes, this);
 		this.chat.context.on('changed:ffzap.betterttv.gif_emoticons_mode', () => {
 			if (this.chat.context.get('ffzap.betterttv.pro_emoticons')) {
 				this.socket.connect();
@@ -228,7 +228,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 			return;
 		}
 
-		const response = await fetch('https://api.betterttv.net/emotes');
+		const response = await fetch('https://api.betterttv.net/2/emotes');
 		if (response.ok) {
 			const data = await response.json();
 
@@ -236,7 +236,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 			const overrideEmotes = [];
 			const nightSubEmotes = [];
 
-			const { emotes } = data;
+			const { emotes, urlTemplate } = data;
 
 			let i = emotes.length;
 			while (i--) {
@@ -258,10 +258,11 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 
 				if (id) {
 					emote.id = id;
+					const emoteTemplate = urlTemplate.replace('{{id}}', id);
 					emote.urls = {
-						1: `https://cdn.betterttv.net/emote/${id}/1x`,
-						2: `https://cdn.betterttv.net/emote/${id}/2x`,
-						4: `https://cdn.betterttv.net/emote/${id}/3x`,
+						1: emoteTemplate.replace('{{image}}', '1x'),
+						2: emoteTemplate.replace('{{image}}', '2x'),
+						4: emoteTemplate.replace('{{image}}', '3x'),
 					};
 				}
 
@@ -269,10 +270,10 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 					overrideEmotes.push(emote);
 				} else {
 					if (dataEmote.imageType === 'gif') { // If the emote is a GIF
-						if (this.chat.context.get('ffzap.betterttv.gif_emoticons_mode') === GIF_EMOTICONS_MODE.DISABLED) {
+						if (this.chat.context.get('ffzap.betterttv.gif_emoticons_mode') === GIF_EMOTES_MODE.DISABLED) {
 							// If the GIF setting is set to "Disabled", ignore it.
 							continue;
-						} else if (this.chat.context.get('ffzap.betterttv.gif_emoticons_mode') === GIF_EMOTICONS_MODE.STATIC) {
+						} else if (this.chat.context.get('ffzap.betterttv.gif_emoticons_mode') === GIF_EMOTES_MODE.STATIC) {
 							// If the GIF setting is set to "Static", route them through the cache.
 							emote.urls[1] = `https://cache.ffzap.com/${emote.urls[1]}`;
 							if (id) {
@@ -282,7 +283,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 						}
 					}
 
-					if (dataEmote.channel && dataEmote.channel === 'night') {
+					if (dataEmote.restrictions && dataEmote.restrictions.emoticonSet === 'night') {
 						nightSubEmotes.push(emote);
 					} else {
 						globalBttv.push(emote);
@@ -317,7 +318,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 
 			set = {
 				emoticons: setEmotes,
-				title: 'Global Emoticons',
+				title: 'Global Emotes',
 				source: 'BetterTTV',
 				icon: 'https://cdn.betterttv.net/tags/developer.png',
 				_type: 1,
@@ -381,10 +382,10 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 
 				if (emoteFromArray.imageType === 'gif') {
 					switch (this.chat.context.get('ffzap.betterttv.gif_emoticons_mode')) {
-						case GIF_EMOTICONS_MODE.DISABLED:
+						case GIF_EMOTES_MODE.DISABLED:
 							break;
 
-						case GIF_EMOTICONS_MODE.STATIC:
+						case GIF_EMOTES_MODE.STATIC:
 							emote.urls[1] = `https://cache.ffzap.com/${emote.urls[1]}`;
 							emote.urls[2] = `https://cache.ffzap.com/${emote.urls[2]}`;
 							emote.urls[4] = `https://cache.ffzap.com/${emote.urls[4]}`;
@@ -392,7 +393,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 							channelBttv.push(emote);
 							break;
 
-						case GIF_EMOTICONS_MODE.ANIMATED:
+						case GIF_EMOTES_MODE.ANIMATED:
 							channelBttv.push(emote);
 							break;
 
@@ -411,7 +412,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 
 			const set = {
 				emoticons: channelBttv,
-				title: 'Channel Emoticons',
+				title: 'Channel Emotes',
 				source: 'BetterTTV',
 				icon: 'https://cdn.betterttv.net/tags/developer.png',
 				_type: 1,
@@ -431,7 +432,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 		}
 	}
 
-	updateEmoticons() {
+	updateEmotes() {
 		this.updateGlobalEmotes();
 
 		const chat = this.parent.resolve('chat');

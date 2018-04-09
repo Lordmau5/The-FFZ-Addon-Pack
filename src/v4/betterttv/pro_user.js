@@ -37,9 +37,9 @@ export default class ProUser {
 			};
 
 			if (_emote.imageType === 'gif') {
-				if (this.parent.chat.context.get('ffzap.betterttv.gif_emoticons_mode') === this.parent.GIF_EMOTICONS_MODE.DISABLED) { // If the GIF setting is set to "Disabled", ignore it.
+				if (this.parent.chat.context.get('ffzap.betterttv.gif_emoticons_mode') === this.parent.GIF_EMOTES_MODE.DISABLED) { // If the GIF setting is set to "Disabled", ignore it.
 					continue;
-				} else if (this.parent.chat.context.get('ffzap.betterttv.gif_emoticons_mode') === this.parent.GIF_EMOTICONS_MODE.STATIC) { // If the GIF setting is set to "Static", route them through the cache.
+				} else if (this.parent.chat.context.get('ffzap.betterttv.gif_emoticons_mode') === this.parent.GIF_EMOTES_MODE.STATIC) { // If the GIF setting is set to "Static", route them through the cache.
 					emote.urls[1] = `https://cache.ffzap.com/${emote.urls[1]}`;
 					emote.urls[2] = `https://cache.ffzap.com/${emote.urls[2]}`;
 					emote.urls[4] = `https://cache.ffzap.com/${emote.urls[4]}`;
@@ -50,7 +50,7 @@ export default class ProUser {
 
 		const set = {
 			emoticons: this.emotes,
-			title: 'Personal Emoticons',
+			title: 'Personal Emotes',
 			source: 'BetterTTV',
 			icon: 'https://cdn.betterttv.net/tags/developer.png'
 		};
