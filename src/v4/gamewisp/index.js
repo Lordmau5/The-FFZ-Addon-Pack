@@ -80,8 +80,7 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 			if (enabled) {
 				this.socket.connect();
 				
-				const chat = this.parent.resolve('chat');
-				for (const room of chat.iterateRooms()) {
+				for (const room of this.chat.iterateRooms()) {
 					if (room) this.roomAdd(room);
 				}
 			} else {
@@ -171,8 +170,7 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 			no_invert: true
 		});
 
-		const chat = this.parent.resolve('chat');
-		for (const room of chat.iterateRooms()) {
+		for (const room of this.chat.iterateRooms()) {
 			if (room) this.roomAdd(room);
 		}
 
@@ -347,7 +345,7 @@ class GameWisp extends FrankerFaceZ.utilities.module.Module {
 		}
 	
 		if (twitchChannel == null) {
-			this.log.error('Tried to add a badge with an undefined twitch channel!', [id, twitchChannel, gwChannel, tier, url]);
+			this.log.debug('Tried to add a badge with an undefined twitch channel!', [id, twitchChannel, gwChannel, tier, url]);
 			return;
 		}
 

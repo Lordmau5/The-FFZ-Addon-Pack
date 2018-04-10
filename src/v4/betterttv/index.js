@@ -83,13 +83,12 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 		this.chat.context.on('changed:ffzap.betterttv.override_emoticons', this.updateEmotes, this);
 		this.chat.context.on('changed:ffzap.betterttv.channel_emoticons', this.updateEmotes, this);
 		this.chat.context.on('changed:ffzap.betterttv.gif_emoticons_mode', this.updateEmotes, this);
-		this.chat.context.on('changed:ffzap.betterttv.gif_emoticons_mode', () => {
+		this.chat.context.on('changed:ffzap.betterttv.pro_emoticons', () => {
 			if (this.chat.context.get('ffzap.betterttv.pro_emoticons')) {
 				this.socket.connect();
 
-				for (let i = 0; i < this.channels.length; i++) {
-					const channel = this.channels[i];
-					this.roomAdd(channel);
+				for (const room of this.chat.iterateRooms()) {
+					if (room) this.updateChannel(room);
 				}
 			} else {
 				for (const key in this.ProUsers) {
@@ -128,8 +127,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 			this.socket.connect();
 		}
 
-		const chat = this.parent.resolve('chat');
-		for (const room of chat.iterateRooms()) {
+		for (const room of this.chat.iterateRooms()) {
 			if (room) this.updateChannel(room);
 		}
 	}
@@ -243,30 +241,26 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 				const dataEmote = emotes[i];
 
 				const requireSpaces = /[^A-Za-z0-9]/.test(dataEmote.regex);
-				const match = /cdn.betterttv.net\/emote\/(\w+)/.exec(dataEmote.url);
-				const id = match && match[1];
 
 				const emote = {
+					id: dataEmote.id,
 					urls: {
 						1: dataEmote.url,
 					},
-					name: dataEmote.regex,
+					name: dataEmote.code,
 					width: dataEmote.width,
 					height: dataEmote.height,
 					require_spaces: requireSpaces,
 				};
 
-				if (id) {
-					emote.id = id;
-					const emoteTemplate = urlTemplate.replace('{{id}}', id);
-					emote.urls = {
-						1: emoteTemplate.replace('{{image}}', '1x'),
-						2: emoteTemplate.replace('{{image}}', '2x'),
-						4: emoteTemplate.replace('{{image}}', '3x'),
-					};
-				}
+				const emoteTemplate = `https:${urlTemplate.replace('{{id}}', emote.id)}`;
+				emote.urls = {
+					1: emoteTemplate.replace('{{image}}', '1x'),
+					2: emoteTemplate.replace('{{image}}', '2x'),
+					4: emoteTemplate.replace('{{image}}', '3x'),
+				};
 
-				if (this.override_emotes.indexOf(dataEmote.regex) !== -1) {
+				if (this.override_emotes.indexOf(emote.name) !== -1) {
 					overrideEmotes.push(emote);
 				} else {
 					if (dataEmote.imageType === 'gif') { // If the emote is a GIF
@@ -276,10 +270,8 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 						} else if (this.chat.context.get('ffzap.betterttv.gif_emoticons_mode') === GIF_EMOTES_MODE.STATIC) {
 							// If the GIF setting is set to "Static", route them through the cache.
 							emote.urls[1] = `https://cache.ffzap.com/${emote.urls[1]}`;
-							if (id) {
-								emote.urls[2] = `https://cache.ffzap.com/${emote.urls[2]}`;
-								emote.urls[4] = `https://cache.ffzap.com/${emote.urls[4]}`;
-							}
+							emote.urls[2] = `https://cache.ffzap.com/${emote.urls[2]}`;
+							emote.urls[4] = `https://cache.ffzap.com/${emote.urls[4]}`;
 						}
 					}
 
@@ -290,7 +282,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 					}
 				}
 			}
-
+			
 			let set;
 			if (nightSubEmotes.length > 0) {
 				set = {
@@ -337,7 +329,6 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 	}
 
 	async updateChannel(room, attempts = 0) {
-		this.log.info('Updating room', room);
 		const realID = `addon--ffzap.betterttv--channel-${room.id}`;
 		room.removeSet('addon--ffzap.betterttv', realID);
 		this.emotes.unloadSet(realID);
@@ -346,7 +337,6 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 			this.socket.joinChannel(room.login);
 		}
 
-		this.log.info('Channel Setting', this.chat.context.get('ffzap.betterttv.channel_emoticons'));
 		if (!this.chat.context.get('ffzap.betterttv.channel_emoticons')) {
 			return;
 		}
@@ -435,8 +425,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 	updateEmotes() {
 		this.updateGlobalEmotes();
 
-		const chat = this.parent.resolve('chat');
-		for (const room of chat.iterateRooms()) {
+		for (const room of this.chat.iterateRooms()) {
 			if (room) this.updateChannel(room);
 		}
 	}
