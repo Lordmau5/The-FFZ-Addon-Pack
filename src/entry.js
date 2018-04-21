@@ -8,7 +8,9 @@
 
 	const checkFFZInterval = attempts => {
 		if (window.FrankerFaceZ) {
-			window.document.head.appendChild(script);
+			if (!window.document.head.querySelector('#ffz-ap-script')) {
+				window.document.head.appendChild(script);
+			}
 		} else {
 			const newAttempts = (attempts || 0) + 1;
 			if (newAttempts < 60) {
