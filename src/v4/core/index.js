@@ -64,7 +64,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 	async initSupporters() {
 		const host = 'https://cdn.ffzap.com/supporters.json';
 
-		this.initTier2Emotes();
+		// this.initTier2Emotes();
 
 		const response = await fetch(host);
 		if (response.ok) {
@@ -86,7 +86,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 				};
 	
 				if (user.level >= 2) { // Supporter Badge Color
-					ffzUser.addSet('addon--ffzap.core', 'addon--ffzap.core--emotes-tier2');
+					// ffzUser.addSet('addon--ffzap.core', 'addon--ffzap.core--emotes-tier2');
 					supporterBadge.color = user.badge_color;
 				}
 	
@@ -103,17 +103,17 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 		}
 	}
 
-	async initTier2Emotes() { // eslint-disable-line class-methods-use-this
-		const response = await fetch('https://api.frankerfacez.com/v1/set/105031');
-		if (response.ok) {
-			const data = await response.json();
-			data.set.title = 'Monthly Emote-Vote';
-			data.set.source = 'FFZ:AP';
-			this.emotes.loadSetData('addon--ffzap.core--emotes-tier2', data.set);
+	// async initTier2Emotes() { // eslint-disable-line class-methods-use-this
+	// 	const response = await fetch('https://api.frankerfacez.com/v1/set/105031');
+	// 	if (response.ok) {
+	// 		const data = await response.json();
+	// 		data.set.title = 'Monthly Emote-Vote';
+	// 		data.set.source = 'FFZ:AP';
+	// 		this.emotes.loadSetData('addon--ffzap.core--emotes-tier2', data.set);
 	
-			this.chat.getUser(undefined, 'lordmau5').addSet('addon--ffzap.core', 'addon--ffzap.core--emotes-tier2');
-		}
-	}
+	// 		this.chat.getUser(undefined, 'lordmau5').addSet('addon--ffzap.core', 'addon--ffzap.core--emotes-tier2');
+	// 	}
+	// }
 }
 
 FrankerFaceZ.get().register('addon.ffzap.core', FFZAP).enable();

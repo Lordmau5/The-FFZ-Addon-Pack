@@ -46,7 +46,7 @@ module.exports = {
         "no-useless-concat": ["warn"],
         "no-useless-return": ["warn"],
         "no-void": ["error"],
-        "no-warning-comments": ["warn"],
+        "no-warning-comments": 0,
         "no-with": ["error"],
         "radix": ["error"],
         "require-await": ["warn"],
