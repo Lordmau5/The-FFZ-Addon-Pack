@@ -1,4 +1,4 @@
-export default class BTTVSocket {
+export default class Socket {
 	constructor(parent, events) {
 		this.parent = parent;
 

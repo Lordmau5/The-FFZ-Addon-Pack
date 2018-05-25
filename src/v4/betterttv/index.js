@@ -294,7 +294,6 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 				};
 		
 				this.emotes.loadSetData('addon--ffzap.betterttv--emotes-special-night', set);
-				this.chat.getUser(undefined, 'lordmau5').addSet('addon--ffzap.betterttv', 'addon--ffzap.betterttv--emotes-special-night');
 			}
 
 			let setEmotes = [];
