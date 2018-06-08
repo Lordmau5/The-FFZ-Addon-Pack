@@ -181,7 +181,7 @@ class LirikLIVE extends FrankerFaceZ.utilities.module.Module {
 			title: 'Past Emotes',
 			source: 'LIRIK LIVE',
 			icon: 'https://cdn.ffzap.com/liriklive/icon.png',
-			sort: 45,
+			sort: 51,
 			force_global: (emote_set, channel) => channel && channel.login === 'lirik'
 		};
 
@@ -190,7 +190,6 @@ class LirikLIVE extends FrankerFaceZ.utilities.module.Module {
 
 	updateSubscriberEmotes(data) {
 		const realID = 'addon--ffzap.liriklive--emotes-subscriber';
-		this.emotes.removeDefaultSet('addon--ffzap.liriklive', realID);
 		this.emotes.unloadSet(realID);
 
 		if (!this.chat.context.get('ffzap.liriklive.sub_emoticons')) {
@@ -240,13 +239,11 @@ class LirikLIVE extends FrankerFaceZ.utilities.module.Module {
 			merge_id: 'addon--ffzap.liriklive--emotes-global'
 		};
 
-		// this.emotes.loadSetData(realID, set);
-		this.emotes.addDefaultSet('addon--ffzap.liriklive', realID, set);
+		this.emotes.loadSetData(realID, set);
 	}
 
 	updateRestrictedEmotes(data) {
 		const realID = 'addon--ffzap.liriklive--emotes-restricted';
-		this.emotes.removeDefaultSet('addon--ffzap.liriklive', realID);
 		this.emotes.unloadSet(realID);
 
 		if (!this.chat.context.get('ffzap.liriklive.sub_emoticons')) {
@@ -296,8 +293,7 @@ class LirikLIVE extends FrankerFaceZ.utilities.module.Module {
 			merge_id: 'addon--ffzap.liriklive--emotes-global'
 		};
 
-		// this.emotes.loadSetData(realID, set);
-		this.emotes.addDefaultSet('addon--ffzap.liriklive', realID, set);
+		this.emotes.loadSetData(realID, set);
 	}
 
 	async updateEmotes(attempts = 0) {

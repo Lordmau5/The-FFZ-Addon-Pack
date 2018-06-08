@@ -1,5 +1,52 @@
 {
-	"global": [{
+	"global": [
+		{
+			"id": 9773,
+			"code": "lirikREKT"
+		},
+		{
+			"id": 65389,
+			"code": "lirikGOOD"
+		},
+		{
+			"id": 85991,
+			"code": "lirikCLAP"
+		},
+		{
+			"id": 90977,
+			"code": "lirik1"
+		},
+		{
+			"id": 90978,
+			"code": "lirik2"
+		},
+		{
+			"id": 90979,
+			"code": "lirik3"
+		},
+		{
+			"id": 90980,
+			"code": "lirik4"
+		},
+		{
+			"id": 105098,
+			"code": "lirikNON"
+		},
+		{
+			"id": 623359,
+			"code": "lirikDEWD"
+		}
+	],
+	"gifs": [
+		"lirikCHAMP2",
+		"lirikDJ2",
+		"lirikEZ2",
+		"lirikHS2",
+		"lirikRE2",
+		"lirikTHUMP2",
+		"lirikRAIN"
+	],
+	"subscriber": [{
 			"id": 553,
 			"code": "lirikSODA",
 			"width": 20,
@@ -52,10 +99,6 @@
 		{
 			"id": 9706,
 			"code": "lirikGOTY"
-		},
-		{
-			"id": 9773,
-			"code": "lirikREKT"
 		},
 		{
 			"id": 9774,
@@ -118,6 +161,14 @@
 			"code": "lirikCRY"
 		},
 		{
+			"id": 37626,
+			"code": "lirikJ"
+		},
+		{
+			"id": 29425,
+			"code": "lirikCRY"
+		},
+		{
 			"id": 45583,
 			"code": "lirikMEOW"
 		},
@@ -134,40 +185,12 @@
 			"code": "lirikNOT"
 		},
 		{
-			"id": 65389,
-			"code": "lirikGOOD"
-		},
-		{
 			"id": 72445,
 			"code": "lirikHOLD"
 		},
 		{
 			"id": 81628,
 			"code": "lirikTRUCK"
-		},
-		{
-			"id": 85991,
-			"code": "lirikCLAP"
-		},
-		{
-			"id": 90977,
-			"code": "lirik1"
-		},
-		{
-			"id": 90978,
-			"code": "lirik2"
-		},
-		{
-			"id": 90979,
-			"code": "lirik3"
-		},
-		{
-			"id": 90980,
-			"code": "lirik4"
-		},
-		{
-			"id": 105098,
-			"code": "lirikNON"
 		},
 		{
 			"id": 136681,
@@ -198,25 +221,35 @@
 			"code": "lirikFAKE"
 		},
 		{
-			"id": 623359,
-			"code": "lirikDEWD"
+			"id": 489567,
+			"code": "lirikFEELS3"
+		},
+		{
+			"id": 489694,
+			"code": "lirikGREAT3"
+		},
+		{
+			"id": 560487,
+			"code": "lirikFEELS4"
+		},
+		{
+			"id": 561228,
+			"code": "lirikGREAT4"
+		},
+		{
+			"id": 680611,
+			"code": "lirikOHGOD"
 		},
 		{
 			"id": 932342,
 			"code": "lirikZUCC"
+		},
+		{
+			"code": "lirikUSHANKA"
+		},
+		{
+			"code": "lirikFEELS2"
 		}
-	],
-	"normal": [
-		"lirikUSHANKA"
-	],
-	"gifs": [
-		"lirikCHAMP2",
-		"lirikDJ2",
-		"lirikEZ2",
-		"lirikHS2",
-		"lirikRE2",
-		"lirikTHUMP2",
-		"lirikRAIN"
 	],
 	"restricted": [{
 		"id": 109208,

@@ -90,55 +90,57 @@ export default class Socket {
 		};
 
 		this.socket.onmessage = message => {
-			const json = JSON.parse(message.data);
-			// this.parent.log.info('Socket', json);
+			let json = JSON.parse(message.data);
+			json = json instanceof Array ? json : [json];
 
-			switch(json.t) {
-				case EVENT_TYPES.READY: {
-					this._ready = true;
-
-					if (this._connection_buffer.length > 0) {
-						let i = this._connection_buffer.length;
-						while (i--) {
-							const channel = this._connection_buffer[i];
-							this.joinRoom(channel);
+			for (const evt of json) {
+				switch(evt.t) {
+					case EVENT_TYPES.READY: {
+						this._ready = true;
+	
+						if (this._connection_buffer.length > 0) {
+							let i = this._connection_buffer.length;
+							while (i--) {
+								const channel = this._connection_buffer[i];
+								this.joinRoom(channel);
+							}
+							this._connection_buffer = [];
 						}
-						this._connection_buffer = [];
+						break;
 					}
-					break;
-				}
+	
+					case EVENT_TYPES.PING: {
+						this.emit(REQUEST_TYPES.PONG);
+						break;
+					}
+	
+					case EVENT_TYPES.CHANNEL_SUBSCRIPTION_ADDED: {
+						if (!evt.c_d) continue;
 
-				case EVENT_TYPES.PING: {
-					this.emit(REQUEST_TYPES.PONG);
-					break;
-				}
-
-				case EVENT_TYPES.CHANNEL_SUBSCRIPTION_ADDED: {
-					// const {u_id, f: flags, s_m} = json.c_d;
-
-					// if (flags & USER_FLAGS.LIRIK_SUB) {
-					// 	const user = this.parent.chat.getUser(u_id);
-					// 	user.addSet('addon--ffzap.liriklive', 'addon--ffzap.liriklive--emotes-subscriber');
-					// 	// TODO: Add support for 1+ year emote
-					// 	if (s_m >= 12) {
-					// 		user.addSet('addon--ffzap.liriklive', 'addon--ffzap.liriklive--emotes-restricted');
-					// 	}
-					// }
-
-					break;
-				}
-
-				case EVENT_TYPES.USER_CHANNEL_DATA: {
-					// const {u_id, f: flags, s_m} = json.d;
-
-					// if (flags & USER_FLAGS.LIRIK_SUB) {
-					// 	const user = this.parent.chat.getUser(u_id);
-					// 	user.addSet('addon--ffzap.liriklive', 'addon--ffzap.liriklive--emotes-subscriber');
-					// 	// TODO: Add support for 1+ year emote
-					// 	if (s_m >= 12) {
-					// 		user.addSet('addon--ffzap.liriklive', 'addon--ffzap.liriklive--emotes-restricted');
-					// 	}
-					// }
+						const {u_id, f: flags, s_m} = evt.c_d;
+	
+						if (flags & USER_FLAGS.LIRIK_SUB) {
+							const user = this.parent.chat.getUser(u_id);
+							user.addSet('addon--ffzap.liriklive', 'addon--ffzap.liriklive--emotes-subscriber');
+							if (s_m >= 12) {
+								user.addSet('addon--ffzap.liriklive', 'addon--ffzap.liriklive--emotes-restricted');
+							}
+						}
+	
+						break;
+					}
+	
+					case EVENT_TYPES.USER_CHANNEL_DATA: {
+						const {u_id, f: flags, s_m} = evt.d;
+	
+						if (flags & USER_FLAGS.LIRIK_SUB) {
+							const user = this.parent.chat.getUser(u_id);
+							user.addSet('addon--ffzap.liriklive', 'addon--ffzap.liriklive--emotes-subscriber');
+							if (s_m >= 12) {
+								user.addSet('addon--ffzap.liriklive', 'addon--ffzap.liriklive--emotes-restricted');
+							}
+						}
+					}
 				}
 			}
 		};
@@ -193,9 +195,9 @@ export default class Socket {
 	}
 
 	joinRoom(channel_id) {
-		// if (!this.parent.chat.context.get('ffzap.liriklive.sub_emoticons')) {
-		// 	return;
-		// }
+		if (!this.parent.chat.context.get('ffzap.liriklive.sub_emoticons')) {
+			return;
+		}
 
 		if (!channel_id) {
 			return;
