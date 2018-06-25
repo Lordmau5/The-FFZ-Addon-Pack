@@ -343,7 +343,11 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 		const response = await fetch(`https://api.betterttv.net/2/channels/${room.login}`);
 		if (response.ok) {
 			const channelBttv = [];
-			const { emotes } = await response.json();
+			const { emotes, bots } = await response.json();
+
+			for (const bot of bots) {
+				room.getUser(null, bot).addBadge('ffz', 2);
+			}
 
 			let i = emotes.length;
 			while (i--) {
