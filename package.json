@@ -3,7 +3,7 @@
   "fullName": "The FFZ Add-On Pack",
   "version": "4.0.0",
   "scripts": {
-    "dev": "webpack-dev-server --config webpack.web.dev.js",
+    "serve": "webpack-dev-server --config webpack.web.dev.js",
     "build": "webpack --config webpack.config.js"
   },
   "devDependencies": {
