@@ -9,7 +9,7 @@ export default class Socket {
         this._connected = false;
         this._connecting = false;
         this._connect_attempts = 1;
-        this._joined_channels = [];
+        this._joined_channels = {};
         this._connection_buffer = [];
         this._events = events;
     }
@@ -28,7 +28,7 @@ export default class Socket {
         this.socket = new WebSocket('wss://emotes.gamewisp.com/');
         this.socket.binaryType = 'arraybuffer';
 
-        this._joined_channels = [];
+        this._joined_channels = {};
 
         this.socket.onopen = () => {
             this.parent.log.info('Socket: Connected to socket server.');
@@ -179,6 +179,6 @@ export default class Socket {
                 name: channel,
             });
         }
-        this._joined_channels[channel] = false;
+        delete this._joined_channels[channel];
     }
 }

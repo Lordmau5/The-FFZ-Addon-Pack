@@ -3,11 +3,10 @@ export default class Socket {
         this.parent = parent;
 
         this.socket = false;
-        this._looked_up_users = [];
         this._connected = false;
         this._connecting = false;
         this._connect_attempts = 1;
-        this._joined_channels = [];
+        this._joined_channels = {};
         this._connection_buffer = [];
         this._events = events;
     }
@@ -182,6 +181,6 @@ export default class Socket {
                 name: channel,
             });
         }
-        this._joined_channels[channel] = false;
+        delete this._joined_channels[channel];
     }
 }

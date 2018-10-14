@@ -30,8 +30,9 @@ export default class Socket {
         this._connecting = false;
         this._ready = false;
         this._connect_attempts = 1;
-        this._joined_channels = [];
+        this._joined_channels = {};
         this._connection_buffer = [];
+        this._announce_buffer = {};
     }
 
     connect() {
@@ -50,7 +51,8 @@ export default class Socket {
         this.socket = new WebSocket('wss://lirik.hnlbot.com/ws');
         this.socket.binaryType = 'arraybuffer';
 
-        this._joined_channels = [];
+        this._joined_channels = {};
+        this._announce_buffer = {};
 
         this.socket.onopen = () => {
             this.parent.log.info('Socket: Connected to socket server.');
@@ -115,6 +117,11 @@ export default class Socket {
                 }
 	
                 case EVENT_TYPES.CHANNEL_SUBSCRIPTION_ADDED: {
+                    if (!evt.c_id) continue;
+                    if (this._announce_buffer[evt.c_id]) {
+                        this.announceMessage(evt.c_id);
+                        delete this._announce_buffer[evt.c_id];
+                    }
                     if (!evt.c_d) continue;
 
                     const {u_id, f: flags, s_m} = evt.c_d;
@@ -224,6 +231,8 @@ export default class Socket {
             c_id: channel_id,
         });
         this._joined_channels[channel_id] = true;
+
+        this._announce_buffer[channel_id] = true; 
     }
 
     announceMessage(channel_id) {
@@ -248,6 +257,6 @@ export default class Socket {
                 c_id: channel_id,
             });
         }
-        this._joined_channels[channel_id] = false;
+        delete this._joined_channels[channel_id];
     }
 }
