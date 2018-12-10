@@ -85,6 +85,8 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
                 const user = data[i];
                 if (user.id === 26964566) continue;
 
+                if (!user.tier) continue;
+
                 const ffzUser = this.chat.getUser(user.id);
 	
                 const badge = {
@@ -99,6 +101,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
                 };
 
                 if (user.tier >= 3 && user.badge_is_colored) {
+                    badge.color = 'transparent';
                     badge.no_invert = true;
                 }
 
