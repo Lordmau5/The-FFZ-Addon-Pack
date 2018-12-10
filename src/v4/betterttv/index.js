@@ -30,13 +30,13 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
             },
         });
 
-        this.settings.add('ffzap.betterttv.override_emoticons', {
-            default: false,
+        this.settings.add('ffzap.betterttv.arbitrary_emoticons', {
+            default: true,
 
             ui: {
                 path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
-                title: 'Override Emotes',
-                description: 'Enable to show override emoticons (like D:).',
+                title: 'Arbitrary Emotes',
+                description: 'Enable to show arbitrary emoticons (like D:, :tf:, (poolparty), :\'(  and similar).',
                 component: 'setting-check-box',
             },
         });
@@ -53,7 +53,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
         });
 
         this.settings.add('ffzap.betterttv.gif_emoticons_mode', {
-            default: 1,
+            default: 2,
 
             ui: {
                 path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
@@ -80,7 +80,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
         });
 
         this.chat.context.on('changed:ffzap.betterttv.global_emoticons', this.updateEmotes, this);
-        this.chat.context.on('changed:ffzap.betterttv.override_emoticons', this.updateEmotes, this);
+        this.chat.context.on('changed:ffzap.betterttv.arbitrary_emoticons', this.updateEmotes, this);
         this.chat.context.on('changed:ffzap.betterttv.channel_emoticons', this.updateEmotes, this);
         this.chat.context.on('changed:ffzap.betterttv.gif_emoticons_mode', this.updateEmotes, this);
         this.chat.context.on('changed:ffzap.betterttv.pro_emoticons', () => {
@@ -105,11 +105,6 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
         this.pro_users = {};
         this.night_subs = {};
         this.socket = false;
-
-        this.override_emotes = [
-            ':\'(',
-            'D:',
-        ];
     }
 
     onEnable() {
@@ -251,8 +246,17 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
             const data = await response.json();
 
             const globalBttv = [];
-            const overrideEmotes = [];
+            const arbitraryEmotes = [];
             const nightSubEmotes = [];
+
+            const overlayEmotes = {
+                'SoSnowy': '2px 0 0 0',
+                'CandyCane': null,
+                'ReinDeer': null,
+                'IceCold': '2px 0 0 0',
+                'TopHat': null,
+                'SantaHat': null,
+            };
 
             const { emotes, urlTemplate } = data;
 
@@ -260,7 +264,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
             while (i--) {
                 const dataEmote = emotes[i];
 
-                const requireSpaces = /[^A-Za-z0-9]/.test(dataEmote.regex);
+                const arbitraryEmote = /[^A-Za-z0-9]/.test(dataEmote.code);
 
                 const emote = {
                     id: dataEmote.id,
@@ -270,7 +274,9 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
                     name: dataEmote.code,
                     width: dataEmote.width,
                     height: dataEmote.height,
-                    require_spaces: requireSpaces,
+                    require_spaces: arbitraryEmote,
+                    modifier: overlayEmotes.hasOwnProperty(dataEmote.code),
+                    modifier_offset: overlayEmotes[dataEmote.code],
                 };
 
                 const emoteTemplate = `https:${urlTemplate.replace('{{id}}', emote.id)}`;
@@ -280,8 +286,8 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
                     4: emoteTemplate.replace('{{image}}', '3x'),
                 };
 
-                if (this.override_emotes.indexOf(emote.name) !== -1) {
-                    overrideEmotes.push(emote);
+                if (arbitraryEmote) {
+                    arbitraryEmotes.push(emote);
                 } else {
                     if (dataEmote.imageType === 'gif') { // If the emote is a GIF
                         if (this.getAnimatedEmoteMode() === GIF_EMOTES_MODE.DISABLED) {
@@ -319,8 +325,8 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
             let setEmotes = [];
             setEmotes = setEmotes.concat(globalBttv);
 
-            if (this.chat.context.get('ffzap.betterttv.override_emoticons')) {
-                setEmotes = setEmotes.concat(overrideEmotes);
+            if (this.chat.context.get('ffzap.betterttv.arbitrary_emoticons')) {
+                setEmotes = setEmotes.concat(arbitraryEmotes);
             }
 
             if (setEmotes.length === 0) {
@@ -366,7 +372,10 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
             const { emotes, bots } = await response.json();
 
             for (const bot of bots) {
-                room.getUser(null, bot).addBadge('ffz', 2);
+                const botUser = room.getUser(null, bot);
+                if (botUser) {
+                    botUser.addBadge('ffz', 2);
+                }
             }
 
             let i = emotes.length;
