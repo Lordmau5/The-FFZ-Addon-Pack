@@ -29,7 +29,7 @@ class LirikLIVE extends FrankerFaceZ.utilities.module.Module {
         });
 
         this.settings.add('ffzap.liriklive.gif_emotes_mode', {
-            default: 1,
+            default: 2,
 
             ui: {
                 path: 'Add-Ons > FFZ:AP > LIRIK LIVE >> Emotes',

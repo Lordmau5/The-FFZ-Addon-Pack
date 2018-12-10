@@ -9,7 +9,7 @@
 		},
 		{
 			"id": 85991,
-			"code": "lirikCLAP"
+			"code": "lirikCLAP2"
 		},
 		{
 			"id": 90977,
@@ -64,7 +64,7 @@
 		"code": "lirikThump2"
 	}, {
 		"id": 2172,
-		"code": "lirikC2"
+		"code": "lirikC"
 	}, {
 		"id": 2173,
 		"code": "lirikM"
@@ -115,7 +115,7 @@
 		"code": "lirikMLG"
 	}, {
 		"id": 16720,
-		"code": "lirikCLENCH2"
+		"code": "lirikCLENCH3"
 	}, {
 		"id": 17853,
 		"code": "lirikDEAD"
@@ -163,7 +163,7 @@
 		"code": "lirikGREAT2"
 	}, {
 		"id": 136681,
-		"code": "lirikCLENCH"
+		"code": "lirikCLENCH2"
 	}, {
 		"id": 142912,
 		"code": "lirikWUT"
@@ -204,6 +204,9 @@
 		"id": 680519,
 		"code": "lirikWEEB2"
 	}, {
+		"id": 680521,
+		"code": "lirikW"
+	}, {
 		"id": 680530,
 		"code": "lirikTEN2"
 	}, {
@@ -214,10 +217,10 @@
 		"code": "lirikOHGOD"
 	}, {
 		"id": 680652,
-		"code": "lirikO4"
+		"code": "lirikO"
 	}, {
 		"id": 680672,
-		"code": "lirikLUL2"
+		"code": "lirikLUL"
 	}, {
 		"id": 680675,
 		"code": "lirikLOOT2"
@@ -235,10 +238,10 @@
 		"code": "lirikBLIND2"
 	}, {
 		"id": 680761,
-		"code": "lirikBB2"
+		"code": "lirikBB"
 	}, {
 		"id": 785804,
-		"code": "lirikMONK2"
+		"code": "lirikMONK"
 	}, {
 		"id": 884567,
 		"code": "lirikPOG2"
