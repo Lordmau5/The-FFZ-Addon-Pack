@@ -4,6 +4,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
     constructor(...args) {
         super(...args);
 
+        this.inject('settings');
         this.inject('chat');
         this.inject('chat.emotes');
         this.inject('chat.badges');
@@ -31,6 +32,19 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 
         this.supporters = {};
         this.added_supporters = [];
+
+        this.settings.add('ffzap.core.remove_spaces', {
+            default: false,
+
+            ui: {
+                path: 'Add-Ons > FFZ:AP > Core >> Emotes',
+                title: 'Remove Spaces Between Emotes',
+                description: 'Enable to remove spaces inbetween emotes when they are right after one another. (e.g. combo emotes)',
+                component: 'setting-check-box',
+            },
+        });
+
+        this.on('chat:receive-message', this.onReceiveMessage);
     }
 
     onEnable() {
@@ -38,6 +52,30 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 
         this.initDeveloper();
         this.initSupporters();
+    }
+
+    removeSpacesBetweenEmotes (tokens) {
+        const output = [];
+        let lastType;
+
+        for (let i = 0, l = tokens.length; i < l; i++) {
+            let token = tokens[i];
+            // We don't worry about setting last_type because we know the next type is emoticon so it doesn't matter.
+            if (token.type === 'text' && token.text === ' ' && lastType === 'emote' && i + 1 < l && tokens[i + 1].type === 'emote') {
+                if (i - 1 >= 0) tokens[i - 1].altText += ' ';
+                continue;
+            }
+
+            lastType = token.type;
+            output.push(token);
+        }
+        return output;
+    }
+
+    onReceiveMessage(msg) {
+        if (this.chat.context.get('ffzap.core.remove_spaces')) {
+            msg.message.ffz_tokens = this.removeSpacesBetweenEmotes(msg.message.ffz_tokens);
+        }
     }
 
     async initDeveloper() {
