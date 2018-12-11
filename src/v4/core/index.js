@@ -44,7 +44,109 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
             },
         });
 
+        this.settings.add('ffzap.core.message_deletion', {
+            default: 0,
+
+            ui: {
+                path: 'Add-Ons > FFZ:AP > Core >> Chat',
+                title: 'Local Message Deletion',
+                description: 'Change the mode of which messages will be deleted for yourself.',
+                component: 'setting-select-box',
+                data: [
+                    { value: 0, title: 'Don\'t Delete Any Messages' },
+                    { value: 1, title: 'Delete Non-Sub (And Higher) Messages' },
+                    { value: 2, title: 'Delete Non-Mod (And Higher) Messages' },
+                ],
+            },
+        });
+
+        this.settings.add('ffzap.core.enable_highlight_sound', {
+            default: false,
+
+            ui: {
+                path: 'Add-Ons > FFZ:AP > Core >> Highlight Sounds',
+                title: 'Enable Highlight Sound',
+                description: 'Enable to hear a sound every time you\'re mentioned.',
+                component: 'setting-check-box',
+            },
+        });
+
+        this.settings.add('ffzap.core.highlight_sound', {
+            default: 'https://cdn.ffzap.com/sounds/default_wet.mp3',
+
+            ui: {
+                path: 'Add-Ons > FFZ:AP > Core >> Highlight Sounds',
+                title: 'Sound File',
+                description: 'Change the sound that will play when you get mentioned.',
+                component: 'setting-combo-box',
+                data: [
+                    // Default Sounds
+                    { value: 'https://cdn.ffzap.com/sounds/default_wet.mp3', title: 'Default - Wet' },
+                    { value: 'https://cdn.ffzap.com/sounds/default_graceful.mp3', title: 'Default - Graceful' },
+                    { value: 'https://cdn.ffzap.com/sounds/default_blocker.mp3', title: 'Default - Blocker' },
+
+                    // Meme Sounds
+                    { value: 'https://cdn.ffzap.com/sounds/coin.mp3', title: 'Mario - Coin Sound' },
+                    { value: 'https://cdn.ffzap.com/sounds/recovery.mp3', title: 'Pokemon - Recovery' },
+                    { value: 'https://cdn.ffzap.com/sounds/icq.mp3', title: 'ICQ - Notification' },
+                    { value: 'https://cdn.ffzap.com/sounds/aol.mp3', title: 'AOL - You\'ve got mail!' },
+                    { value: 'https://cdn.ffzap.com/sounds/mailmf.mp3', title: 'Euro Trip - Mail Motherf**ker!' },
+                    { value: 'https://cdn.ffzap.com/sounds/zelda_secret.mp3', title: 'Zelda - Secret Sound' },
+                    { value: 'https://cdn.ffzap.com/sounds/brainpower.mp3', title: 'O-oooooooooo AAAAE-A-A-I-A-U' },
+                    { value: 'https://cdn.ffzap.com/sounds/the_best.mp3', title: 'THE BEST THE BEST' },
+                    { value: 'https://cdn.ffzap.com/sounds/wow.mp3', title: 'WOW!' },
+                    { value: 'https://cdn.ffzap.com/sounds/vsauce.mp3', title: 'Hey Vsauce, Michael here.' },
+                    { value: 'https://cdn.ffzap.com/sounds/number_1.mp3', title: 'We are number one, HEY!' },
+                    { value: 'https://cdn.ffzap.com/sounds/hello.mp3', title: 'Hello.webm' },
+                    { value: 'https://cdn.ffzap.com/sounds/tuturu.mp3', title: 'Tuturu~~' },
+                    { value: 'https://cdn.ffzap.com/sounds/omae_wa_mou_shindeiru.mp3', title: 'Omae wa mou shindeiru' },
+                    { value: 'https://cdn.ffzap.com/sounds/never_asked_for_this.mp3', title: 'I never asked for this.' },
+                    { value: 'https://cdn.ffzap.com/sounds/nani.mp3', title: 'N-NANI?!' },
+                    { value: 'https://cdn.ffzap.com/sounds/oh_no.mp3', title: 'Knuckles - Oh no' },
+                    { value: 'https://cdn.ffzap.com/sounds/whats_going_on.mp3', title: 'He-Man - What\'s going on?!' },
+                ],
+            },
+        });
+
+        this.settings.add('ffzap.core.highlight_sound_volume', {
+            default: 50,
+
+            ui: {
+                path: 'Add-Ons > FFZ:AP > Core >> Highlight Sounds',
+                title: 'Highlight Sound Volume',
+                description: 'Change the volume at which the highlight sounds will be played at.',
+                component: 'setting-select-box',
+                data: [
+                    { value: 5, title: '5%' },
+                    { value: 10, title: '10%' },
+                    { value: 20, title: '20%' },
+                    { value: 30, title: '30%' },
+                    { value: 40, title: '40%' },
+                    { value: 50, title: '50%' },
+                    { value: 60, title: '60%' },
+                    { value: 70, title: '70%' },
+                    { value: 80, title: '80%' },
+                    { value: 90, title: '90%' },
+                    { value: 100, title: '100%' },
+                ],
+            },
+        });
+
         this.on('chat:receive-message', this.onReceiveMessage);
+
+        this.chat.context.on('changed:ffzap.core.highlight_sound', url => {
+            this.log.info(url);
+            this.highlight_sound.src = url;
+            this.playHighlightSound();
+        }, this);
+        
+        this.chat.context.on('changed:ffzap.core.highlight_sound_volume', volume => {
+            this.highlight_sound.volume = volume / 100;
+            this.playHighlightSound();
+        }, this);
+
+        this.highlight_sound = new Audio(this.chat.context.get('ffzap.core.highlight_sound'));
+        this.highlight_sound.volume = this.chat.context.get('ffzap.core.highlight_sound_volume') / 100;
     }
 
     onEnable() {
@@ -72,9 +174,39 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
         return output;
     }
 
+    isModeratorOrHigher (badges) {
+        return 'broadcaster' in badges || 'staff' in badges || 'admin' in badges || 'global_mod' in badges || 'moderator' in badges;
+    }
+
+    handleMessageDeletion (msg) {
+        const chatDeletion = this.chat.context.get('ffzap.core.message_deletion');
+        const badges = msg.message.badges;
+
+        if (chatDeletion == 1) {
+            if (!('subscriber' in badges) && !this.isModeratorOrHigher(badges)) {
+                msg.message.ffz_removed = true;
+            }
+        } else if (chatDeletion == 2 && !this.isModeratorOrHigher(badges)) {
+            msg.message.ffz_removed = true;
+        }
+    }
+
+    playHighlightSound () {
+        if (!this.highlight_sound.paused) {
+            this.highlight_sound.pause();
+        }
+        this.highlight_sound.play();
+    }
+
     onReceiveMessage(msg) {
         if (this.chat.context.get('ffzap.core.remove_spaces')) {
             msg.message.ffz_tokens = this.removeSpacesBetweenEmotes(msg.message.ffz_tokens);
+        }
+
+        this.handleMessageDeletion(msg);
+
+        if (this.chat.context.get('ffzap.core.enable_highlight_sound') && msg.message.mentioned) {
+            this.playHighlightSound();
         }
     }
 
