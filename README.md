@@ -38,15 +38,13 @@ You'll need the recommended version of [NodeJS](https://nodejs.org/) installed.
 Afterwards, download the repository to a local folder.
 Once that is done, open a command prompt or terminal in the folder and run:  
 `npm install`  
-After that's been done, there is another command that has to be ran in order for Gulp to function:  
-`npm install gulp -g`  
-Afterwards, just run `gulp dev`, which will start a local server on port 3000 and listen to changes in the add-ons to build a minified version.  
+Afterwards, just run `npm run serve`, which will start a local server on port 3000 and listen to changes in the add-ons to build a minified version.  
 In your browser, open up the console and set `localStorage.ffz_ap_debug_mode` to `true`, then (re-)load a Twitch website.
 
 If everything worked properly, the console should print:  
 `FFZ:AP: Development Server is present.`
 
-Now you can just edit away. The grunt task is recompiling the script and you just need to refresh the Twitch page once it's done.
+Now you can just edit away. The webpack task is recompiling the script and you just need to refresh the Twitch page once it's done.
 
 ## Stay up to date!
 

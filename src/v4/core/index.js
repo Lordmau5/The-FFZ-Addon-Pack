@@ -132,6 +132,26 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
             },
         });
 
+        this.settings.add('ffzap.core.enable_highlight_notification', {
+            default: false,
+            ui: {
+                path: 'Add-ons > FFZ:AP > Core >> Highlight Notifications',
+                title: 'Enable Highlight Notifications',
+                description: 'Show a browser notification when highlighted in chat.',
+                component: 'setting-check-box',
+            },
+        });
+
+        this.settings.add('ffzap.core.highlight_notification_focused', {
+            default: false,
+            ui: {
+                path: 'Add-ons > FFZ:AP > Core >> Highlight Notifications',
+                title: 'Show notification when chat is visible',
+                description: 'Also shows a notification when the chat is the current tab',
+                component: 'setting-check-box',
+            },
+        });
+
         this.on('chat:receive-message', this.onReceiveMessage);
 
         this.chat.context.on('changed:ffzap.core.highlight_sound', url => {
@@ -139,10 +159,20 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
             this.highlight_sound.src = url;
             this.playHighlightSound();
         }, this);
-        
+
         this.chat.context.on('changed:ffzap.core.highlight_sound_volume', volume => {
             this.highlight_sound.volume = volume / 100;
             this.playHighlightSound();
+        }, this);
+
+        this.chat.context.on('changed:ffzap.core.enable_highlight_notification', enabled => {
+            if (enabled && Notification.permission !== 'granted') {
+                Notification.requestPermission().then(permission => {
+                    if (permission !== 'granted') {
+                        this.log.warn('Permission not granted, can not show notifications even though feature is enabled');
+                    }
+                });
+            }
         }, this);
 
         this.highlight_sound = new Audio(this.chat.context.get('ffzap.core.highlight_sound'));
@@ -154,6 +184,9 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 
         this.initDeveloper();
         this.initSupporters();
+
+        // Warm up settings cache so we get change events
+        this.chat.context.get('ffzap.core.enable_highlight_notification');
     }
 
     removeSpacesBetweenEmotes (tokens) {
@@ -208,6 +241,13 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
         if (this.chat.context.get('ffzap.core.enable_highlight_sound') && msg.message.mentioned) {
             this.playHighlightSound();
         }
+
+        if (this.chat.context.get('ffzap.core.enable_highlight_notification') && msg.message.mentioned && !msg.message.deleted && (this.chat.context.get('ffzap.core.highlight_notification_focused') || document.visibilityState !== 'visible')) {
+            new Notification(`Mentioned by @${msg.message.user.displayName} in ${msg.channel}'s chat`, {
+                body: msg.message.message,
+                silent: this.chat.context.get('ffzap.core.enable_highlight_sound'),
+            });
+        }
     }
 
     async initDeveloper() {
@@ -250,7 +290,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
             const data = await response.json();
 
             this.badges.loadBadgeData('addon--ffzap.core--badges-supporter', supporterBadge);
-	
+
             for (let i = 0; i < data.length; i++) {
                 const user = data[i];
                 if (user.id === 26964566) continue;
@@ -258,7 +298,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
                 if (!user.tier) continue;
 
                 const ffzUser = this.chat.getUser(user.id);
-	
+
                 const badge = {
                     title: (this.helpers[user.id] && this.helpers[user.id].title) || 'FFZ:AP Supporter',
                     color: user.tier >= 2 && user.badge_color || supporterBadge.color,
@@ -287,21 +327,21 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
         const response = await fetch(host);
         if (response.ok) {
             const data = await response.json();
-	
+
             for (let i = 0; i < data.users.length; i++) {
                 const user = data.users[i];
                 if (this.added_supporters.includes(user.id)) continue;
 
                 const ffzUser = this.chat.getUser(user.id);
-	
+
                 const supporterBadge = {
                     id: 'supporter',
                 };
-	
+
                 if (user.level >= 2) { // Supporter Badge Color
                     supporterBadge.color = user.badge_color;
                 }
-	
+
                 if (user.level >= 3) { // Custom Supporter Badge Support
                     supporterBadge.image = `https://cdn.ffzap.com/badges/t3/${user.username}_18.png`;
                     supporterBadge.urls = {
@@ -327,7 +367,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
     // 		data.set.title = 'Monthly Emote-Vote';
     // 		data.set.source = 'FFZ:AP';
     // 		this.emotes.loadSetData('addon--ffzap.core--emotes-tier2', data.set);
-	
+
     // 		this.chat.getUser(undefined, 'lordmau5').addSet('addon--ffzap.core', 'addon--ffzap.core--emotes-tier2');
     // 	}
     // }
