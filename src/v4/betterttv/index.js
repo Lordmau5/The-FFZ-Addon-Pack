@@ -301,7 +301,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
                         }
                     }
 
-                    if (dataEmote.restrictions && dataEmote.restrictions.emoticonSet === 'night') {
+                    if (dataEmote.channel && dataEmote.channel === 'night') {
                         nightSubEmotes.push(emote);
                     } else {
                         globalBttv.push(emote);
