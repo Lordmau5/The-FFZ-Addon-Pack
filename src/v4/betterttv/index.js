@@ -53,7 +53,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
         });
 
         this.settings.add('ffzap.betterttv.gif_emoticons_mode', {
-            default: 2,
+            default: 1,
 
             ui: {
                 path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
