@@ -116,6 +116,8 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
                     { value: 'https://cdn.ffzap.com/sounds/nani.mp3', title: 'N-NANI?!' },
                     { value: 'https://cdn.ffzap.com/sounds/oh_no.mp3', title: 'Knuckles - Oh no' },
                     { value: 'https://cdn.ffzap.com/sounds/whats_going_on.mp3', title: 'He-Man - What\'s going on?!' },
+                    { value: 'https://cdn.ffzap.com/sounds/gnome.mp3', title: 'Gnome' },
+                    { value: 'https://cdn.ffzap.com/sounds/oof.mp3', title: 'Roblox Death Sound (OOF)' },
                 ],
             },
         });
@@ -263,6 +265,8 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 
     async fetchSupporters() {
         const host = 'https://api.ffzap.com/supporters';
+        const local_user = this.resolve('site').getUser();
+        let needsNotify = false;
 
         const supporterBadge = {
             id: 'supporter',
@@ -289,6 +293,10 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 
                 if (!user.tier) continue;
 
+                if (local_user && local_user.id == user.id && user.legacy) {
+                    needsNotify = true;
+                }
+
                 const ffzUser = this.chat.getUser(user.id);
 	
                 const badge = {
@@ -310,6 +318,10 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
                 ffzUser.addBadge('addon--ffzap.core', 'addon--ffzap.core--badges-supporter', badge);
                 this.added_supporters.push(user.id);
             }
+        }
+
+        if (needsNotify) {
+            setTimeout(this.showGameWispNotification, 1000);
         }
     }
 
