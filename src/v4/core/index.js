@@ -163,24 +163,11 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
         this.highlight_sound.volume = this.chat.context.get('ffzap.core.highlight_sound_volume') / 100;
     }
 
-    onLoad() { // eslint-disable-line class-methods-use-this
-        const noty_css = document.createElement('link');
-        noty_css.type = 'text/css';
-        noty_css.rel = 'stylesheet';
-        noty_css.href = 'https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css';
-        document.head.appendChild(noty_css);
-        
-        const noty_js = document.createElement('script');
-        noty_js.type = 'text/javascript';
-        noty_js.src = 'https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js';
-        document.head.appendChild(noty_js);
-    }
-
     onEnable() {
         this.log.debug('FFZ:AP\'s Core module was enabled successfully.');
 
         this.initDeveloper();
-        this.initSupporters();
+        this.fetchSupporters();
     }
 
     removeSpacesBetweenEmotes (tokens) {
@@ -323,94 +310,6 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
         if (needsNotify) {
             setTimeout(this.showGameWispNotification, 1000);
         }
-    }
-
-    async fetchLegacySupporters() {
-        const local_user = this.resolve('site').getUser();
-        let needsNotify = false;
-
-        const host = 'https://cdn.ffzap.com/supporters.json';
-
-        const response = await fetch(host);
-        if (response.ok) {
-            const data = await response.json();
-	
-            for (let i = 0; i < data.users.length; i++) {
-                const user = data.users[i];
-                if (this.added_supporters.includes(user.id)) continue;
-
-                if (local_user && local_user.id == user.id) {
-                    needsNotify = true;
-                }
-
-                const ffzUser = this.chat.getUser(user.id);
-	
-                const supporterBadge = {
-                    id: 'supporter',
-                };
-	
-                if (user.level >= 2) { // Supporter Badge Color
-                    supporterBadge.color = user.badge_color;
-                }
-	
-                if (user.level >= 3) { // Custom Supporter Badge Support
-                    supporterBadge.image = `https://cdn.ffzap.com/badges/t3/${user.username}_18.png`;
-                    supporterBadge.urls = {
-                        1: `https://cdn.ffzap.com/badges/t3/${user.username}_18.png`,
-                        2: `https://cdn.ffzap.com/badges/t3/${user.username}_36.png`,
-                        4: `https://cdn.ffzap.com/badges/t3/${user.username}_72.png`,
-                    };
-                }
-                ffzUser.addBadge('addon--ffzap.core', 'addon--ffzap.core--badges-supporter', supporterBadge);
-            }
-        }
-
-        if (needsNotify) {
-            setTimeout(this.showGameWispNotification, 1000);
-        }
-    }
-
-    showGameWispNotification () {
-        if (!localStorage.ffz_ap_gamewisp_notify && !document.location.href.includes('popout')) {
-            const n = new Noty({
-                type: 'alert',
-                layout: 'bottomCenter',
-                theme: 'sunset',
-                title: '<span style="font-size: 1.5em">Attention supporter!</span>',
-                text: 'It appears as though you are still supporting FFZ:AP through <a href="https://gamewisp.com/channel/4360/" target="_blank">GameWisp</a>.<br>'
-                    + 'The replacement for the supporter status is now Patreon.<br>'
-                    + 'Please make sure to switch over and cancel on GameWisp if you don\'t want to lose your badge.<br><br>'
-                    + '<a href="https://patreon.com/Lordmau5" target="_blank">Click here to go to Patreon</a>',
-                closeWith: 'button',
-                callbacks: {
-                    onTemplate: function () {
-                        const logo = document.createElement('img');
-                        logo.className = 'tw-mg-r-1';
-                        logo.src = 'https://cdn.ffzap.com/icon32.png';
-                        
-                        const closeButton = document.createElement('button');
-                        closeButton.id = 'ffzap_noty_close';
-                        closeButton.className = 'tw-button-icon tw-mg-r-05 tw-absolute tw-right-0';
-                        closeButton.innerHTML = '<span class="tw-button-icon__icon"><figure class="ffz-i-ok"></figure></span>';
-
-                        this.barDom.innerHTML = '<div class="ffzap_noty noty_body tw-c-background-base tw-c-text-base tw-block tw-border"><div class="ffzap_noty_title">'
-                            + logo.outerHTML + this.options.title + closeButton.outerHTML
-                            + '</div><div class="ffzap_noty_text">' + this.options.text + '</div></div>';
-                    },
-                    afterShow: function () {
-                        this.barDom.querySelector('#ffzap_noty_close').addEventListener('click', () => {
-                            n.close();
-                            localStorage.ffz_ap_gamewisp_notify = true;
-                        });
-                    },
-                },
-            }).show();
-        }
-    }
-
-    async initSupporters() {
-        await this.fetchSupporters();
-        await this.fetchLegacySupporters();
     }
 
     // async initTier2Emotes() { // eslint-disable-line class-methods-use-this
