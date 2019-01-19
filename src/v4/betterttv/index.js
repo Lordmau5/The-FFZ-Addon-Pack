@@ -249,14 +249,14 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
             const arbitraryEmotes = [];
             const nightSubEmotes = [];
 
-            const overlayEmotes = {
-                'SoSnowy': '2px 0 0 0',
-                'CandyCane': null,
-                'ReinDeer': null,
-                'IceCold': '2px 0 0 0',
-                'TopHat': null,
-                'SantaHat': null,
-            };
+            // const overlayEmotes = {
+            //     'SoSnowy': '2px 0 0 0',
+            //     'CandyCane': null,
+            //     'ReinDeer': null,
+            //     'IceCold': '2px 0 0 0',
+            //     'TopHat': null,
+            //     'SantaHat': null,
+            // };
 
             const { emotes, urlTemplate } = data;
 
@@ -275,8 +275,8 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
                     width: dataEmote.width,
                     height: dataEmote.height,
                     require_spaces: arbitraryEmote,
-                    modifier: overlayEmotes.hasOwnProperty(dataEmote.code),
-                    modifier_offset: overlayEmotes[dataEmote.code],
+                    // modifier: overlayEmotes.hasOwnProperty(dataEmote.code),
+                    // modifier_offset: overlayEmotes[dataEmote.code],
                 };
 
                 const emoteTemplate = `https:${urlTemplate.replace('{{id}}', emote.id)}`;
