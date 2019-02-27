@@ -30,7 +30,7 @@ function ffzapInit () {
 	const s = ce('script');
 	s.type = 'text/javascript';
 	s.src = 'https://cdn.ffzap.com/ffz-ap.min.js';
-	document.head.appendChild(s);	
+	document.head.appendChild(s);
 }
 
 ffzapInit();
