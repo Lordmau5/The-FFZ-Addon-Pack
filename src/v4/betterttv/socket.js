@@ -36,7 +36,6 @@ export default class Socket {
                 while (i--) {
                     const channel = this._connection_buffer[i];
                     this.joinChannel(channel);
-                    this.broadcastMe(channel);
                 }
                 this._connection_buffer = [];
             }
@@ -166,6 +165,8 @@ export default class Socket {
             name: channel,
         });
         this._joined_channels[channel] = true;
+
+        this.broadcastMe(channel);
     }
 
     partChannel(channel) {

@@ -112,6 +112,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 
         this.on('chat:room-add', this.roomAdd);
         this.on('chat:room-remove', this.roomRemove);
+        this.on('chat:receive-message', this.onReceiveMessage);
 
         this.addBadges();
 
@@ -138,6 +139,16 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
 
         if (this.chat.context.get('ffzap.betterttv.pro_emoticons')) {
             this.socket.partChannel(room.id);
+        }
+    }
+
+    onReceiveMessage(msg) {
+        const user = this.resolve('site').getUser();
+        if (user) {
+            const msg_user_id = msg.message.user.id;
+            if (user.id === msg_user_id) {
+                this.socket.broadcastMe(msg.channel);
+            }
         }
     }
 

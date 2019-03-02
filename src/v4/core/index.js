@@ -149,7 +149,6 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
         this.on('chat:receive-message', this.onReceiveMessage);
 
         this.chat.context.on('changed:ffzap.core.highlight_sound', url => {
-            this.log.info(url);
             this.highlight_sound.src = url;
             this.playHighlightSound();
         }, this);
