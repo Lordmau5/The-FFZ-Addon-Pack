@@ -1,4 +1,4 @@
-/* global FrankerFaceZ, fetch, Noty */
+/* global FrankerFaceZ, fetch */
 
 class FFZAP extends FrankerFaceZ.utilities.module.Module {
     constructor(...args) {
@@ -50,13 +50,13 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 
             ui: {
                 path: 'Add-Ons > FFZ:AP > Core >> Chat',
-                title: 'Local Message Deletion',
-                description: 'Change the mode of which messages will be deleted for yourself.',
+                title: 'Message User-Level Filtering',
+                description: 'Messages will be removed from chat entirely if they aren\'t sent by a user of this level or higher.',
                 component: 'setting-select-box',
                 data: [
-                    { value: 0, title: 'Don\'t Delete Any Messages' },
-                    { value: 1, title: 'Delete Non-Sub (And Higher) Messages' },
-                    { value: 2, title: 'Delete Non-Mod (And Higher) Messages' },
+                    { value: 0, title: 'Display All Messages' },
+                    { value: 1, title: 'Display Subscriber Messages' },
+                    { value: 2, title: 'Display Moderator Messages' },
                 ],
             },
         });
@@ -160,6 +160,38 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 
         this.highlight_sound = new Audio(this.chat.context.get('ffzap.core.highlight_sound'));
         this.highlight_sound.volume = this.chat.context.get('ffzap.core.highlight_sound_volume') / 100;
+
+        this.remove_spaces_tokenizer = {
+            type: 'remove_spaces',
+            priority: -100,
+            process: tokens => {
+                if (!tokens || !tokens.length) {
+                    return tokens;
+                }
+
+                if (!this.chat.context.get('ffzap.core.remove_spaces')) {
+                    return tokens;
+                }
+
+                const output = [];
+                let lastType;
+
+                for (let i = 0, l = tokens.length; i < l; i++) {
+                    let token = tokens[i];
+                    // We don't worry about setting last_type because we know the next type is emoticon so it doesn't matter.
+                    if (token.type === 'text' && token.text === ' ' && lastType === 'emote' && i + 1 < l && tokens[i + 1].type === 'emote') {
+                        if (i - 1 >= 0) tokens[i - 1].text += ' ';
+                        continue;
+                    }
+
+                    lastType = token.type;
+                    output.push(token);
+                }
+                return output;
+            },
+        };
+
+        this.chat.addTokenizer(this.remove_spaces_tokenizer);
     }
 
     onEnable() {
@@ -167,24 +199,6 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 
         this.initDeveloper();
         this.fetchSupporters();
-    }
-
-    removeSpacesBetweenEmotes (tokens) {
-        const output = [];
-        let lastType;
-
-        for (let i = 0, l = tokens.length; i < l; i++) {
-            let token = tokens[i];
-            // We don't worry about setting last_type because we know the next type is emoticon so it doesn't matter.
-            if (token.type === 'text' && token.text === ' ' && lastType === 'emote' && i + 1 < l && tokens[i + 1].type === 'emote') {
-                if (i - 1 >= 0) tokens[i - 1].altText += ' ';
-                continue;
-            }
-
-            lastType = token.type;
-            output.push(token);
-        }
-        return output;
     }
 
     isModeratorOrHigher (badges) {
@@ -212,10 +226,6 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
     }
 
     onReceiveMessage(msg) {
-        if (this.chat.context.get('ffzap.core.remove_spaces')) {
-            msg.message.ffz_tokens = this.removeSpacesBetweenEmotes(msg.message.ffz_tokens);
-        }
-
         this.handleMessageDeletion(msg);
 
         if (this.chat.context.get('ffzap.core.enable_highlight_sound') && msg.message.mentioned) {
