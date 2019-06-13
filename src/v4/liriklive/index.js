@@ -8,7 +8,7 @@ const GIF_EMOTES_MODE = {
     ANIMATED: 2,
 };
 
-class LirikLIVE extends FrankerFaceZ.utilities.module.Module {
+class LirikLIVE extends FrankerFaceZ.utilities.addon.Addon {
     constructor(...args) {
         super(...args);
 
@@ -21,7 +21,7 @@ class LirikLIVE extends FrankerFaceZ.utilities.module.Module {
             default: true,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > LIRIK LIVE @{"description": "LIRIK LIVE idea by OBAN_INTERNET"} >> Emotes',
+                path: 'Add-Ons > Lirik LIVE >> Emotes',
                 title: 'Global Emotes',
                 description: 'Enable to show LIRIK LIVE global emotes.',
                 component: 'setting-check-box',
@@ -32,7 +32,7 @@ class LirikLIVE extends FrankerFaceZ.utilities.module.Module {
             default: 2,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > LIRIK LIVE >> Emotes',
+                path: 'Add-Ons > Lirik LIVE >> Emotes',
                 title: 'GIF Emotes',
                 description: 'Change the mode of how GIF emotes are showing up.',
                 component: 'setting-select-box',
@@ -48,7 +48,7 @@ class LirikLIVE extends FrankerFaceZ.utilities.module.Module {
             default: true,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > LIRIK LIVE >> Emotes',
+                path: 'Add-Ons > Lirik LIVE >> Emotes',
                 title: 'Subscriber Emotes',
                 description: 'Enable to show additional LIRIK LIVE subscriber emotes.',
                 component: 'setting-check-box',
@@ -61,10 +61,12 @@ class LirikLIVE extends FrankerFaceZ.utilities.module.Module {
 
         this.socket = false;
         this._last_emote_id = 0;
+
+        this.enable();
     }
 
     onEnable() {
-        this.log.debug('FFZ:AP\'s LirikLIVE module was enabled successfully.');
+        this.log.debug('FFZ:AP\'s Lirik LIVE module was enabled successfully.');
 
         this.updateEmotes();
 
@@ -322,4 +324,5 @@ class LirikLIVE extends FrankerFaceZ.utilities.module.Module {
     }
 }
 
-FrankerFaceZ.get().register('addon.ffzap.liriklive', LirikLIVE).enable();
+// FrankerFaceZ.get().register('addon.ffzap.liriklive', LirikLIVE).enable();
+LirikLIVE.register('ffzap-liriklive');

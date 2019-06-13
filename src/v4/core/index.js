@@ -1,6 +1,6 @@
 /* global FrankerFaceZ, fetch */
 
-class FFZAP extends FrankerFaceZ.utilities.module.Module {
+class FFZAP extends FrankerFaceZ.utilities.addon.Addon {
     constructor(...args) {
         super(...args);
 
@@ -38,7 +38,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
             default: false,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > Core >> Emotes',
+                path: 'Add-Ons > FFZ:AP Core >> Emotes',
                 title: 'Remove Spaces Between Emotes',
                 description: 'Enable to remove spaces inbetween emotes when they are right after one another. (e.g. combo emotes)',
                 component: 'setting-check-box',
@@ -49,7 +49,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
             default: 0,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > Core >> Chat',
+                path: 'Add-Ons > FFZ:AP Core >> Chat',
                 title: 'Message User-Level Filtering',
                 description: 'Messages will be removed from chat entirely if they aren\'t sent by a user of this level or higher.',
                 component: 'setting-select-box',
@@ -65,7 +65,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
             default: false,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > Core >> Highlight Sounds',
+                path: 'Add-Ons > FFZ:AP Core >> Highlight Sounds',
                 title: 'Enable Highlight Sound',
                 description: 'Enable to hear a sound every time you\'re mentioned.',
                 component: 'setting-check-box',
@@ -76,7 +76,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
             default: false,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > Core >> Highlight Sounds',
+                path: 'Add-Ons > FFZ:AP Core >> Highlight Sounds',
                 title: 'Prevent in own Channel',
                 description: 'Enable to prevent the sound from playing in your own channel.',
                 component: 'setting-check-box',
@@ -87,7 +87,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
             default: 'https://cdn.ffzap.com/sounds/default_wet.mp3',
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > Core >> Highlight Sounds',
+                path: 'Add-Ons > FFZ:AP Core >> Highlight Sounds',
                 title: 'Sound File',
                 description: 'Change the sound that will play when you get mentioned.',
                 component: 'setting-combo-box',
@@ -126,7 +126,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
             default: 50,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > Core >> Highlight Sounds',
+                path: 'Add-Ons > FFZ:AP Core >> Highlight Sounds',
                 title: 'Highlight Sound Volume',
                 description: 'Change the volume at which the highlight sounds will be played at.',
                 component: 'setting-select-box',
@@ -192,6 +192,8 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
         };
 
         this.chat.addTokenizer(this.remove_spaces_tokenizer);
+
+        this.enable();
     }
 
     onEnable() {
@@ -240,7 +242,7 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
         }
     }
 
-    async initDeveloper() {
+    initDeveloper() {
         const developerBadge = {
             id: 'developer',
             title: 'FFZ:AP Developer',
@@ -261,8 +263,6 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 
     async fetchSupporters() {
         const host = 'https://api.ffzap.com/supporters';
-        const local_user = this.resolve('site').getUser();
-        let needsNotify = false;
 
         const supporterBadge = {
             id: 'supporter',
@@ -289,10 +289,6 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
 
                 if (!user.tier) continue;
 
-                if (local_user && local_user.id == user.id && user.legacy) {
-                    needsNotify = true;
-                }
-
                 const ffzUser = this.chat.getUser(user.id);
 	
                 const badge = {
@@ -315,23 +311,8 @@ class FFZAP extends FrankerFaceZ.utilities.module.Module {
                 this.added_supporters.push(user.id);
             }
         }
-
-        if (needsNotify) {
-            setTimeout(this.showGameWispNotification, 1000);
-        }
     }
-
-    // async initTier2Emotes() { // eslint-disable-line class-methods-use-this
-    // 	const response = await fetch('https://api.frankerfacez.com/v1/set/105031');
-    // 	if (response.ok) {
-    // 		const data = await response.json();
-    // 		data.set.title = 'Monthly Emote-Vote';
-    // 		data.set.source = 'FFZ:AP';
-    // 		this.emotes.loadSetData('addon--ffzap.core--emotes-tier2', data.set);
-	
-    // 		this.chat.getUser(undefined, 'lordmau5').addSet('addon--ffzap.core', 'addon--ffzap.core--emotes-tier2');
-    // 	}
-    // }
 }
 
-FrankerFaceZ.get().register('addon.ffzap.core', FFZAP).enable();
+// FrankerFaceZ.get().register('addon.ffzap.core', FFZAP).enable();
+FFZAP.register('ffzap-core');

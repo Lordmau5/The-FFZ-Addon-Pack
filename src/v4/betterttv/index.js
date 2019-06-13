@@ -9,7 +9,7 @@ const GIF_EMOTES_MODE = {
     ANIMATED: 2,
 };
 
-class BetterTTV extends FrankerFaceZ.utilities.module.Module {
+class BetterTTV extends FrankerFaceZ.utilities.addon.Addon {
     constructor(...args) {
         super(...args);
 
@@ -23,7 +23,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
             default: true,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
+                path: 'Add-Ons > BetterTTV Emotes >> Emotes',
                 title: 'Global Emotes',
                 description: 'Enable to show global BetterTTV emoticons.',
                 component: 'setting-check-box',
@@ -34,7 +34,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
             default: true,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
+                path: 'Add-Ons > BetterTTV Emotes >> Emotes',
                 title: 'Arbitrary Emotes',
                 description: 'Enable to show arbitrary emoticons (like D:, :tf:, (poolparty), :\'(  and similar).',
                 component: 'setting-check-box',
@@ -45,7 +45,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
             default: true,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
+                path: 'Add-Ons > BetterTTV Emotes >> Emotes',
                 title: 'Channel Emotes',
                 description: 'Enable to show per-channel BetterTTV emoticons.',
                 component: 'setting-check-box',
@@ -56,7 +56,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
             default: 1,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
+                path: 'Add-Ons > BetterTTV Emotes >> Emotes',
                 title: 'GIF Emotes',
                 description: 'Change the mode of how GIF emoticons are showing up.',
                 component: 'setting-select-box',
@@ -72,7 +72,7 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
             default: true,
 
             ui: {
-                path: 'Add-Ons > FFZ:AP > BetterTTV >> Emotes',
+                path: 'Add-Ons > BetterTTV Emotes >> Emotes',
                 title: 'Pro Emotes',
                 description: 'Enable to show BetterTTV Pro emoticons.',
                 component: 'setting-check-box',
@@ -105,10 +105,12 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
         this.pro_users = {};
         this.night_subs = {};
         this.socket = false;
+
+        this.enable();
     }
 
     onEnable() {
-        this.log.debug('FFZ:AP\'s BetterTTV module was enabled successfully.');
+        this.log.debug('FFZ:AP\'s BetterTTV Emotes module was enabled successfully.');
 
         this.on('chat:room-add', this.roomAdd);
         this.on('chat:room-remove', this.roomRemove);
@@ -474,4 +476,5 @@ class BetterTTV extends FrankerFaceZ.utilities.module.Module {
     }
 }
 
-FrankerFaceZ.get().register('addon.ffzap.betterttv', BetterTTV).enable();
+// FrankerFaceZ.get().register('addon.ffzap.betterttv', BetterTTV).enable();
+BetterTTV.register('ffzap-bttv');
