@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+
+Name: manifest.json
+Digest-Algorithms: MD5 SHA1 SHA256
+MD5-Digest: A4us2pGOOGlh8RvDA2W1Ww==
+SHA1-Digest: g/inUorCKjPfxCixG63qJ6M+S1g=
+SHA256-Digest: C7V/vBwaJr8EthtJ1neqZyX3dcxf25t0o7NsFiLiM7Y=
+
+Name: chrome/icon128.png
+Digest-Algorithms: MD5 SHA1 SHA256
+MD5-Digest: 145lJl1k61pwUo5raFrQ3A==
+SHA1-Digest: nYPiSHHH6p96Dmxuad+g8zzxtOw=
+SHA256-Digest: FiuTsd/4OTCGt+/WWUe4Vx9VbxOYLOwAGDpktsQ7d24=
+
+Name: chrome/icon48.png
+Digest-Algorithms: MD5 SHA1 SHA256
+MD5-Digest: +SsZYE4Vo4JT24AusiLhDg==
+SHA1-Digest: odIgIO2qtg+1Kf7wPUofnWwTBMk=
+SHA256-Digest: nl0ghaOxHxSpCF/m08OC2QdyJ8um+gdsDSssYUR8J7g=
+
+Name: chrome/script.js
+Digest-Algorithms: MD5 SHA1 SHA256
+MD5-Digest: 26biPn/dlyrD0nWMHEByaQ==
+SHA1-Digest: QgRoPsZTnYqWCYHSMlRYw2dzws8=
+SHA256-Digest: 38IHeF3RwsShkWwkYP6Yr3F1WJlvZggSPp20zhnWadA=
+

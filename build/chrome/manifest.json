@@ -1,8 +1,8 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "The FFZ Add-On Pack",
   "short_name": "ffz-ap",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "A combination of add-ons for the Twitch extension \"FrankerFaceZ\"",
 
   "icons": {
@@ -10,22 +10,15 @@
     "128": "chrome/icon128.png"
   },
 
-  "content_scripts": [ {
-    "all_frames": true,
-    "js": [ "chrome/script.js" ],
-    "matches": [ "*://*.twitch.tv/*" ],
-    "exclude_globs": [ "*://api.twitch.tv/*" ]
+  "web_accessible_resources": [ {
+    "resources": [ "chrome/script.js" ],
+    "matches": [ "*://*.twitch.tv/*" ]
   } ],
 
-  "permissions": [
-    "*://*.twitch.tv/*"
-  ],
-
-  "applications": {
-    "gecko": {
-      "id": "@ffz-ap",
-      "strict_min_version": "57.0",
-      "update_url": "https://cdn.ffzap.com/firefox-updates.json"
-    }
-  }
+  "content_scripts": [ {
+    "all_frames": true,
+    "js": [ "chrome/contentScript.js" ],
+    "matches": [ "*://*.twitch.tv/*" ],
+    "exclude_globs": [ "*://api.twitch.tv/*" ]
+  } ]
 }

@@ -1,264 +1,328 @@
 {
-	"global": [{
-			"id": 9773,
-			"code": "lirikREKT"
-		},
-		{
-			"id": 65389,
-			"code": "lirikGOOD"
-		},
-		{
-			"id": 85991,
-			"code": "lirikCLAP2"
-		},
-		{
-			"id": 90977,
-			"code": "lirik1"
-		},
-		{
-			"id": 90978,
-			"code": "lirik2"
-		},
-		{
-			"id": 90979,
-			"code": "lirik3"
-		},
-		{
-			"id": 90980,
-			"code": "lirik4"
-		},
-		{
-			"id": 105098,
-			"code": "lirikNON"
-		},
-		{
-			"id": 623359,
-			"code": "lirikDEWD"
-		}
-	],
-	"gifs": [
-		"lirikCHAMP2",
-		"lirikDJ2",
-		"lirikEZ2",
-		"lirikHS2",
-		"lirikRE2",
-		"lirikTHUMP2",
-		"lirikRAIN"
-	],
-	"subscriber": [{
-		"id": 380,
-		"code": "lirikO2"
-	}, {
-		"id": 382,
-		"code": "lirikO3"
-	}, {
-		"id": 553,
-		"code": "lirikSODA",
-		"width": 20,
-		"height": 30
-	}, {
-		"id": 839,
-		"code": "lirikF2"
-	}, {
-		"id": 1956,
-		"code": "lirikThump2"
-	}, {
-		"id": 2172,
-		"code": "lirikC"
-	}, {
-		"id": 2173,
-		"code": "lirikM"
-	}, {
-		"id": 2174,
-		"code": "lirikW2"
-	}, {
-		"id": 2197,
-		"code": "lirikB"
-	}, {
-		"id": 2343,
-		"code": "lirikFA"
-	}, {
-		"id": 4493,
-		"code": "lirikFAT"
-	}, {
-		"id": 9418,
-		"code": "lirikG"
-	}, {
-		"id": 9419,
-		"code": "lirikR"
-	}, {
-		"id": 9420,
-		"code": "lirikRAGE"
-	}, {
-		"id": 9706,
-		"code": "lirikGOTY"
-	}, {
-		"id": 9774,
-		"code": "lirikHYPE2"
-	}, {
-		"id": 9914,
-		"code": "lirikRIP"
-	}, {
-		"id": 12127,
-		"code": "lirikPVP"
-	}, {
-		"id": 12640,
-		"code": "lirikDREAM"
-	}, {
-		"id": 13085,
-		"code": "lirikWC2"
-	}, {
-		"id": 14013,
-		"code": "lirikTRASH"
-	}, {
-		"id": 16156,
-		"code": "lirikMLG"
-	}, {
-		"id": 16720,
-		"code": "lirikCLENCH3"
-	}, {
-		"id": 17853,
-		"code": "lirikDEAD"
-	}, {
-		"id": 19993,
-		"code": "lirikCOP"
-	}, {
-		"id": 19994,
-		"code": "lirikDRUG"
-	}, {
-		"id": 23002,
-		"code": "lirikCRASH"
-	}, {
-		"id": 24578,
-		"code": "lirikOWL"
-	}, {
-		"id": 24742,
-		"code": "lirikOWL2"
-	}, {
-		"id": 29425,
-		"code": "lirikCRY"
-	}, {
-		"id": 37626,
-		"code": "lirikJ"
-	}, {
-		"id": 45583,
-		"code": "lirikMEOW"
-	}, {
-		"id": 48740,
-		"code": "lirikWC"
-	}, {
-		"id": 48986,
-		"code": "lirikF"
-	}, {
-		"id": 50740,
-		"code": "lirikNOT"
-	}, {
-		"id": 72445,
-		"code": "lirikHOLD"
-	}, {
-		"id": 81628,
-		"code": "lirikTRUCK"
-	}, {
-		"id": 136680,
-		"code": "lirikGREAT2"
-	}, {
-		"id": 136681,
-		"code": "lirikCLENCH2"
-	}, {
-		"id": 142912,
-		"code": "lirikWUT"
-	}, {
-		"id": 144534,
-		"code": "lirikNOTT"
-	}, {
-		"id": 149444,
-		"code": "lirikOK"
-	}, {
-		"id": 159912,
-		"code": "lirikDED"
-	}, {
-		"id": 162308,
-		"code": "lirikLEAN"
-	}, {
-		"id": 164087,
-		"code": "lirikFAKE"
-	}, {
-		"id": 266588,
-		"code": "lirikPRAY2"
-	}, {
-		"id": 392662,
-		"code": "lirikHEY2"
-	}, {
-		"id": 489567,
-		"code": "lirikFEELS3"
-	}, {
-		"id": 489694,
-		"code": "lirikGREAT3"
-	}, {
-		"id": 560487,
-		"code": "lirikFEELS4"
-	}, {
-		"id": 561228,
-		"code": "lirikGREAT4"
-	}, {
-		"id": 680519,
-		"code": "lirikWEEB2"
-	}, {
-		"id": 680521,
-		"code": "lirikW"
-	}, {
-		"id": 680530,
-		"code": "lirikTEN2"
-	}, {
-		"id": 680543,
-		"code": "lirikSHUCKS2"
-	}, {
-		"id": 680611,
-		"code": "lirikOHGOD"
-	}, {
-		"id": 680652,
-		"code": "lirikO"
-	}, {
-		"id": 680672,
-		"code": "lirikLUL"
-	}, {
-		"id": 680675,
-		"code": "lirikLOOT2"
-	}, {
-		"id": 680678,
-		"code": "lirikLEWD2"
-	}, {
-		"id": 680691,
-		"code": "lirikHUG2"
-	}, {
-		"id": 680706,
-		"code": "lirikH2"
-	}, {
-		"id": 680749,
-		"code": "lirikBLIND2"
-	}, {
-		"id": 680761,
-		"code": "lirikBB"
-	}, {
-		"id": 785804,
-		"code": "lirikMONK"
-	}, {
-		"id": 884567,
-		"code": "lirikPOG2"
-	}, {
-		"id": 932342,
-		"code": "lirikZUCC"
-	}, {
-		"id": 938884,
-		"code": "lirikTOS2"
-	}, {
-		"code": "lirikFEELS2"
-	}, {
-		"code": "lirikUSHANKA"
-	}],
-	"restricted": [{
-		"id": 109208,
-		"code": "lirikOG",
-		"months": 12
-	}]
+  "global": [
+    {
+      "name": "lirikREKT",
+      "code": "lirikREKT"
+    },
+    {
+      "name": "lirikGOOD",
+      "code": "lirikGOOD"
+    },
+    {
+      "name": "lirikCLAP2",
+      "code": "lirikCLAP2"
+    },
+    {
+      "name": "lirik1",
+      "code": "lirik1"
+    },
+    {
+      "name": "lirik2",
+      "code": "lirik2"
+    },
+    {
+      "name": "lirik3",
+      "code": "lirik3"
+    },
+    {
+      "name": "lirik4",
+      "code": "lirik4"
+    },
+    {
+      "name": "lirikNON",
+      "code": "lirikNON"
+    },
+    {
+      "name": "lirikDEWD",
+      "code": "lirikDEWD"
+    }
+  ],
+  "gifs": [
+    "lirikCHAMP2",
+    "lirikDJ2",
+    "lirikEZ2",
+    "lirikHS2",
+    "lirikRE2",
+    "lirikTHUMP2",
+    "lirikRAIN"
+  ],
+  "subscriber": [
+    {
+      "name": "lirikO2",
+      "code": "lirikO2"
+    },
+    {
+      "name": "lirikO3",
+      "code": "lirikO3"
+    },
+    {
+      "name": "lirikSODA",
+      "code": "lirikSODA",
+      "width": 20,
+      "height": 30
+    },
+    {
+      "name": "lirikF2",
+      "code": "lirikF2"
+    },
+    {
+      "name": "lirikThump2",
+      "code": "lirikThump2"
+    },
+    {
+      "name": "lirikC",
+      "code": "lirikC"
+    },
+    {
+      "name": "lirikM",
+      "code": "lirikM"
+    },
+    {
+      "name": "lirikW2",
+      "code": "lirikW2"
+    },
+    {
+      "name": "lirikB",
+      "code": "lirikB"
+    },
+    {
+      "name": "lirikFA",
+      "code": "lirikFA"
+    },
+    {
+      "name": "lirikFAT",
+      "code": "lirikFAT"
+    },
+    {
+      "name": "lirikG",
+      "code": "lirikG"
+    },
+    {
+      "name": "lirikR",
+      "code": "lirikR"
+    },
+    {
+      "name": "lirikRAGE",
+      "code": "lirikRAGE"
+    },
+    {
+      "name": "lirikGOTY",
+      "code": "lirikGOTY"
+    },
+    {
+      "name": "lirikHYPE2",
+      "code": "lirikHYPE2"
+    },
+    {
+      "name": "lirikRIP",
+      "code": "lirikRIP"
+    },
+    {
+      "name": "lirikPVP",
+      "code": "lirikPVP"
+    },
+    {
+      "name": "lirikDREAM",
+      "code": "lirikDREAM"
+    },
+    {
+      "name": "lirikWC2",
+      "code": "lirikWC2"
+    },
+    {
+      "name": "lirikTRASH",
+      "code": "lirikTRASH"
+    },
+    {
+      "name": "lirikMLG",
+      "code": "lirikMLG"
+    },
+    {
+      "name": "lirikCLENCH3",
+      "code": "lirikCLENCH3"
+    },
+    {
+      "name": "lirikDEAD",
+      "code": "lirikDEAD"
+    },
+    {
+      "name": "lirikCOP",
+      "code": "lirikCOP"
+    },
+    {
+      "name": "lirikDRUG",
+      "code": "lirikDRUG"
+    },
+    {
+      "name": "lirikCRASH",
+      "code": "lirikCRASH"
+    },
+    {
+      "name": "lirikOWL",
+      "code": "lirikOWL"
+    },
+    {
+      "name": "lirikOWL2",
+      "code": "lirikOWL2"
+    },
+    {
+      "name": "lirikCRY",
+      "code": "lirikCRY"
+    },
+    {
+      "name": "lirikJ",
+      "code": "lirikJ"
+    },
+    {
+      "name": "lirikMEOW",
+      "code": "lirikMEOW"
+    },
+    {
+      "name": "lirikWC",
+      "code": "lirikWC"
+    },
+    {
+      "name": "lirikF",
+      "code": "lirikF"
+    },
+    {
+      "name": "lirikNOT",
+      "code": "lirikNOT"
+    },
+    {
+      "name": "lirikHOLD",
+      "code": "lirikHOLD"
+    },
+    {
+      "name": "lirikTRUCK",
+      "code": "lirikTRUCK"
+    },
+    {
+      "name": "lirikGREAT2",
+      "code": "lirikGREAT2"
+    },
+    {
+      "name": "lirikCLENCH2",
+      "code": "lirikCLENCH2"
+    },
+    {
+      "name": "lirikWUT",
+      "code": "lirikWUT"
+    },
+    {
+      "name": "lirikNOTT",
+      "code": "lirikNOTT"
+    },
+    {
+      "name": "lirikOK",
+      "code": "lirikOK"
+    },
+    {
+      "name": "lirikDED",
+      "code": "lirikDED"
+    },
+    {
+      "name": "lirikLEAN",
+      "code": "lirikLEAN"
+    },
+    {
+      "name": "lirikFAKE",
+      "code": "lirikFAKE"
+    },
+    {
+      "name": "lirikPRAY2",
+      "code": "lirikPRAY2"
+    },
+    {
+      "name": "lirikHEY2",
+      "code": "lirikHEY2"
+    },
+    {
+      "name": "lirikFEELS3",
+      "code": "lirikFEELS3"
+    },
+    {
+      "name": "lirikGREAT3",
+      "code": "lirikGREAT3"
+    },
+    {
+      "name": "lirikFEELS4",
+      "code": "lirikFEELS4"
+    },
+    {
+      "name": "lirikGREAT4",
+      "code": "lirikGREAT4"
+    },
+    {
+      "name": "lirikWEEB2",
+      "code": "lirikWEEB2"
+    },
+    {
+      "name": "lirikTEN2",
+      "code": "lirikTEN2"
+    },
+    {
+      "name": "lirikSHUCKS2",
+      "code": "lirikSHUCKS2"
+    },
+    {
+      "name": "lirikOHGOD",
+      "code": "lirikOHGOD"
+    },
+    {
+      "name": "lirikO",
+      "code": "lirikO"
+    },
+    {
+      "name": "lirikLOOT2",
+      "code": "lirikLOOT2"
+    },
+    {
+      "name": "lirikLEWD2",
+      "code": "lirikLEWD2"
+    },
+    {
+      "name": "lirikHUG2",
+      "code": "lirikHUG2"
+    },
+    {
+      "name": "lirikH2",
+      "code": "lirikH2"
+    },
+    {
+      "name": "lirikBLIND2",
+      "code": "lirikBLIND2"
+    },
+    {
+      "name": "lirikMONK",
+      "code": "lirikMONK"
+    },
+    {
+      "name": "lirikPOG2",
+      "code": "lirikPOG2"
+    },
+    {
+      "name": "lirikZUCC",
+      "code": "lirikZUCC"
+    },
+    {
+      "name": "lirikTOS2",
+      "code": "lirikTOS2"
+    },
+    {
+      "name": "lirikFEELS2",
+      "code": "lirikFEELS2"
+    },
+    {
+      "name": "lirikUSHANKA",
+      "code": "lirikUSHANKA"
+    }
+  ],
+  "restricted": [
+    {
+      "name": "lirikOG",
+      "code": "lirikOG",
+      "months": 12
+    }
+  ]
 }
