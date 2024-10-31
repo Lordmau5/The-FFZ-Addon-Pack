@@ -1,3 +1,6 @@
+# ⚠️ This repository is now archived
+## If you have issues with any of the add-ons in this add-on pack, please open them on the [FrankerFaceZ/Add-Ons](https://github.com/FrankerFaceZ/Add-Ons) repository.
+
 <details>
   <summary>Old Readme</summary>  
 
